@@ -1,0 +1,14 @@
+{
+  "name": "lucy",
+  "owner": {
+    "name": "Adnan Crnovrsanin"
+  },
+  "description": "Lucy: Adnan's personal plugin system.",
+  "plugins": [
+    {
+      "name": "lucy",
+      "source": "./",
+      "description": "Adnan's personal plugin: his own skills, commands, hooks, and agents."
+    }
+  ]
+}
