@@ -23,6 +23,7 @@ Skills arrive namespaced, for example /lucy:unslop. Never install the plugin on 
 
 ## Layout
 
+- AGENTS.md: the rules for working in this repo, for any agent. CLAUDE.md only imports it.
 - .claude-plugin/: plugin and marketplace manifests
 - skills/: shipped skills, flat
 - drafts/: work in progress, never shipped
