@@ -1,0 +1,3 @@
+interface:
+  display_name: "Review changes"
+  short_description: "Two-axis review of a diff"
