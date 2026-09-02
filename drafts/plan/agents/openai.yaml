@@ -1,0 +1,5 @@
+interface:
+  display_name: "Plan"
+  short_description: "Spec to bite-sized plan"
+policy:
+  allow_implicit_invocation: false
