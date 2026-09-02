@@ -1,0 +1,5 @@
+interface:
+  display_name: "Idea"
+  short_description: "Ideation before a repo exists"
+policy:
+  allow_implicit_invocation: false
