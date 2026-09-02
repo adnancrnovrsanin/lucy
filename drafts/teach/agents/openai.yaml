@@ -1,0 +1,5 @@
+interface:
+  display_name: "Teach"
+  short_description: "Learn a topic over multiple sessions in this directory"
+policy:
+  allow_implicit_invocation: false

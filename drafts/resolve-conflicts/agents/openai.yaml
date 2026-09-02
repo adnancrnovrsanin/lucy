@@ -1,0 +1,3 @@
+interface:
+  display_name: "Resolve conflicts"
+  short_description: "Resolve merge and rebase conflicts by the intent of both sides"

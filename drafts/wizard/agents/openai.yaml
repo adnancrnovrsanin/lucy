@@ -1,0 +1,5 @@
+interface:
+  display_name: "Wizard"
+  short_description: "Generate a bash wizard for human-only steps"
+policy:
+  allow_implicit_invocation: false
