@@ -1,0 +1,5 @@
+interface:
+  display_name: "Using Lucy"
+  short_description: "Lucy's constitution"
+policy:
+  allow_implicit_invocation: false
