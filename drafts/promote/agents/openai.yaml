@@ -1,0 +1,5 @@
+interface:
+  display_name: "Promote"
+  short_description: ".lucy/ artifacts into project docs"
+policy:
+  allow_implicit_invocation: false
