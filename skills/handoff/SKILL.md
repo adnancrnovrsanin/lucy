@@ -17,6 +17,8 @@ Redact secrets, keys, tokens, and personal data.
 
 Inside a repository, save to .lucy/handoffs/<YYYY-MM-DD>-<slug>.md and copy it to .lucy/handoffs/latest.md. Outside a repository, save to the OS temporary directory and print the path.
 
+Before the first write under .lucy/ in a project, run `git check-ignore -q .lucy`. If the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit; .lucy/ is process state and never enters the repository.
+
 Done when the file exists and a reader with only the file could start the next step.
 
 ## Offer to spawn

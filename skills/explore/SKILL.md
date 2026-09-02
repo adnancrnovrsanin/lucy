@@ -13,6 +13,8 @@ This session is for understanding, not changing. Two shapes share one rule: a co
 
 Explore never edits source files, configuration, or documentation in the project. It writes only under .lucy/notes/ (or the OS temporary directory outside a repository). If the user asks for a change mid-session, say that explore is read-only and suggest leaving the mode.
 
+Before the first write under .lucy/ in a project, run `git check-ignore -q .lucy`. If the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit; .lucy/ is process state and never enters the repository.
+
 ## Codebase tour
 
 1. Name the question the tour answers: how does X flow, where does Y live, what would Z touch.

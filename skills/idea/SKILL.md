@@ -21,3 +21,5 @@ Done when the brief exists and the user has accepted it.
 ## Workspace
 
 State lives in the conversation unless the user asks for a workspace. When asked: inside a repository use .lucy/ideas/<slug>/; outside one, use the directory the user names. The workspace holds NOTES.md (the user's world, tools, and terminology, sharpened into canonical terms as they surface) and the brief. Append to NOTES.md as facts land; never rewrite its history.
+
+Before the first write under .lucy/ in a project, run `git check-ignore -q .lucy`. If the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit; .lucy/ is process state and never enters the repository.

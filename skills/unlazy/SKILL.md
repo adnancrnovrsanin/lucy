@@ -11,6 +11,8 @@ Make incomplete work visible and make completion testable. Prove outcomes agains
 
 For solo work, create `.lucy/gates/GATES.md` from the local file `templates/gates-leaf.md` before implementing (orchestrated mode instead starts from `templates/PLAN.md` plus per-leaf `templates/gates-leaf.md` and per-branch `templates/gates-node.md` under `.lucy/gates/<scope>/`; see Build the depth tree below). State one observable outcome per gate. Give every runnable gate an indented `CHECK:` and `EXPECT:`; use a manual gate only when no command can decide the outcome.
 
+Before the first write under .lucy/ in a project, run `git check-ignore -q .lucy`. If the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit; .lucy/ is process state and never enters the repository.
+
 Throughout this file, `<skill-dir>` is the directory containing this `SKILL.md` and `<scope>` is a pipeline id under `.lucy/gates/`. Run the checker from the repository root without a file argument: it discovers the solo ledger, or the single scope, and anchors every `CHECK:` at that root. When you name a ledger explicitly, pass `--root . --cwd .` so repository-relative commands keep the same base.
 
 Treat `CHECK:` as code. Before executing an inherited ledger, parse it without running anything and read every command and called script:
