@@ -1,0 +1,3 @@
+interface:
+  display_name: "Review feedback"
+  short_description: "Verify review feedback against the codebase before acting on it"
