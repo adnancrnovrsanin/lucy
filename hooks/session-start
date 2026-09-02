@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# SessionStart hook: inject Lucy's constitution (using-lucy/SKILL.md, body
+# only) as additional context. Prints one JSON object. Ignores stdin and
+# arguments (the dev-machine installer appends a marker argument).
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+FILE="$ROOT/skills/using-lucy/SKILL.md"
+[ -f "$FILE" ] || FILE="$ROOT/drafts/using-lucy/SKILL.md"
+
+if [ ! -f "$FILE" ]; then
+  printf '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"Lucy: the constitution file was not found. Run /using-lucy after linking skills."}}\n'
+  exit 0
+fi
+
+# Drop the frontmatter between the first two --- lines.
+body="$(awk 'NR==1 && $0=="---" {infm=1; next} infm && $0=="---" {infm=0; next} !infm {print}' "$FILE")"
+
+escape_json() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  printf '%s' "$s"
+}
+
+context="<LUCY>\nThis machine runs Lucy. The constitution below applies to this session.\n\n$(escape_json "$body")\n</LUCY>"
+printf '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"%s"}}\n' "$context"
+exit 0
