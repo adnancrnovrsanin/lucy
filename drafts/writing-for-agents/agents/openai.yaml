@@ -1,0 +1,3 @@
+interface:
+  display_name: "Writing for agents"
+  short_description: "Write documents an agent will act on"
