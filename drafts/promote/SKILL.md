@@ -1,6 +1,6 @@
 ---
 name: promote
-description: Turn .lucy/ artifacts into project documentation, reconciled with what was built.
+description: "Turn .lucy/ artifacts into project documentation, reconciled with what was built."
 disable-model-invocation: true
 ---
 

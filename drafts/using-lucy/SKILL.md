@@ -1,6 +1,6 @@
 ---
 name: using-lucy
-description: Lucy's constitution: the skills-first rule, gates, and mode map. Injected at session start; type it to reload.
+description: "Lucy's constitution: the skills-first rule, gates, and mode map. Injected at session start; type it to reload."
 disable-model-invocation: true
 ---
 

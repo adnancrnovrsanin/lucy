@@ -44,6 +44,7 @@ for dir in "$@"; do
   fm_name="$(printf '%s\n' "$fm" | sed -n 's/^name: *//p' | head -1)"
   [ "$fm_name" = "$name" ] || fail "$name" "frontmatter name '$fm_name' does not equal the directory name"
   desc="$(printf '%s\n' "$fm" | sed -n 's/^description: *//p' | head -1)"
+  desc="${desc#\"}"; desc="${desc%\"}"
   [ -n "$desc" ] || fail "$name" "missing description"
   user_invoked=0
   if printf '%s\n' "$fm" | grep -q '^disable-model-invocation: true'; then

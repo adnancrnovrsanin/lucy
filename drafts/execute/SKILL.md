@@ -1,6 +1,6 @@
 ---
 name: execute
-description: Execute a plan task by task with fresh implementer subagents, reviews, and a ledger.
+description: "Execute a plan task by task with fresh implementer subagents, reviews, and a ledger."
 disable-model-invocation: true
 argument-hint: "[plan path]"
 ---

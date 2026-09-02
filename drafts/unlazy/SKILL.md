@@ -1,6 +1,6 @@
 ---
 name: unlazy
-description: Use for substantial multi-part autonomous work, an audit or build that must not stop half-done, or when the user says unlazy or gates: write the gate ledger first, run approved checks, re-verify before reporting.
+description: "Use for substantial multi-part autonomous work, an audit or build that must not stop half-done, or when the user says unlazy or gates: write the gate ledger first, run approved checks, re-verify before reporting."
 ---
 
 # Unlazy

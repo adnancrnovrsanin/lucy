@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Turn an approved spec into a bite-sized implementation plan in .lucy/plans/.
+description: "Turn an approved spec into a bite-sized implementation plan in .lucy/plans/."
 disable-model-invocation: true
 argument-hint: "[spec path]"
 ---

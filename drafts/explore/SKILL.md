@@ -1,6 +1,6 @@
 ---
 name: explore
-description: Explore mode: understand a codebase or technology without changing it; writes notes to .lucy/notes/.
+description: "Explore mode: understand a codebase or technology without changing it; writes notes to .lucy/notes/."
 argument-hint: "[what to explore]"
 disable-model-invocation: true
 ---

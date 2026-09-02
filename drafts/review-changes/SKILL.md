@@ -1,6 +1,6 @@
 ---
 name: review-changes
-description: Use when a task, feature, or branch is done and needs review before merging or moving on: dispatch a reviewer subagent over the diff since a fixed point, reporting standards and spec findings separately.
+description: "Use when a task, feature, or branch is done and needs review before merging or moving on: dispatch a reviewer subagent over the diff since a fixed point, reporting standards and spec findings separately."
 ---
 
 # Review changes

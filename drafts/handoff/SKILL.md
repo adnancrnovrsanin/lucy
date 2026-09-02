@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Compact this conversation into a handoff document for the next session; optionally spawn it.
+description: "Compact this conversation into a handoff document for the next session; optionally spawn it."
 argument-hint: "[what the next session is for]"
 disable-model-invocation: true
 ---

@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use when writing implementation code for a feature or bug fix, before the code exists: red, green, refactor, one slice at a time, at seams agreed with the user.
+description: "Use when writing implementation code for a feature or bug fix, before the code exists: red, green, refactor, one slice at a time, at seams agreed with the user."
 ---
 
 # Test-driven development

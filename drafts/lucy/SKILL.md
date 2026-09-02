@@ -1,6 +1,6 @@
 ---
 name: lucy
-description: Which Lucy flow or mode fits my situation.
+description: "Which Lucy flow or mode fits my situation."
 disable-model-invocation: true
 ---
 
