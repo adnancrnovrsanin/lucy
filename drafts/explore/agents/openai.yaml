@@ -1,0 +1,5 @@
+interface:
+  display_name: "Explore"
+  short_description: "Understand without changing"
+policy:
+  allow_implicit_invocation: false
