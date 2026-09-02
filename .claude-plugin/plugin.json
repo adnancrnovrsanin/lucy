@@ -1,7 +1,7 @@
 {
   "name": "lucy",
-  "version": "0.1.0",
-  "description": "Adnan's personal plugin: his own skills, commands, hooks, and agents.",
+  "version": "0.2.0",
+  "description": "Adnan's personal plugin: his own skills and hooks, merged from superpowers, mattpocock/skills, and unlazy.",
   "author": {
     "name": "Adnan Crnovrsanin"
   }
