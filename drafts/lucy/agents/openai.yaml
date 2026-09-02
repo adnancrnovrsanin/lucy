@@ -1,0 +1,5 @@
+interface:
+  display_name: "Lucy"
+  short_description: "Which flow fits my situation"
+policy:
+  allow_implicit_invocation: false
