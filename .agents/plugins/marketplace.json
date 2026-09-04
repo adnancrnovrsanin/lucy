@@ -1,0 +1,10 @@
+{
+  "name": "lucy-codex",
+  "plugins": [
+    {
+      "name": "lucy",
+      "source": "./",
+      "description": "Adnan's personal plugin system for Codex."
+    }
+  ]
+}

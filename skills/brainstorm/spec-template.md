@@ -19,7 +19,7 @@ A long, numbered list that covers every aspect of the feature.
 
 ## Architecture
 
-Components, their interfaces (call the Skill tool with "codebase-design" for the vocabulary), data flow, error handling.
+Components, their interfaces (invoke `codebase-design` through the host's skill mechanism for the vocabulary), data flow, error handling.
 
 ## Implementation decisions
 

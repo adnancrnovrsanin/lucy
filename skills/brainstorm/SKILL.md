@@ -17,7 +17,7 @@ Before your first question, classify the request and say the classification out 
 
 - **Spike.** A feasibility question ("can we...", "is it possible...", "quick and dirty is fine") whose output is an answer, not code you keep. Present the question and what you will try in two or three sentences, get a nod, then find out as cheaply as correctness allows. No design doc, no spec file. Report findings as a recommendation; anything you built stays labeled throwaway.
 - **Bounded.** A well-scoped change to code that already exists in this repo: a new flag, a small endpoint, a one-file fix. Understanding the kind of app is not enough; bounded means the flow you are changing is already here to read. If there is no existing flow to change, the task is not bounded. Ask the clarifying questions that matter, present a short design in chat, a few sentences to a few short paragraphs, and stop. Implementation starts only after the user says yes to that design. A bounded task's approval is as hard a gate as an architectural one. No spec file, no implementation plan document.
-- **Architectural.** New projects, new subsystems, changes that restructure how components fit together or alter interfaces others depend on. Follow the full process: questions, approaches, sectioned design, written spec, then /plan.
+- **Architectural.** New projects, new subsystems, changes that restructure how components fit together or alter interfaces others depend on. Follow the full process: questions, approaches, sectioned design, written spec, then the `plan` skill.
 
 When in doubt between two paths, take the heavier one. The path moves in one direction only. Hidden complexity discovered mid-task upgrades it: stop, say so, and step up. Nothing downgrades mid-task.
 
@@ -35,7 +35,7 @@ Red flags, and what is true instead:
 
 ## The interview
 
-Call the Skill tool with "grilling" for every question round: number the questions, attach a recommended answer to each, ask the whole frontier at once, and find facts yourself before asking the user for decisions. On the architectural path also call the Skill tool with "domain-modeling", so terms sharpen and CONTEXT.md and ADRs update as decisions land.
+Invoke `grilling` through the host's skill mechanism for every question round: number the questions, attach a recommended answer to each, ask the whole frontier at once, and find facts yourself before asking the user for decisions. On the architectural path, also invoke `domain-modeling` through the host's skill mechanism so terms sharpen and CONTEXT.md and ADRs update as decisions land.
 
 Before the first round:
 
@@ -74,7 +74,7 @@ Architectural:
 5. Write the spec to `.lucy/specs/<YYYY-MM-DD>-<slug>.md` from `spec-template.md` in this skill's directory.
 6. Spec self-review.
 7. User review gate.
-8. Tell the user to run `/plan <spec path>`. Brainstorm never invokes plan.
+8. Tell the user to invoke `plan` with the spec path through the host's skill syntax. Brainstorm never invokes plan.
 
 ## Exploring approaches
 
@@ -91,7 +91,7 @@ Architectural:
 - Cover architecture, components, data flow, error handling, and testing.
 - Be ready to go back and clarify if something does not make sense.
 
-For module shape, seams, and testability, call the Skill tool with "codebase-design" and use its vocabulary in the design.
+For module shape, seams, and testability, invoke `codebase-design` through the host's skill mechanism and use its vocabulary in the design.
 
 ## Working in existing codebases
 
@@ -101,7 +101,7 @@ For module shape, seams, and testability, call the Skill tool with "codebase-des
 
 ## After the design
 
-Architectural path only. Write the validated design to `.lucy/specs/<YYYY-MM-DD>-<slug>.md`, following `spec-template.md`. Before the first write into `.lucy/`, run `git check-ignore -q .lucy/`; if the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit. The spec itself is never committed. It stays in `.lucy/specs/` through the build, where plan and execute read it; say so when the user approves it. After finish, the user runs /promote to move the spec, corrected to what was built, into the project's documentation.
+Architectural path only. Write the validated design to `.lucy/specs/<YYYY-MM-DD>-<slug>.md`, following `spec-template.md`. Before the first write into `.lucy/`, run `git check-ignore -q .lucy/`; if the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit. The spec itself is never committed. It stays in `.lucy/specs/` through the build, where plan and execute read it; say so when the user approves it. After finish, the user invokes `promote` to move the spec, corrected to what was built, into the project's documentation.
 
 Spec self-review. Look at the written spec with fresh eyes:
 
@@ -116,4 +116,4 @@ User review gate. Ask the user to review the written spec:
 
 > Spec written to <path>. Review it and tell me what to change before we plan the implementation.
 
-Wait for the answer. If they request changes, make them and repeat the self-review. Once the user approves, set the spec's Status line to approved with how and when, then tell the user to run `/plan <path>`. Brainstorm never invokes plan.
+Wait for the answer. If they request changes, make them and repeat the self-review. Once the user approves, set the spec's Status line to approved with how and when, then tell the user to invoke `plan` with the path through the host's skill syntax. Brainstorm never invokes plan.

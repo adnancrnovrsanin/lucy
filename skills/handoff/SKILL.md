@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 # Handoff
 
-Write a handoff document so a fresh session can continue this work without the conversation. Call the Skill tool with "writing-for-agents" first: the document is a brief for an agent.
+Write a handoff document so a fresh session can continue this work without the conversation. Invoke `writing-for-agents` through the host's skill mechanism first: the document is a brief for an agent.
 
 ## Write
 
@@ -23,4 +23,4 @@ Done when the file exists and a reader with only the file could start the next s
 
 ## Offer to spawn
 
-Ask one question: open the next session yourself, or spawn a background agent seeded with this document? If the user chooses spawn and `claude --help` lists a `--bg` flag, run `claude --bg --name "<short descriptive name>" "Read <handoff path> and continue the work it describes."` from the current directory and tell the user the agent appears under `claude agents`. If the flag is not available, print the exact command to start a new session and point it at the file.
+Ask one question: should the user open the next session themselves, or should the host create a native background task seeded with this document? If the user chooses a background task and the host exposes a native task or subagent mechanism, create it from the current directory with the prompt `Read <handoff path> and continue the work it describes.` and tell the user where it appears. If the host has no such mechanism, print that exact prompt and tell the user to begin a new session with it.

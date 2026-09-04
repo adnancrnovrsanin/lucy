@@ -7,7 +7,7 @@
 //
 // Usage: node scripts/install-dev-hooks.mjs [--uninstall]
 //
-// SessionStart (startup|clear|compact): bash <repo>/hooks/session-start
+// SessionStart (startup|resume|clear|compact): bash <repo>/hooks/session-start
 // Stop: <this node> $HOME/.claude/skills/unlazy/scripts/stop-hook.mjs
 // Both commands end with " --lucy-hook-v1"; that marker is how Lucy's groups
 // are recognised on later runs and on uninstall. Other hooks are preserved.
@@ -33,7 +33,7 @@ if (unknown.length > 0) {
 const quote = (p) => JSON.stringify(p);
 const entries = {
   SessionStart: {
-    matcher: "startup|clear|compact",
+    matcher: "startup|resume|clear|compact",
     hooks: [{ type: "command", command: "bash " + quote(join(REPO, "hooks", "session-start")) + " " + MARKER }],
   },
   Stop: {

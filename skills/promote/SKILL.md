@@ -16,7 +16,7 @@ Done when the user has seen the list and picked what to promote (default: everyt
 
 ## 2. Map
 
-Detect the project's documentation conventions: docs/adr/, docs/specs/, docs/design/, CONTEXT.md, README.md, a notes directory, AGENTS.md or CLAUDE.md. Propose one target per artifact: a spec goes to the specs directory (docs/specs/ when none exists), notes to the notes directory (docs/notes/ when none exists), decisions to docs/adr/, terminology to CONTEXT.md, agent pointers to AGENTS.md (CLAUDE.md when AGENTS.md is absent). When a target is ambiguous, call the Skill tool with "grilling" for one round.
+Detect the project's documentation conventions: docs/adr/, docs/specs/, docs/design/, CONTEXT.md, README.md, a notes directory, AGENTS.md or CLAUDE.md. Propose one target per artifact: a spec goes to the specs directory (docs/specs/ when none exists), notes to the notes directory (docs/notes/ when none exists), decisions to docs/adr/, terminology to CONTEXT.md, agent pointers to AGENTS.md (CLAUDE.md when AGENTS.md is absent). When a target is ambiguous, invoke `grilling` through the host's skill mechanism for one round.
 
 Done when every artifact has a target the user agreed to.
 
@@ -28,7 +28,7 @@ Done when no sentence in the promoted document contradicts the code and every ru
 
 ## 4. Merge
 
-Call the Skill tool with "domain-modeling". A decision that is hard to reverse, surprising without context, and the result of a real trade-off becomes an ADR in docs/adr/, numbered after the highest existing one. New terms go into CONTEXT.md. User-facing behavior goes into README.md or the docs the project already keeps. Pointers an agent needs to find the new documents go into AGENTS.md or CLAUDE.md; call the Skill tool with "writing-for-agents" before writing them. Merge into existing documents rather than adding a parallel file that says the same thing.
+Invoke `domain-modeling` through the host's skill mechanism. A decision that is hard to reverse, surprising without context, and the result of a real trade-off becomes an ADR in docs/adr/, numbered after the highest existing one. New terms go into CONTEXT.md. User-facing behavior goes into README.md or the docs the project already keeps. Pointers an agent needs to find the new documents go into AGENTS.md or CLAUDE.md; invoke `writing-for-agents` through the host's skill mechanism before writing them. Merge into existing documents rather than adding a parallel file that says the same thing.
 
 Done when each piece of the artifact lives in exactly one project document.
 

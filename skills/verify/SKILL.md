@@ -105,7 +105,7 @@ Wrong: Trust agent report
 
 ## Substantial work: the evidence is a ledger
 
-When the work has more than a handful of independently required outcomes, or it ran unattended, one command's output is not enough evidence. Call the Skill tool with "unlazy": the gate ledger under .lucy/gates/ is the proof, and `--reverify` is the verification command. Report the met, unmet, and abandoned counts it prints, nothing rounder.
+When the work has more than a handful of independently required outcomes, or it ran unattended, one command's output is not enough evidence. Invoke `unlazy` through the host's skill mechanism: the gate ledger under .lucy/gates/ is the proof, and `--reverify` is the verification command. Report the met, unmet, and abandoned counts it prints, nothing rounder.
 
 ## When to apply
 

@@ -44,7 +44,7 @@ The spec or plan the work implements, in this order: the `.lucy/specs/` or `.luc
 
 **3. Dispatch the reviewer.**
 
-Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md](code-reviewer.md). Hand it the range and the spec source, never your session history. The dispatch states: Report Standards and Spec findings under separate headings; never rerank one axis against the other.
+Dispatch a fresh reviewer subagent, filling the template at [code-reviewer.md](code-reviewer.md). Hand it the range and the spec source, never your session history. In Codex, use `spawn_agent` with `fork_turns: "none"`; on another host, use its equivalent no-history spawn. The dispatch states: Report Standards and Spec findings under separate headings; never rerank one axis against the other.
 
 Placeholders:
 
@@ -59,7 +59,7 @@ Placeholders:
 - Important: fix before proceeding.
 - Minor: note for later.
 
-Severity is read within each axis. A Critical spec finding is fixed now even when the Standards axis is clean, and the other way round. When you disagree with a finding, Call the Skill tool with "review-feedback" and work through it there, with reasoning and evidence.
+Severity is read within each axis. A Critical spec finding is fixed now even when the Standards axis is clean, and the other way round. When you disagree with a finding, invoke `review-feedback` through the host's skill mechanism and work through it there, with reasoning and evidence.
 
 ## Example
 

@@ -11,6 +11,8 @@ Execute a plan by dispatching a fresh implementer subagent per task, a task revi
 
 **Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They never inherit your session's context or history; you construct exactly what they need. This also preserves your own context for coordination work.
 
+**Fresh-agent adapter:** Create each fresh implementer or reviewer with no inherited controller history. In Codex, use `spawn_agent` with `fork_turns: "none"` and retain the returned agent id. Send rounds 1 to 3 through `followup_task` to that id; create the rounds 4 and 5 replacement with `fork_turns: "none"` again. On another host, use its equivalent no-history spawn and native follow-up controls. Never rely on a host default to make a worker fresh.
+
 **Core principle:** Fresh subagent per task + task review (spec + quality) + broad final review = high quality, fast iteration
 
 **Narration:** between tool calls, narrate at most one short line. The ledger and the tool results carry the record.
@@ -23,7 +25,7 @@ Four things stop you, and only these: an irreversible or destructive operation; 
 
 ## When to use
 
-The user typed `/execute` with a plan whose tasks are mostly independent. With a subagent tool available, run the loop below. Without one, run the inline mode below. Tightly coupled tasks mean the plan needs rework first: tell the user to run /plan. Without a plan there is nothing to execute: tell the user to run /plan, or /brainstorm when there is no approved spec yet.
+The user invoked `execute` with a plan whose tasks are mostly independent. With a subagent tool available, run the loop below. Without one, run the inline mode below. Tightly coupled tasks mean the plan needs rework first: tell the user to invoke `plan`. Without a plan there is nothing to execute: tell the user to invoke `plan`, or `brainstorm` when there is no approved spec yet.
 
 Compared with inline mode, the subagent loop gives you:
 - A fresh subagent per task, so no context pollution
@@ -40,11 +42,11 @@ Setup first: worktree, ledger check, read the plan, pre-flight review. Then, per
 4. Otherwise enter the fix loop. A finding that conflicts with the plan text gets a ruling first, ledgered. Rounds 1 to 3 resume the implementer; rounds 4 and 5 dispatch a fresh implementer on a more capable model. Each round ends with a scoped re-review from [re-review-prompt.md](re-review-prompt.md).
 5. When round 5 still leaves findings open, the breaker trips: adjudicate each open finding. A load-bearing one gets a ruling and you continue, stopping only if every path forward is a guess; the rest are parked in the ledger with rulings. Then append the completion line.
 
-When no tasks remain, dispatch the final whole-branch reviewer through review-changes. If it returns findings: ONE fix dispatch, one scoped re-review, adjudicate the residuals. When the final review is clean, clear the workspace of everything but the ledger and call the Skill tool with "finish".
+When no tasks remain, dispatch the final whole-branch reviewer through review-changes. If it returns findings: ONE fix dispatch, one scoped re-review, adjudicate the residuals. When the final review is clean, clear the workspace of everything but the ledger and invoke `finish` through the host's skill mechanism.
 
 ## Setup
 
-Ensure the work happens in an isolated workspace: Call the Skill tool with "worktree" to create one or verify the existing one. Never start implementation on a main/master branch without the user's explicit consent.
+Ensure the work happens in an isolated workspace: invoke `worktree` through the host's skill mechanism to create one or verify the existing one. Never start implementation on a main/master branch without the user's explicit consent.
 
 Conversation memory does not survive compaction. In real sessions, controllers that lost their place have re-dispatched entire completed task sequences, the single most expensive failure observed. Track progress in a ledger file, not only in todos.
 
@@ -90,7 +92,7 @@ Use the least powerful model that can handle each role to conserve cost and incr
 
 ## The task loop
 
-Call the Skill tool with "writing-for-agents" before composing the first dispatch. Every brief, dispatch, and report contract below is a document for an agent and follows it.
+Invoke `writing-for-agents` through the host's skill mechanism before composing the first dispatch. Every brief, dispatch, and report contract below is a document for an agent and follows it.
 
 **Batch small same-shape work.** When the plan lists several tasks that are each a small, independent edit of the same kind, such as the same one-line fix, constant change, or field addition repeated across files, do not dispatch one subagent per task. Compose ONE dispatch brief listing every file and its change, send the whole batch to a single subagent, and review its diff as one unit. Reserve one-dispatch-per-task for work that needs its own judgment, its own tests, or its own review.
 
@@ -181,7 +183,7 @@ Adjudicate only at the cap. Adjudicating earlier to end a loop is pre-judging wi
 
 ### 5. Complete the task
 
-When the review comes back clean, or every open finding is parked with a ruling at the cap, check the task's gates. If the task declares a Gates: ledger, call the Skill tool with "unlazy" and run --reverify on that ledger; the task completes only on ALL MET. execute drives, unlazy proves. An unmet gate is a finding: it enters the fix loop like a confirmed spec gap, and the round count continues from where the review left it.
+When the review comes back clean, or every open finding is parked with a ruling at the cap, check the task's gates. If the task declares a Gates: ledger, invoke `unlazy` through the host's skill mechanism and run --reverify on that ledger; the task completes only on ALL MET. execute drives, unlazy proves. An unmet gate is a finding: it enters the fix loop like a confirmed spec gap, and the round count continues from where the review left it.
 
 Then append the completion line to the ledger in the same message as your other bookkeeping:
 
@@ -192,7 +194,7 @@ Then mark the todo complete and move on. Never move to the next task while the r
 
 ## Final review
 
-The final whole-branch review gets a package too: run `scripts/review-package PLAN_FILE MERGE_BASE HEAD` (MERGE_BASE is the commit the branch started from, e.g. `git merge-base main HEAD`) and include the printed path in the final review dispatch, so the final reviewer reads one file instead of re-deriving the branch diff with git commands. Dispatch on the most capable available model (see model selection): Call the Skill tool with "review-changes" and fill its code-reviewer.md, handing it the package path and the plan as the spec source. Point it at the ledger's deferred-minor and parked lines so it can triage which must be fixed before merge.
+The final whole-branch review gets a package too: run `scripts/review-package PLAN_FILE MERGE_BASE HEAD` (MERGE_BASE is the commit the branch started from, e.g. `git merge-base main HEAD`) and include the printed path in the final review dispatch, so the final reviewer reads one file instead of re-deriving the branch diff with git commands. Dispatch on the most capable available model (see model selection): invoke `review-changes` through the host's skill mechanism and fill its code-reviewer.md, handing it the package path and the plan as the spec source. Point it at the ledger's deferred-minor and parked lines so it can triage which must be fixed before merge.
 
 If the final whole-branch review returns findings, dispatch ONE fix subagent with the complete findings list, not one fixer per finding. Per-finding fixers each rebuild context and re-run suites; a real session's final-review fix wave cost more than all its tasks combined. Then run exactly one scoped re-review of the fix wave (`scripts/review-package PLAN_FILE FIX_BASE HEAD` over the fix range, [re-review-prompt.md](re-review-prompt.md)). Adjudicate any residual findings as in the task loop's breaker: park with rulings, or rule on the load-bearing ones and ledger what you decided. Only the four classes above stop you here. There is no second fix wave; residual load-bearing findings reach the user when finish presents the options.
 
@@ -202,7 +204,7 @@ Before you delete anything, collect every ledger line containing `Ruling:` (pref
 
 When the final whole-branch review is clean and its fixes are merged, delete this plan's briefs, reports, and review packages from the workspace; the git history is their record now. Keep `progress.md`: promote reads its `Ruling:` lines to reconcile the spec with what was built. Sibling directories belong to other plans; leave them alone.
 
-Call the Skill tool with "finish".
+Invoke `finish` through the host's skill mechanism.
 
 ## Common rationalizations
 
@@ -231,4 +233,4 @@ When no subagent tool is available, work the tasks in this session. Setup is the
 
 Stop and ask when you hit a blocker: a missing dependency, a failing test you cannot explain, an instruction you do not understand, or a verification that fails repeatedly. Inline you have no reviewer to catch a wrong guess, so blockers stop you instead of becoming rulings. Do not force through a blocker. If the user updates the plan in response, return to the plan read and the pre-flight scan before continuing.
 
-After every task is complete and verified, collect the rulings as in Finish, then call the Skill tool with "finish".
+After every task is complete and verified, collect the rulings as in Finish, then invoke `finish` through the host's skill mechanism.

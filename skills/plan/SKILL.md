@@ -55,7 +55,7 @@ Every plan starts with this header:
 ```markdown
 # [Feature name] implementation plan
 
-> For agentic workers: run this plan with Lucy's execute skill (/execute), one task at a time. Steps use checkbox syntax for tracking.
+> For agentic workers: run this plan with Lucy's `execute` skill, one task at a time. Steps use checkbox syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -158,4 +158,4 @@ If you find issues, fix them inline. No need to re-review; fix and move on. If y
 
 ## Execution handoff
 
-Plan complete at <path>. Tell the user to run /execute <path>. The plan skill never invokes execute.
+Plan complete at <path>. Tell the user to invoke `execute` with the path through the host's skill syntax. The plan skill never invokes execute.

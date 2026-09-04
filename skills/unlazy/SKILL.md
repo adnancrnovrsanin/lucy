@@ -93,7 +93,7 @@ Re-read the current request, reconcile it against the PLAN inventory when presen
 
 ## The Stop hook ships with Lucy
 
-Lucy registers `scripts/stop-hook.mjs` as a Claude Code Stop hook in every project. It scans this project's `.lucy/gates/` ledgers and dispatch state, blocks the session from ending while gates are unmet or launch waves are incomplete, and releases after six consecutive blocks without progress. It never executes `CHECK:` lines. In a project with no ledger it allows the stop.
+Lucy registers `scripts/stop-hook.mjs` as a Stop hook in every supported host. It scans this project's `.lucy/gates/` ledgers and dispatch state, blocks the session from ending while gates are unmet or launch waves are incomplete, and releases after six consecutive blocks without progress. It never executes `CHECK:` lines. In a project with no ledger it allows the stop.
 
 ## Spend attention where it compounds
 

@@ -25,11 +25,11 @@ Tests failing (<N> failures). Must fix before completing:
 
 ## Step 1b: Prove the ledgers
 
-If `.lucy/gates/` exists in this project, call the Skill tool with "unlazy" and re-verify every ledger that belongs to this work with `--reverify`. Stop here unless the result is `ALL MET`; an unmet or abandoned gate is reported to the user in place of the menu. execute drives, unlazy proves: the menu below is reachable only past this step.
+If `.lucy/gates/` exists in this project, invoke `unlazy` through the host's skill mechanism and re-verify every ledger that belongs to this work with `--reverify`. Stop here unless the result is `ALL MET`; an unmet or abandoned gate is reported to the user in place of the menu. execute drives, unlazy proves: the menu below is reachable only past this step.
 
 ## Step 1c: Count unpromoted artifacts
 
-Count the files under `.lucy/specs/`, `.lucy/notes/`, and `.lucy/ideas/`. If the count is above zero, the menu preamble gains one line: `<N> unpromoted artifacts in .lucy/, run /promote after integrating.` finish never runs promote itself; the user types it.
+Count the files under `.lucy/specs/`, `.lucy/notes/`, and `.lucy/ideas/`. If the count is above zero, the menu preamble gains one line: `<N> unpromoted artifacts in .lucy/, invoke promote after integrating.` finish never invokes promote itself; the user invokes it.
 
 ## Step 2: Detect environment
 
