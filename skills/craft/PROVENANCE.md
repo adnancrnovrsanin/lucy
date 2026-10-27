@@ -2,6 +2,8 @@
 
 Authored for Lucy from the sources below, studied 2026-10-27; reports in .lucy/notes/2026-10-27-forms-research/ (not shipped).
 
+The scan, its rules and tests, and the forms checklist moved to skills/inspect on 2026-10-27 (ADR-0009); the sections below still record what each source contributed to that material.
+
 ## https://github.com/danielmeppiel/form-builder, commit 6be19fcbba6ac9f114175e7df14cfe5688e247fa
 
 Taken: ideas only. Aria wiring of hints and errors with aria-describedby (forms/feedback.md, Announcements) and autocomplete tokens on personal-data fields (forms/autofill.md, Autocomplete tokens). Its other ideas (schema at module level, setError for server errors, reset after success) did not land as playbook text. The repository states the MIT License in README.md and SKILL.md and ships no license file.
@@ -44,12 +46,12 @@ Changed: the ladder is cut to four ordered steps; the severity calibration becom
 
 ## https://github.com/nextlevelbuilder/ui-ux-pro-max-skill, commit 28b3b8dee8c976df4fa3e94aed4e092ad43fcb03, path .claude/skills/ui-ux-pro-max/data/ux-guidelines.csv
 
-Taken: the shape of a scan rule record with good and bad fixtures (scripts/rules/forms/ and tests/rules.test.mjs), the focusable error summary in feedback.md, and the redundant-entry and accessible-authentication ideas (WCAG 2.2 3.3.7 and 3.3.8) behind the "never ask twice" rule in multi-step.md.
+Taken: the shape of a scan rule record with good and bad fixtures (skills/inspect/scripts/rules/forms/ and skills/inspect/tests/rules.test.mjs), the focusable error summary in feedback.md, and the redundant-entry and accessible-authentication ideas (WCAG 2.2 3.3.7 and 3.3.8) behind the "never ask twice" rule in multi-step.md.
 Changed: only the rule shape and the ideas; no CSV rows are copied.
 
 ## https://github.com/Owl-Listener/designer-skills, commit 9a6930cf84a822eb458624bd11c61aac5bbdf224, path interaction-design
 
-Taken: the option cutoff at 5, the review step for high-stakes forms (forms.md step 5, multi-step.md Review step), nothing preselected for consent (preselected-consent rule), and testing with real data (forms/checklist.md, Real data).
+Taken: the option cutoff at 5, the review step for high-stakes forms (forms.md step 5, multi-step.md Review step), nothing preselected for consent (preselected-consent rule), and testing with real data (skills/inspect/forms/checklist.md, Real data).
 Changed: restated as checklist items and one scan rule.
 
 ## https://github.com/ibelick/ui-skills, commit 59193a75432e5f41c6980f53b9e6a7bd56919947, path skills/fixing-accessibility
@@ -59,7 +61,7 @@ Changed: folded into the component inventory step.
 
 ## https://github.com/vibeeval/vibecosystem, commit 3b763b1fb288f57bfa3cce76ef18184b96461a78, path skills/form-validation
 
-Taken: a cross-check list of form guidelines used to test that no common rule was missing from forms/feedback.md and forms/checklist.md.
+Taken: a cross-check list of form guidelines used to test that no common rule was missing from forms/feedback.md and skills/inspect/forms/checklist.md.
 Changed: no text carried over; items it had that we lacked were added in our words.
 
 ## https://github.com/omer-metin/skills-for-antigravity, commit e8dcf4e8737921a10088bd5c9eb65e81f74c051f, path skills/forms-validation
@@ -100,8 +102,8 @@ Changed: condensed into token tables and short rules; credited at the end of for
 
 ## WHATWG HTML Living Standard section 4.10.19.7, snapshot 939677714df7379fee3667040113b41c91c851e7, read 2026-10-27
 
-Taken: the autofill token table in forms/autofill.md (CC BY 4.0) and the token data in scripts/rules/forms/autofill-tokens.mjs (BSD 3-Clause), including the element allow-list used by the autocomplete-invalid rule.
-Changed: the table is reformatted as Markdown and the data as a module; tests/autofill-tokens.test.mjs checks that the two stay in step.
+Taken: the autofill token table in forms/autofill.md (CC BY 4.0) and the token data in skills/inspect/scripts/rules/forms/autofill-tokens.mjs (BSD 3-Clause), including the element allow-list used by the autocomplete-invalid rule.
+Changed: the table is reformatted as Markdown and the data as a module; skills/inspect/tests/autofill-tokens.test.mjs checks that the two stay in step.
 
 ## Facts confirmed during the build, each with its URL and date
 

@@ -1,6 +1,6 @@
 ---
 name: craft
-description: "Use when building or changing a form or input flow in any UI stack: detect the library, map the data model, pick real components, prove it with the scan."
+description: "Use when building or changing a form or input flow in any UI stack: detect the library, map the data model, pick real components, prove it with inspect."
 ---
 
 # Craft
@@ -9,9 +9,9 @@ Craft holds playbooks for implementation areas where agents reliably cut corners
 
 ## 1. Detect the stack
 
-Run the scan's stack command from the project directory you are changing:
+Run the inspect skill's stack command from the project directory you are changing:
 
-    node <this skill's directory>/scripts/scan.mjs --stack
+    node <this skill's directory>/../inspect/scripts/scan.mjs --stack
 
 It prints the UI library with its base or platform, the form library, the validation library with versions, the installed shadcn components, and the vendor tools the project configures. In a monorepo, run it from the package that holds the code.
 
@@ -37,4 +37,4 @@ Done when every control the form needs maps to a component that exists or that y
 |---|---|
 | Building or changing a form, a wizard, or any input flow | [forms.md](forms.md) |
 
-Each playbook ends with a proof step that runs the same scan script.
+Each playbook ends with a proof step that invokes inspect.

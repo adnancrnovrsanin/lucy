@@ -1093,7 +1093,7 @@ SOFTWARE.
 
 ## WHATWG HTML Living Standard
 
-The autofill token table in forms/autofill.md is from the WHATWG HTML Living Standard, licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/). The token data in scripts/rules/forms/autofill-tokens.mjs is licensed under the BSD 3-Clause License:
+The autofill token table in forms/autofill.md is from the WHATWG HTML Living Standard, licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/). The token data in skills/inspect/scripts/rules/forms/autofill-tokens.mjs is licensed under the BSD 3-Clause License:
 
 Copyright © WHATWG (Apple, Google, Mozilla, Microsoft).
 

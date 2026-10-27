@@ -63,11 +63,8 @@ Done when every field in the table renders with its mapped control and the proje
 
 ## Step 7: Prove
 
-1. Run `node <this skill's directory>/scripts/scan.mjs` from the project. It scans the files changed since the merge base plus untracked files; pass paths to scan others.
-2. Fix every error finding. When a finding is wrong for this code, suppress it on the line above with `// craft-scan-ignore <rule-id>: <reason>`. Read the warnings and fix the ones that apply.
-3. Walk [forms/checklist.md](forms/checklist.md).
+Invoke `inspect` through the host's skill mechanism on your changes. It runs the scan, walks the forms checklist, and reports each finding with the section of this playbook that fixes it.
 
-4. Check the summary's `files N`. It must count the form's files. When it shows 0 or misses them (nothing changed since the merge base, or the form is already committed), run the scan again with the form's paths passed explicitly. A scan that checked no form file proves nothing.
-5. The scan sees an enum only when it is declared in the same file as the control. Check every enum field's control against the field table by hand.
+Fix every error finding by applying the section it points at. When a scan finding is wrong for this code, suppress it on the line above with `// inspect-ignore <rule-id>: <reason>`. Read the warnings and fix the ones that apply.
 
-Done when the scan exits 0, its `files N` counts the form's files, and every checklist item is checked. Report the scan's summary line, every suppression with its reason, and every checklist item you could not check, marked "Not verified".
+Done when inspect reports no error findings, its scan counted the form's files, and every checklist item is checked. Report inspect's summary, every suppression with its reason, and every item marked "Not verified".
