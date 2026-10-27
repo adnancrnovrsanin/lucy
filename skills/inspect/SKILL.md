@@ -27,18 +27,18 @@ Done when you can state the areas and the file set, for example "forms, diff, 2 
 3. For the diff, or a scope with one form, review each form here by following steps 1 to 4 of [forms/reviewer.md](forms/reviewer.md) yourself, with its bracketed values filled in as that file says.
 4. For a scope with more than one form, say how many you found and ask before reviewing them, since each review is a subagent; when the user declines, report the scan findings only. Otherwise invoke `writing-for-agents` through the host's skill mechanism, then dispatch one review subagent per form, at most four at a time, each with [forms/reviewer.md](forms/reviewer.md) filled in for its form.
 
-A scan exit of 2 with a "not scanned" list means those files could not be read: list them as "not inspected", never as a pass. An exit of 2 with a usage message, such as no git repository for the diff, means the scope needs naming: say so and ask for one. A form whose review did not come back is "not inspected" too.
+A scan exit of 1 means it found error findings, which you report; it is not a tool failure. A scan exit of 2 with a "not scanned" list means those files could not be read: list them as "not inspected", never as a pass. An exit of 2 with a usage message, such as no git repository for the diff, means the scope needs naming: say so and ask for one. A form whose review did not come back is "not inspected" too.
 
 Done when the scan has covered the whole scope and every listed form has a review result or a "not inspected" entry.
 
 ## 3. Report
 
-Each finding gives: the id (a scan rule id or a checklist item id), `file:line`, severity (error, warning, or info), the problem in one sentence, and "fix by", the craft section that fixes it. The scan prints its pointer; checklist items carry theirs. A checklist failure the scan already reported on the same line is listed once, under the scan rule.
+Each finding gives: the id (a scan rule id or a checklist item id), `file:line`, severity (error, warning, or info), the problem in one sentence, and "fix by", the craft section that fixes it. The scan prints its pointer; checklist items carry theirs. A checklist failure the scan already reported on the same line is listed once, under the scan rule. After the findings, list every checklist item marked "Not verified".
 
 - For the diff, or a scope with one form, report in the conversation, or in the review that called you.
-- For a scope with more than one form, also write `.lucy/inspections/<YYYY-MM-DD>-<area>.md`: one section per form, the scan summary, and every "not inspected" entry. Before the first write into `.lucy/`, run `git check-ignore -q .lucy/`; if the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit.
+- For a scope with more than one form, also write `.lucy/inspections/<YYYY-MM-DD>-<area>.md`: one section per form, the scan summary, every "Not verified" item, and every "not inspected" entry. Before the first write into `.lucy/`, run `git check-ignore -q .lucy/`; if the directory is not ignored, append `.lucy/` to .gitignore and propose that one-line commit.
 
-Then propose the fixes. In an interactive session, list what you would fix and wait for a yes; then fix by applying the sections the pointers name, invoking `craft` through the host's skill mechanism. When execute or review-changes called you, return the findings; they enter that flow's fix loop.
+Then propose the fixes. In an interactive session, list what you would fix and wait for a yes; then fix by applying the sections the pointers name, invoking `craft` through the host's skill mechanism. When craft's proof step, execute, or review-changes called you, return the findings without waiting for a yes; the caller fixes them in its own flow.
 
 Done when every finding is reported with its pointer and every "not inspected" entry is named.
 
