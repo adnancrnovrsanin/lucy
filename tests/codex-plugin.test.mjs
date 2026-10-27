@@ -64,7 +64,7 @@ const marketplace = readJson(resolve(root, ".agents/plugins/marketplace.json"));
 const hooks = readJson(resolve(root, "hooks/hooks.json"));
 
 assert.equal(plugin.name, "lucy");
-assert.equal(plugin.version, "0.2.0");
+assert.equal(plugin.version, "0.3.0");
 assert.equal(plugin.skills, "./skills/");
 assert.equal(marketplace.name, "lucy-codex");
 assert.deepEqual(marketplace.plugins, [{
