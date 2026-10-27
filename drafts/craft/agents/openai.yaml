@@ -1,0 +1,3 @@
+interface:
+  display_name: "Craft"
+  short_description: "Playbooks for areas agents cut corners on"
