@@ -69,7 +69,7 @@ Rating, Segment, ToggleButtonGroup, and RichTextEditor have no `name`: their val
 | Checkbox, Switch | `isSelected` | `onChange(boolean)` |
 | RadioGroup | `value` | `onChange(string)` |
 | Select | `value` | `onChange(key)` |
-| NumberField | `value` | `onChange(number or undefined)`, fired on commit (blur, stepper), not per keystroke |
+| NumberField | `value` | `onChange(number)`, fired on commit (blur, stepper), not per keystroke; normalize `undefined` and `NaN` to empty |
 | Date controls | `value` | `onChange(DateValue or null)` |
 
 ```tsx
@@ -95,6 +95,8 @@ Rating, Segment, ToggleButtonGroup, and RichTextEditor have no `name`: their val
   )}
 />
 ```
+
+Without a form library, React Aria's default timing is the small-form behavior: constraints and `validate` run when the value is committed (blur) and on submit, and errors then update live. It has no submit-only or section mode. Medium and large forms control `isInvalid` themselves: keep a `submitted` flag (medium) or a per-section `finished` flag set by Continue or by focus leaving the Fieldset (large), show a field's error only when its flag is set, and set `validationBehavior="aria"` so the browser does not block Continue.
 
 Neither HeroUI nor React Aria documents TanStack Form. Wire it the same way: `value` from `field.state.value`, the change handler from the table calling `field.handleChange`, `onBlur={field.handleBlur}`, `isInvalid` from `field.state.meta.isTouched && !field.state.meta.isValid`, and the first message in FieldError. Its timing is the equivalent given in the shadcn note.
 
@@ -139,7 +141,7 @@ Neither HeroUI nor React Aria documents TanStack Form. Wire it the same way: `va
 2. Stay on 3.2.2 or later.
 3. Browser messages ignore I18nProvider; pass custom text through the FieldError render function.
 4. The default `validationBehavior="native"` blocks submit; use `"aria"` when a library owns validation (`heroui-rhf-validation-behavior`).
-5. NumberField `onChange` fires on commit, and `commitBehavior` `"snap"` (default) clamps while `"validate"` keeps the value and flags it. An empty field is `undefined`; map it before validation.
+5. NumberField `onChange` fires on commit, and `commitBehavior` `"snap"` (default) clamps while `"validate"` keeps the value and flags it. The docs describe the parsed number as `NaN` when no valid number could be parsed and do not say what an empty field reports, so the schema maps both `undefined` and `NaN` to empty before validation.
 6. `formatOptions` restrict which characters can be typed.
 7. Calendar week and first-day settings need care in non-Gregorian locales.
 8. 3.2.6 renamed a Fieldset class from `fieldset__field_group` to `fieldset__field-group`; custom CSS targeting the old name breaks.
@@ -153,4 +155,4 @@ All read 2026-10-27.
 
 1. Auto-advance: React Aria's `useDateSegment` (https://github.com/adobe/react-spectrum, `packages/react-aria/src/datepicker/useDateSegment.ts`, main) calls `focusManager.focusNext()` when a numeric segment has received as many digits as its maximum allows, and after a day-period or era match. The DateField page (https://react-aria.adobe.com/DateField) does not describe it. So DateField and DatePicker auto-advance.
 2. Component lists: https://heroui.com/react/llms.txt lists the web components, and https://heroui.com/native/llms.txt and https://heroui.com/docs/native list the Native ones. The web list has Form, Fieldset, Label, Description, FieldError, ErrorMessage, TextField, Input, TextArea, InputGroup, NumberField, SearchField, Select, ListBox, ComboBox, Autocomplete, DateField, DatePicker, DateRangePicker, Calendar, RangeCalendar, TimeField, CheckboxGroup, Checkbox, RadioGroup, Switch, ToggleButtonGroup, Slider, InputOTP, TagGroup, and the Color components, which matches the matrix in report-heroui.md. The Native list has no Form, date, number, or combobox component. The HeroUI MCP was not available, and the Pro indexes were not re-read: the Pro rows come from the same-day study in report-heroui.md.
-3. Version facts come from that study: `@heroui/react` 3.2.6 (Apache-2.0) at heroui-inc/heroui commit 70a11531fedfb39b6a0748ca49766266108362ae, `react-aria-components` 1.21.1 at adobe/react-spectrum commit 06891def3e7488f4e598debb8418bf17cf060279, and the React Aria forms page (https://react-aria.adobe.com/forms) for the validation model.
+3. Version facts come from that study: `@heroui/react` 3.2.6 (Apache-2.0) at heroui-inc/heroui commit 70a11531fedfb39b6a0748ca49766266108362ae, `react-aria-components` 1.21.1 at adobe/react-spectrum commit 06891def3e7488f4e598debb8418bf17cf060279, and the React Aria forms page (https://react-aria.adobe.com/forms) for the validation model. The same page says errors show after commit (blur) or on submit and that `validationBehavior="aria"` stops fields from blocking submit. https://react-aria.adobe.com/NumberField describes the parsed value as `NaN` when it cannot be parsed.

@@ -36,7 +36,7 @@ Without Pro, a date, number, or combobox field is a decision to take to the user
 
 ## React Hook Form
 
-Wrap each field in Controller, forward `onBlur`, and show errors through FieldError with `isInvalid={fieldState.invalid}`.
+Wrap each field in Controller, forward `field.onBlur` and `field.ref` (to the Input or the control that takes focus) so focus-on-error and `trigger(..., { shouldFocus: true })` reach it, and show errors through FieldError with `isInvalid={fieldState.invalid}`.
 
 | Control | Value prop | Change handler |
 |---|---|---|

@@ -43,6 +43,15 @@ Field does not connect the control to FieldDescription or FieldError. Give the d
 
 Combobox is built on Base UI even in a Radix project. Read the installed `combobox.tsx` before coding against it. Records use `itemToStringValue` for their label; many-to-many uses `multiple` with chips. Relations follow field-map.md: item id is the primary key.
 
+## Async combobox
+
+For relations (field-map.md), use the Combobox with its own state:
+
+- Control the input text with `onInputValueChange` and debounce the fetch (300 to 500 ms), with the query passed through `encodeURIComponent` and an `AbortController` that cancels the previous request.
+- Pass `filter={null}` to the Combobox so Base UI keeps the server results instead of filtering them again on the client.
+- Items are the fetched records. The form value is the record's primary key and the label comes from `itemToStringValue`; keep the selected record in state, or load it by id on edit, so its label shows when it is not in the current results.
+- Bind it through Controller like the other controlled components, with `ref={field.ref}` and `onBlur={field.onBlur}` on `ComboboxInput`.
+
 ## React Hook Form
 
 - Plain inputs use `register` or spread the Controller field.
@@ -128,4 +137,5 @@ All read 2026-10-27.
 2. `field.tsx` does not wire `aria-describedby`: `apps/v4/registry/new-york-v4/ui/field.tsx` at the same commit has no `aria-describedby`, no `useId`, and no id props. FieldError renders `<div role="alert" data-slot="field-error">` and dedupes `errors` by message; Field sets only `data-invalid` styling. The recipe therefore sets ids and `aria-describedby`.
 3. Bases: `npx shadcn@latest init --help` (run 2026-10-27) lists `-b, --base <base>  the component library to use. (base, radix, aria)`. The components.json page (`apps/v4/content/docs/(root)/components-json.mdx` at the same commit) documents `style`, `tailwind`, and `aliases` and does not mention `aria`. Today the CLI accepts a third value, `aria`, that the docs do not describe; the note treats Radix and Base UI as the documented bases and tells the agent to read the installed files when `info` reports anything else.
 4. `@hookform/resolvers`: release notes at https://github.com/react-hook-form/resolvers/releases (v6.0.0 on 2026-10-19, v6.0.1 on 2026-10-27). 6.0.0's only breaking change is the effect-ts resolver requiring `effect@^4.0.0`; 6.0.1 drops a typeschema peer dependency. `zodResolver` is unchanged: import from `@hookform/resolvers/zod`, and the README at v6.0.1 shows `useForm<z.input<typeof schema>, any, z.output<typeof schema>>({ resolver: zodResolver(schema) })` to force the output type.
-5. TanStack Form dynamic validation: https://github.com/TanStack/form docs `framework/react/guides/dynamic-validation.md` (main, 2026-10-27): `revalidateLogic({ mode, modeAfterSubmission })` is required for `onDynamic` to run.
+5. Async Combobox: the installed `combobox.tsx` is `const Combobox = ComboboxPrimitive.Root` (`apps/v4/registry/bases/base/ui/combobox.tsx` at 96da9cc, read 2026-10-27), so Base UI props pass through. https://base-ui.com/react/components/combobox.md (read 2026-10-27) documents `filter` as a function or `null`, `filter={null}` in its async search example, and `onInputValueChange`; `filteredItems` is the alternative when the app keeps source items separately. The same commit also has `apps/v4/registry/bases/aria/ui/combobox.tsx`, which supports the `aria` base finding in fact 3.
+6. TanStack Form dynamic validation: https://github.com/TanStack/form docs `framework/react/guides/dynamic-validation.md` (main, 2026-10-27): `revalidateLogic({ mode, modeAfterSubmission })` is required for `onDynamic` to run.
