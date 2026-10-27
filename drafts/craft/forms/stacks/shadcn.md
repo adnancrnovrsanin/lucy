@@ -50,7 +50,7 @@ Combobox is built on Base UI even in a Radix project. Read the installed `combob
 - Errors: `<FieldError errors={[fieldState.error]} />`, shown when `fieldState.invalid`.
 - Resolver: `import { zodResolver } from "@hookform/resolvers/zod"` and `resolver: zodResolver(schema)`. The call is the same on 5.x and 6.x.
 - A schema with defaults or transforms types the form with both sides: `useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>`.
-- Timing comes from [feedback.md](../feedback.md): `mode: "onTouched"` for small forms; `mode: "onSubmit"` with `reValidateMode: "onChange"` for medium and large.
+- Timing follows the form size from [feedback.md](../feedback.md): small forms use `mode: "onTouched"`; medium forms use `mode: "onSubmit"` with `reValidateMode: "onChange"`; large forms use `mode: "onChange"` and show a field's error only once its section is finished (a step's Continue, or focus leaving its fieldset) or after a submit attempt. Continue calls `trigger(sectionFields, { shouldFocus: true })`. `reValidateMode` applies only after a submit, which is why large forms do not use `onSubmit`.
 
 ```tsx
 <Controller
@@ -91,7 +91,7 @@ The example is the Radix shape. Base UI needs the changes in the Base UI and Rad
 - Every control gets `onBlur={field.handleBlur}` and `onChange` or `onValueChange` calling `field.handleChange`.
 - Arrays: `mode="array"` on the Field, `field.pushValue` to add, `field.removeValue(index)` to remove.
 - Error visibility: `const invalid = field.state.meta.isTouched && !field.state.meta.isValid`; then `data-invalid={invalid}`, `aria-invalid={invalid}`, and `<FieldError errors={field.state.meta.errors} />`.
-- Timing: `validators` keyed by event. Small forms use `onBlur` plus `onChange` after the first blur; medium and large forms use `validationLogic: revalidateLogic({ mode: "submit", modeAfterSubmission: "change" })` with `validators: { onDynamic: schema }`. Section validation calls `form.validateField` for each field of the section.
+- Timing: `validators` keyed by event. Small forms use `onBlur` plus `onChange` after the first blur. Medium forms use `validationLogic: revalidateLogic({ mode: "submit", modeAfterSubmission: "change" })` with `validators: { onDynamic: schema }`. Large forms validate on change and show a field's error only once its section is finished or after a submit attempt; the section's Continue calls `form.validateField` for each of its fields.
 
 ## Base UI and Radix
 
