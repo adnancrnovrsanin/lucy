@@ -1,11 +1,11 @@
 # Forms reviewer
 
-The prompt for one review subagent, one per form, when a scope holds more than one form. Fill the bracketed values:
+The steps of one form's review. They are the prompt for a review subagent, one per form, when a scope holds more than one form, and you follow them yourself for the diff or a single form. Fill the bracketed values:
 
 - `[FORM FILES]`: the form's files, relative to the project root.
 - `[PROJECT ROOT]`: the absolute path of the project.
-- `[STACK LINE]`: the output of `--stack` run from the form's package.
-- `[SCAN FINDINGS]`: the scan's findings for these files, or "none".
+- `[STACK LINE]`: the output of `node [INSPECT DIRECTORY]/scripts/scan.mjs --stack`, run from the directory of the `package.json` nearest the form's files.
+- `[SCAN FINDINGS]`: the scan findings whose path is one of the form's files, or "none".
 - `[CRAFT DIRECTORY]`: the craft skill's directory, the sibling of this skill's directory.
 - `[INSPECT DIRECTORY]`: this skill's directory.
 
