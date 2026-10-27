@@ -9,21 +9,27 @@ import { selectFiles, UsageError } from './lib/files.mjs';
 import { scanSource, selfTest } from './lib/engine.mjs';
 import { summarize, formatText, formatJson, exitCode } from './lib/report.mjs';
 import formsRules from './rules/forms/index.mjs';
+import { readSource, ReadError } from './lib/jsx.mjs';
+import { isFormFile, inLibraryDir } from './lib/helpers.mjs';
 
 export const RULES = [...formsRules];
 
-const USAGE = `usage: node scan.mjs [--stack] [--base <ref>] [--all] [--json] [--self-test] [paths...]
+// Which files belong to each reviewer area.
+const INVENTORIES = { forms: (source) => isFormFile(source) };
+
+const USAGE = `usage: node scan.mjs [--stack] [--base <ref>] [--all] [--json] [--self-test] [--inventory <area>] [paths...]
   --stack       print the detected stack of the current project and exit
   --base <ref>  compare against this ref instead of the default branch
   --all         scan every file under the current directory
   --json        print machine-readable output
   --self-test   check every rule against its own good and bad examples
+  --inventory <area>  list the files that belong to an area (forms) instead of scanning
 With no paths and no --all, scans the files changed since the merge base plus untracked files.
 Exit 0 with no error findings, 1 with error findings, 2 on usage errors or unreadable files.
 `;
 
 export function parseArgs(argv) {
-  const options = { stack: false, base: null, all: false, json: false, selfTest: false, help: false, paths: [] };
+  const options = { stack: false, base: null, all: false, json: false, selfTest: false, help: false, inventory: null, paths: [] };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--stack') options.stack = true;
@@ -35,6 +41,11 @@ export function parseArgs(argv) {
       const value = argv[++i];
       if (!value || value.startsWith('-')) throw new UsageError('--base needs a ref');
       options.base = value;
+    } else if (arg === '--inventory') {
+      const value = argv[++i];
+      if (!value || value.startsWith('-')) throw new UsageError('--inventory needs an area');
+      if (!INVENTORIES[value]) throw new UsageError(`unknown inventory area ${value}; known: ${Object.keys(INVENTORIES).join(', ')}`);
+      options.inventory = value;
     } else if (arg.startsWith('-')) {
       throw new UsageError(`unknown option ${arg}`);
     } else {
@@ -79,6 +90,7 @@ export function main(argv, cwd = realpathSync(process.cwd())) {
   } catch (error) {
     return fail(error);
   }
+  if (options.inventory) return inventory(options, files, cwd);
   const stacks = new Map();
   const stackFor = (file) => {
     const root = packageRootOf(file);
@@ -94,6 +106,30 @@ export function main(argv, cwd = realpathSync(process.cwd())) {
   const report = summarize(results, [...stacks.values()]);
   process.stdout.write(options.json ? formatJson(report) : formatText(report));
   return exitCode(report);
+}
+
+function inventory(options, files, cwd) {
+  const matches = [];
+  const unreadable = [];
+  for (const file of files) {
+    const path = relative(cwd, file) || file;
+    if (inLibraryDir(path)) continue;
+    try {
+      const source = readSource(readFileSync(file, 'utf8'), { jsx: !/\.ts$/.test(path) });
+      if (INVENTORIES[options.inventory](source)) matches.push(path);
+    } catch (error) {
+      if (!(error instanceof ReadError)) throw error;
+      unreadable.push({ path, reason: error.message });
+    }
+  }
+  if (options.json) {
+    process.stdout.write(`${JSON.stringify({ area: options.inventory, files: matches, unreadable }, null, 2)}\n`);
+  } else {
+    const lines = [...matches, ...unreadable.map((u) => `not read: ${u.path}  ${u.reason}`)];
+    lines.push(`${options.inventory}: ${matches.length} files${unreadable.length ? `, not read ${unreadable.length}` : ''}`);
+    process.stdout.write(`${lines.join('\n')}\n`);
+  }
+  return unreadable.length ? 2 : 0;
 }
 
 // Compare real paths: Node resolves the symlinks under ~/.claude/skills for import.meta.url

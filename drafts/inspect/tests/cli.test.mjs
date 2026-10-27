@@ -146,3 +146,26 @@ test('error findings print their fix-by pointer', () => {
   assert.match(r.stdout, /^ {2}fix by: craft\/forms\/field-map\.md#dates-and-times$/m);
   rmSync(dir, { recursive: true, force: true });
 });
+
+test('--inventory forms lists form files outside the library and hidden directories', () => {
+  const dir = project({
+    'app/a.tsx': 'export function A() { const form = useForm(); return <form onSubmit={form.handleSubmit(save)} />; }',
+    'app/b.tsx': CLEAN,
+    'components/ui/form.tsx': 'export const Form = (p) => <form {...p} />;',
+    '.claude/w/app/c.tsx': 'export const C = () => <form />;',
+  });
+  const r = run(dir, '--inventory', 'forms', '--all');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.deepEqual(r.stdout.trim().split('\n'), ['app/a.tsx', 'forms: 1 files']);
+  const json = JSON.parse(run(dir, '--inventory', 'forms', '--all', '--json').stdout);
+  assert.deepEqual(json, { area: 'forms', files: ['app/a.tsx'], unreadable: [] });
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test('--inventory rejects an unknown area', () => {
+  const dir = project({ 'app/a.tsx': CLEAN });
+  const r = run(dir, '--inventory', 'tables', '--all');
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /unknown inventory area tables/);
+  rmSync(dir, { recursive: true, force: true });
+});
