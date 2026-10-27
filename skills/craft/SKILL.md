@@ -27,7 +27,7 @@ Ask the library what it offers before writing a field. The vendor tools are the 
 - HeroUI web and HeroUI Native: the HeroUI MCP tools `list_components` and `get_component_docs` when your tool list has them. When a HeroUI skill for the package is available, invoke it through the host's skill mechanism.
 - With no vendor tool: read the installed component files and the package's type definitions.
 
-A component the form needs and the project lacks comes from the same library, for example `npx shadcn@latest add calendar popover`, or you ask the user. The form is built from that library's components only: no raw HTML stand-in, no second UI library.
+A component the form needs and the project lacks comes from the same library, for example `npx shadcn@latest add calendar popover`, or you ask the user. The form is built from that library's components only: no raw HTML stand-in (such as a clickable div where a button or the library's choice component belongs), no second UI library.
 
 Done when every control the form needs maps to a component that exists or that you will add, and you have said which vendor tool you used or that none was available.
 

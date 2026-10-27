@@ -13,7 +13,7 @@ export default [
     severity: 'warning',
     platform: 'all',
     why: 'A submit failure is caught and only logged, so the user sees nothing.',
-    fix: 'Map the failure onto the fields it concerns and show a form-level message with a way to retry (forms/feedback.md, server errors).',
+    fix: 'Map the failure onto the fields it concerns and show a form-level message with a way to retry.',
     ref: 'craft forms feedback reference; aj-geddes form-validation exhibits',
     check: ({ source }) => (isFormFile(source)
       ? catchBlocks(source).filter((b) => b.body.replace(/console\.\w+\s*\([^;]*\)\s*;?/g, '').trim() === '').map((b) => ({ line: b.line }))
@@ -42,7 +42,7 @@ export default [
     severity: 'warning',
     platform: 'web',
     why: 'A form reports a problem with alert(), which blocks the page and is not tied to a field.',
-    fix: 'Show the message inline on the field or as a form-level message (forms/feedback.md).',
+    fix: 'Show the message inline on the field or as a form-level message.',
     ref: 'omer-metin forms-validation validations',
     check: ({ source }) => (isFormFile(source) ? hits(source, /(?<![\w.])alert\s*\(|\bwindow\.alert\s*\(/g) : []),
     good: [{ code: 'const form = useForm();\nasync function onSubmit(v) {\n  const res = await save(v);\n  if (!res.ok) form.setError("root", { message: "Save failed. Try again." });\n}' }],
@@ -108,7 +108,7 @@ export default [
     severity: 'info',
     platform: 'all',
     why: 'The form has no warning before navigation throws away unsaved changes.',
-    fix: 'Guard on the form library\'s dirty state with a beforeunload listener and the router\'s blocker (forms/feedback.md, unsaved changes).',
+    fix: 'Guard on the form library\'s dirty state with a beforeunload listener and the router\'s blocker.',
     ref: 'Vercel Web Interface Guidelines, forms',
     check: ({ source }) => {
       const use = /\buse(?:App)?Form\s*\(/.exec(source.masked);

@@ -96,6 +96,8 @@ Note: values read from https://reactnative.dev/docs/textinput on 2026-10-27 (pro
 
 `enterkeyhint` is `next` on fields within a step and `done` or `send` on the last field.
 
+Inputs use at least a 16px font so iOS does not zoom on focus, and the viewport never sets `maximum-scale` or `user-scalable=no`.
+
 ## Input help: free and keyless
 
 - `Intl.DisplayNames`: country, language, and currency names.

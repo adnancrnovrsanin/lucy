@@ -19,7 +19,7 @@ export default [
     severity: 'error',
     platform: 'web',
     why: 'The autocomplete value is not valid for this element, so browsers ignore it.',
-    fix: 'Use a token from the WHATWG list that fits the input type (forms/autofill.md), with optional section-, shipping or billing, and home, work, or mobile before contact fields.',
+    fix: 'Use a token from the WHATWG list that fits the input type, with optional section-, shipping or billing, and home, work, or mobile before contact fields.',
     ref: 'WCAG 2.2 1.3.5 Identify Input Purpose; WHATWG HTML autofill',
     check: ({ source }) => {
       const out = [];
@@ -72,7 +72,7 @@ export default [
     severity: 'warning',
     platform: 'web',
     why: 'A personal-data field has no autocomplete token.',
-    fix: 'Add the WHATWG token for the field (forms/autofill.md), for example email, tel, given-name, or current-password.',
+    fix: 'Add the WHATWG token for the field, for example email, tel, given-name, or current-password.',
     ref: 'WCAG 2.2 1.3.5 Identify Input Purpose',
     check: ({ source }) => source.elements
       .filter((el) => INPUT_LIKE.has(el.tag) && !has(el, 'autoComplete', 'autocomplete') && !SKIP_TYPES.has(inputType(el))
@@ -89,7 +89,7 @@ export default [
     severity: 'warning',
     platform: 'native',
     why: 'A React Native field for personal data has no autoComplete or textContentType, so the OS cannot fill it.',
-    fix: 'Set autoComplete (Android) and textContentType (iOS) to the values in forms/autofill.md, for example email and emailAddress.',
+    fix: 'Set autoComplete (Android) and textContentType (iOS), for example email and emailAddress.',
     ref: 'craft forms autofill reference, React Native',
     check: ({ source }) => source.elements
       .filter((el) => NATIVE_INPUTS.has(el.tag) && !has(el, 'autoComplete', 'textContentType')
@@ -120,7 +120,7 @@ export default [
     severity: 'warning',
     platform: 'web',
     why: 'maxLength on a text field silently cuts off pasted or typed input.',
-    fix: 'Drop maxLength, show a character count, and validate the length after trimming (forms/field-map.md, value rules).',
+    fix: 'Drop maxLength, show a character count, and validate the length after trimming.',
     ref: 'GOV.UK Design System, text input and character count',
     check: ({ source }) => source.elements
       .filter((el) => LENGTH_HOSTS.has(el.tag) && has(el, 'maxLength', 'maxlength') && LENGTH_TYPES.has(inputType(el))

@@ -31,6 +31,7 @@ export function formatText(report) {
     lines.push(`${list[0].severity} ${rule} (${list.length})`);
     for (const f of list) lines.push(`  ${f.path}:${f.line}  ${f.message}`);
     lines.push(`  fix: ${list[0].fix}`);
+    if (list[0].fixBy) lines.push(`  fix by: ${list[0].fixBy}`);
     lines.push(`  ref: ${list[0].ref}`);
   }
   if (report.suppressed.length) {

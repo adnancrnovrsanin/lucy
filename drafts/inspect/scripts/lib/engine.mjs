@@ -31,7 +31,10 @@ export function scanSource({ path, text, stack, rules }) {
     if (rule.when && !rule.when(stack)) continue;
     for (const hit of rule.check({ source, stack, path })) {
       const line = hit.line ?? source.lineOf(hit.index ?? 0);
-      const finding = { rule: rule.id, severity: rule.severity, path, line, message: hit.message ?? rule.why, fix: rule.fix, ref: rule.ref };
+      const finding = {
+        rule: rule.id, severity: rule.severity, path, line, message: hit.message ?? rule.why, fix: rule.fix, ref: rule.ref,
+        ...(rule.fixBy ? { fixBy: rule.fixBy } : {}),
+      };
       const match = suppressions.find((s) => s.rule === rule.id && s.reason && (s.endLine === line || s.endLine === line - 1));
       if (match) suppressed.push({ ...finding, reason: match.reason });
       else findings.push(finding);

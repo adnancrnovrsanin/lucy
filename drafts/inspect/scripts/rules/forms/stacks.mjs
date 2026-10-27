@@ -69,7 +69,7 @@ export default [
     severity: 'warning',
     platform: 'all',
     why: 'A picker value from @internationalized/date goes through JS Date, which can shift the day or drop the zone.',
-    fix: 'Convert with the library: toString() for dates and wall-clock times, toAbsoluteString() for instants (forms/stacks/heroui.md, dates).',
+    fix: 'Convert with the library: toString() for dates and wall-clock times, toAbsoluteString() for instants.',
     ref: 'React Aria internationalized date docs',
     check: ({ source }) => (importsFrom(source, /^@internationalized\/date$/).length ? hits(source, /\bnew Date\(|\.toISOString\(\)/g) : []),
     good: [{ code: 'import { parseDate } from "@internationalized/date";\nconst iso = value.toString();' }],
@@ -113,7 +113,7 @@ export default [
     platform: 'web',
     when: (s) => s.ui === 'shadcn' && s.components.has('field'),
     why: 'The legacy shadcn Form API is used where the Field component is installed.',
-    fix: 'Build new forms with Field, FieldLabel, FieldDescription, and FieldError (forms/stacks/shadcn.md).',
+    fix: 'Build new forms with Field, FieldLabel, FieldDescription, and FieldError.',
     ref: 'shadcn/ui forms docs',
     check: ({ source }) => importsFrom(source, /components\/ui\/form$/)
       .filter((i) => /\bForm(Field|Item|Control)\b/.test(i.names))

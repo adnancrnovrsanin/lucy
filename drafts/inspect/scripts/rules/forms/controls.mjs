@@ -24,7 +24,7 @@ export default [
     platform: 'web',
     when: (s) => s.hasDatePicker,
     why: 'A native date or time input is used where the UI library has a date picker.',
-    fix: 'Use the library date picker for near-term dates, and three day, month, and year inputs (shadcn) or the segmented DateField (HeroUI) for memorable dates; see forms/field-map.md. shadcn has no time field, so its time recipe keeps Input type="time".',
+    fix: 'Use the library date picker for near-term dates, and three day, month, and year inputs (shadcn) or the segmented DateField (HeroUI) for memorable dates. shadcn has no time field, so its time recipe keeps Input type="time".',
     ref: 'craft forms brief, failure 2',
     check: ({ source, stack }) => source.elements
       .filter((el) => DATE_INPUT_TAGS.has(el.tag) && DATE_TYPES.has(inputType(el)) && !(inputType(el) === 'time' && stack.ui === 'shadcn'))
@@ -45,7 +45,7 @@ export default [
     platform: 'web',
     when: (s) => s.hasSelect,
     why: 'A native <select> is used where the UI library has a Select.',
-    fix: 'Use the library Select, or its NativeSelect component when a native control is wanted; for 5 or fewer options use RadioGroup or ToggleGroup, above 30 use Combobox (forms/field-map.md).',
+    fix: 'Use the library Select, or its NativeSelect component when a native control is wanted; for 5 or fewer options use RadioGroup or ToggleGroup, above 30 use Combobox.',
     ref: 'craft forms brief, failure 1',
     check: ({ source, path }) => (inLibraryDir(path) ? [] : source.elements
       .filter((el) => el.tag === 'select')
@@ -61,7 +61,7 @@ export default [
     severity: 'error',
     platform: 'all',
     why: 'A field with a fixed set of values is a free-text input.',
-    fix: 'Pick the control by option count: RadioGroup or ToggleGroup up to 5, Select from 6 to 30, Combobox above 30 (forms/field-map.md).',
+    fix: 'Pick the control by option count: RadioGroup or ToggleGroup up to 5, Select from 6 to 30, Combobox above 30.',
     ref: 'craft forms brief, failure 1',
     check: ({ source }) => {
       const keys = enumKeys(source);

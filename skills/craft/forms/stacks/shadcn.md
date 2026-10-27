@@ -122,6 +122,7 @@ The example is the Radix shape. Base UI needs the changes in the Base UI and Rad
 
 - Errors render in FieldError, not FieldDescription.
 - The legacy Form, FormField, FormItem, and FormControl API is for old code only (scan rule `shadcn-legacy-form-api`).
+- Under the legacy API, FormControl sets `aria-describedby` and `aria-invalid` on its child; hand-written ones override it (`manual-aria-in-library-field`).
 - Docs examples set `autoComplete="off"` on name fields; use the real tokens from autofill.md (`autocomplete-off-personal`).
 - The date picker docs snippet imports `cn` from a bare `"cn"` module; use the project's alias.
 - Native date inputs next to an installed Calendar are replaced with the Calendar recipes (`raw-date-input`).

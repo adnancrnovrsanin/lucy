@@ -20,6 +20,11 @@ First match wins:
 
 Live regions are in the page before their text arrives. Use `aria-live="polite"` through `role="status"` and do not set `aria-live="assertive"`; `role="alert"` is the urgent channel.
 
+- `aria-describedby` and `aria-labelledby` name ids that exist in the rendered form.
+- An `aria-label` starts with the control's visible text, so voice users can say what they see.
+- `aria-invalid` follows the field's state, never a constant.
+- A required marker is hidden with `aria-hidden`, and `required` or `isRequired` announces it once. When most fields are required, mark the optional ones instead.
+
 ## Error summary
 
 For multi-step and large forms:
@@ -48,7 +53,7 @@ Focus goes to the first invalid field on submit. React Hook Form does this by de
 | Characters | "must not include <chars>" or "must only include <allowed>" |
 | Dates | "must include a <part>", "must be a real date", "must be in the past", "must be today or in the past", "must be in the future", "must be after <date>" |
 
-Write the patterns in the app's language and i18n setup. Reuse the label's words, say what to do, and give one message per failure. Plain wording: no "please", "sorry", "invalid", "is required", or "an error occurred".
+Write the patterns in the app's language and i18n setup. Reuse the label's words, say what to do, and give one message per failure. Plain wording: no "please", "sorry", "invalid", "is required", or "an error occurred". Values reach a message through a template literal or the i18n library's placeholders; a `${...}` inside a quoted string prints as written.
 
 Patterns from the GOV.UK Design System (OGL v3.0).
 
@@ -56,7 +61,7 @@ Patterns from the GOV.UK Design System (OGL v3.0).
 
 - One envelope: field errors keyed by path, plus form errors. Use the project's existing shape when it has one.
 - Nested paths join with dots.
-- Unknown keys and non-field failures (permissions, eligibility, capacity, outages) go to a form-level message with a way to retry.
+- Unknown keys and non-field failures (permissions, eligibility, capacity, outages) go to a form-level message in the page, never `alert()`, with a way to retry.
 - Values stay in the form on failure.
 - Zod 4: `z.flattenError` for flat forms, issue paths (or `z.treeifyError`) for nested ones.
 - HTTP 409 maps to the conflicting field.
@@ -66,9 +71,10 @@ Patterns from the GOV.UK Design System (OGL v3.0).
 - The label stays, with a spinner beside it.
 - Repeat clicks are ignored in the handler.
 - Use the library pending prop or `aria-disabled="true"`; native `disabled` drops focus from the button.
+- An unavailable control says why in visible text next to it; a tooltip on a natively disabled control never shows.
 - Submit stays enabled while the form is merely incomplete.
 - A spinner appears after about 150 to 300 ms and stays at least 300 to 500 ms.
-- Payments and sends carry an idempotency key.
+- Payments and sends carry an idempotency key. A submit retries by itself only with one; otherwise the user retries by hand.
 
 ## Success
 

@@ -56,6 +56,8 @@ Build with the stack note's slot table and binding recipe, and with [forms/feedb
 - Large and multi-step forms get the error summary; smaller forms move focus to the first invalid field.
 - Server errors land on their fields, with a form-level message for everything else.
 - Pending, success, unsaved changes, and async checks follow the feedback reference.
+- Every control has a visible label tied to it: the library's label slot, or `label` with `htmlFor` and a matching id. A placeholder is never the label; examples go in the hint.
+- Focus follows the visual order and stays visible: no positive `tabIndex`, no `outline-none` without a focus-visible style, and no `autoFocus` on load.
 
 Done when every field in the table renders with its mapped control and the project's type check or build passes for the changed files.
 

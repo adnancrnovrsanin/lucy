@@ -155,7 +155,7 @@ export default [
     severity: 'info',
     platform: 'all',
     why: 'A validation message is generic or apologetic instead of saying how to fix the problem.',
-    fix: 'Say what to do, reusing the label: "Enter your email address", "Postcode must be 8 characters or less" (forms/feedback.md, message shapes).',
+    fix: 'Say what to do, reusing the label: "Enter your email address", "Postcode must be 8 characters or less".',
     ref: 'GOV.UK Design System, error message',
     check: ({ source }) => source.strings
       .filter((s) => BAD_WORDING.test(s.value) && MESSAGE_CONTEXT.test(lineText(source, s.line)))

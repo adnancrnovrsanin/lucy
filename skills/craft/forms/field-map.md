@@ -27,7 +27,7 @@ Resolve each field in this order: a convention the project already follows, then
 - Add and remove disable at the model's max and min, with an array-level message.
 - Remove buttons are named for their row ("Remove guest 2").
 - Add move up and move down buttons when order matters; drag is never the only way.
-- A nested object is a fieldset with a legend.
+- A nested object is a fieldset with a legend, in the same form: a child component reads the form through the library's context (`useFormContext`), never through a second `useForm`.
 
 ## Dates and times
 
@@ -36,6 +36,7 @@ Resolve each field in this order: a convention the project already follows, then
 - Approximate dates: month and year only. Card expiry: month and year as the card prints them.
 - Time only: the library time field (HeroUI TimeField); shadcn's time recipe is `Input type="time"`.
 - Date ranges: start and end columns map to the library range picker.
+- Dates shown to the user are formatted with the user's locale (`Intl.DateTimeFormat(locale, ...)` or the date library's locale option), never a hard-coded pattern such as `dd/MM/yyyy`.
 - Conversion between control values and the backend type lives in the stack note. A date-only value never goes through a JS `Date`.
 
 ## Numbers and money
@@ -47,13 +48,15 @@ Resolve each field in this order: a convention the project already follows, then
 
 ## Text fields
 
-- Name: one full-name field unless the model splits it; autocomplete `name`, or `given-name` and `family-name`.
+- Name: one full-name field unless the model splits it; autocomplete `name`, or `given-name` and `family-name`. Any letters, marks, spaces, apostrophes, and hyphens are valid; validate the length after trimming.
 - Email: `type="email"`, autocomplete `email` (or `username` when it is the sign-in id), spellcheck off, paste allowed, no confirmation field.
 - Phone: one `type="tel"` field, autocomplete `tel`, any format accepted, parsed with libphonenumber-js, no input mask. The label says why it is needed.
 - Address: line 1, line 2, town, postcode, country, with only the needed ones required and county optional; or one textarea with `street-address` for international addresses. A lookup service is ask-first and always keeps the manual fields.
-- Password: the library password field with a show and hide toggle (`type="button"`), no confirm field unless the product insists, a minimum of 8 and no maximum, paste allowed, `new-password` or `current-password`.
+- Password: the library password field with a show and hide toggle (`type="button"`), no confirm field unless the product insists, a minimum of 8 and no maximum, no character-class rules (reject common or breached passwords instead), paste allowed, `new-password` or `current-password`.
+- Card number: one text field that accepts spaces, with `inputmode="numeric"` and `cc-number`, never split into groups.
 - One-time code: text with `inputmode="numeric"` and `one-time-code`, not a password field.
 - Reference codes: text, spellcheck off.
+- Placeholders hold short examples only, and one that trails off ends in the ellipsis character; an example the user needs belongs in the hint.
 - Long free text: Textarea with a character count when the model has a limit.
 - Title or honorific: avoided; if the model needs it, an optional text input with `honorific-prefix`.
 
@@ -68,6 +71,7 @@ Use the library drop zone or file input. `accept` and the size check mirror the 
 - Editable prefill belongs in the form's default values, not in the schema's `.default()`.
 - An edit form resets once when its record arrives.
 - Values are trimmed before validation.
+- Input is never filtered or masked as it is typed: accept it, normalize it on blur or in the schema, and show an error for what cannot be normalized.
 - Text lengths get a character count and a validation message, never a `maxLength` attribute, which cuts input silently.
 - Money and decimals use `Intl.NumberFormat` for display and a parser for entry; the stored value stays untouched. Other constraints are mirrored into `required`, `type`, `min`, and `max`.
 - A schema with defaults or transforms has different input and output types: type the form with both.

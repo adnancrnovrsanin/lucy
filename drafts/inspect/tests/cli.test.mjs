@@ -138,3 +138,11 @@ test('--self-test passes for the shipped rules', () => {
   assert.equal(r.status, 0, r.stdout);
   assert.match(r.stdout, / rules, 0 failures$/m);
 });
+
+test('error findings print their fix-by pointer', () => {
+  const dir = project({ 'app/b.tsx': DATE });
+  const r = run(dir, 'app/b.tsx');
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /^ {2}fix by: craft\/forms\/field-map\.md#dates-and-times$/m);
+  rmSync(dir, { recursive: true, force: true });
+});
