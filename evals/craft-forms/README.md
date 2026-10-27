@@ -6,8 +6,8 @@ This suite measures whether the craft skill fires when a task builds a form, and
 
 | Case | Stack | What it checks |
 | --- | --- | --- |
-| shadcn-create-invoice | shadcn/ui, Prisma | Field table shown first, control choice per field, no raw date inputs, scan script run |
-| heroui-job-application | HeroUI v3 | Multi-step structure with review, HeroUI wiring, scan script run |
+| shadcn-create-invoice | shadcn/ui, Prisma | Field table shown first, control choice per field, no raw date inputs, inspect run |
+| heroui-job-application | HeroUI v3 | Multi-step structure with review, HeroUI wiring, inspect run |
 | no-data-model | shadcn/ui | With no model, craft proposes a shared schema and field table and asks before writing |
 | small-sign-in | shadcn/ui | Small-form rules: autofill attributes, onTouched mode, one generic failure message |
 | not-a-form | shadcn/ui | Control case: craft must not fire on a plain helper function |

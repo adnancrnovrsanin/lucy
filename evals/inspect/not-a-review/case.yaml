@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: not-a-review
+context:
+  scaffold_script: setup.sh
