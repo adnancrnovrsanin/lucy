@@ -4,7 +4,7 @@ Authored for Lucy from the sources below, studied 2026-10-27; reports in .lucy/n
 
 ## https://github.com/danielmeppiel/form-builder, commit 6be19fcbba6ac9f114175e7df14cfe5688e247fa
 
-Taken: ideas only. Schema at module level with the inferred type (forms/stacks/shadcn.md, React Hook Form section), server errors set on their fields (forms/feedback.md, Server errors), aria wiring of hints and errors (feedback.md, Announcements), autocomplete tokens (forms/autofill.md), and reset after success. The repository states the MIT License in README.md and SKILL.md and ships no license file.
+Taken: ideas only. Aria wiring of hints and errors with aria-describedby (forms/feedback.md, Announcements) and autocomplete tokens on personal-data fields (forms/autofill.md, Autocomplete tokens). Its other ideas (schema at module level, setError for server errors, reset after success) did not land as playbook text. The repository states the MIT License in README.md and SKILL.md and ships no license file.
 Changed: no text copied. Its onBlur and onChange validation timing is replaced by the size-based timing in feedback.md (blur for small forms, submit for medium, section end for large, live revalidation after the first check).
 
 ## https://github.com/ancoleman/ai-design-components, commit 76551b7b19ebc667764ec75da14990d0aef8b6e5, path skills/building-forms
@@ -95,7 +95,7 @@ Contains public sector information licensed under the Open Government Licence v3
 
 ## web.dev sign-in, sign-up, and payment and address form best practices (Sam Dutton), read 2026-10-27, CC BY 4.0
 
-Taken: the field guidance in forms/autofill.md (autocomplete tokens for sign-in, sign-up, payment, and address forms, the input help lists, show and hide password toggle, `one-time-code`) and the matching text rules in forms/field-map.md.
+Taken: the field guidance in forms/autofill.md (autocomplete tokens for sign-in, sign-up, payment, and address forms, the input help lists, `one-time-code`) and the matching text rules in forms/field-map.md, including the show and hide password toggle.
 Changed: condensed into token tables and short rules; credited at the end of forms/autofill.md.
 
 ## WHATWG HTML Living Standard section 4.10.19.7, snapshot 939677714df7379fee3667040113b41c91c851e7, read 2026-10-27

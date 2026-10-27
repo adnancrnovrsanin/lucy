@@ -1126,4 +1126,4 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Field guidance in forms/autofill.md is adapted from the web.dev articles on sign-in form, sign-up form, and payment and address form best practices by Sam Dutton, licensed under the Creative Commons Attribution 4.0 International License (https://creativecommons.org/licenses/by/4.0/).
 
-Contains public sector information licensed under the Open Government Licence v3.0 (https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/). The GOV.UK Design System patterns in forms/feedback.md and forms/multi-step.md come from that source.
+Contains public sector information licensed under the Open Government Licence v3.0 (https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/). The GOV.UK Design System patterns in forms/feedback.md, forms/multi-step.md, and forms/field-map.md come from that source.
