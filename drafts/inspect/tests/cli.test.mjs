@@ -169,3 +169,11 @@ test('--inventory rejects an unknown area', () => {
   assert.match(r.stderr, /unknown inventory area tables/);
   rmSync(dir, { recursive: true, force: true });
 });
+
+test('--inventory rejects an inherited name as an area', () => {
+  const dir = project({ 'app/a.tsx': CLEAN });
+  const r = run(dir, '--inventory', 'constructor', '--all');
+  assert.equal(r.status, 2, r.stdout + r.stderr);
+  assert.match(r.stderr, /unknown inventory area constructor/);
+  rmSync(dir, { recursive: true, force: true });
+});

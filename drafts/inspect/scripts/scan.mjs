@@ -44,7 +44,7 @@ export function parseArgs(argv) {
     } else if (arg === '--inventory') {
       const value = argv[++i];
       if (!value || value.startsWith('-')) throw new UsageError('--inventory needs an area');
-      if (!INVENTORIES[value]) throw new UsageError(`unknown inventory area ${value}; known: ${Object.keys(INVENTORIES).join(', ')}`);
+      if (!Object.hasOwn(INVENTORIES, value)) throw new UsageError(`unknown inventory area ${value}; known: ${Object.keys(INVENTORIES).join(', ')}`);
       options.inventory = value;
     } else if (arg.startsWith('-')) {
       throw new UsageError(`unknown option ${arg}`);
