@@ -1,5 +1,5 @@
 ---
 type: file_exists
-path: 'app/**/*.tsx'
+path: '**/*.tsx'
 exists: false
 ---
