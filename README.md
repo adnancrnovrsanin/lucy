@@ -7,10 +7,11 @@ Lucy replaces the superpowers plugin. Its skills are merged from superpowers 6.3
 ## How it is organised
 
 - The constitution (skills/using-lucy) is injected into every session by a SessionStart hook: the skills-first rule, the gates, the mode map.
-- Fifteen model-invoked skills are the only ones in the model's listing: tdd, diagnose, verify, writing-for-agents, review-feedback, grilling, domain-modeling, codebase-design, review-changes, worktree, finish, resolve-conflicts, unslop, unlazy, craft.
-- craft holds playbooks for implementation areas where agents cut corners, forms first. A playbook ends with skills/craft/scripts/scan.mjs, which exits non-zero on error findings.
+- Sixteen model-invoked skills are the only ones in the model's listing: tdd, diagnose, verify, writing-for-agents, review-feedback, grilling, domain-modeling, codebase-design, review-changes, worktree, finish, resolve-conflicts, unslop, unlazy, craft, inspect.
+- craft holds playbooks for implementation areas where agents cut corners, forms first. A playbook ends by invoking inspect.
+- inspect holds reviewers that judge an implementation against quality factors, forms first, on the current diff by default or a named scope such as all forms. Its scan, skills/inspect/scripts/scan.mjs, exits non-zero on error findings, and every finding names the craft section that fixes it.
 - The remaining user-invoked skills are brainstorm, plan, execute, promote, handoff, wizard, idea, explore, teach, and lucy.
-- Flows write under .lucy/ in the project (specs, plans, runs, notes, handoffs, ideas, gates). Only promote moves anything into the project's own files. unlazy's Stop hook keeps a session from ending while gates are unmet.
+- Flows write under .lucy/ in the project (specs, plans, runs, notes, handoffs, ideas, gates, inspections). Only promote moves anything into the project's own files. unlazy's Stop hook keeps a session from ending while gates are unmet.
 
 ## Claude Code development machine
 

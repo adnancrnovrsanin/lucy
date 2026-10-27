@@ -22,3 +22,7 @@ Lucy's flows produce artifacts: specs from brainstorm, plans from plan, ledgers 
 - Plans are ephemeral by default; a plan worth keeping is promoted on request.
 - .lucy/ is the natural home for per-project Lucy configuration when that need appears; it is out of scope today.
 - The vendored sdd-workspace script is re-pathed from .superpowers/sdd/ to .lucy/runs/.
+
+## Amendment, 2026-10-27
+
+ADR-0009 adds `inspections/` to the working area for full-scope inspection reports. They are process state like runs/ and handoffs/, and promote never moves them.

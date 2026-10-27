@@ -31,7 +31,7 @@ A fourth problem surfaced in the first grill round: process artifacts (specs, pl
 
 2. **Three tiers, by standing context cost.**
    - Tier 1, the constitution: a short document injected by Lucy's SessionStart hook into every session (startup, clear, compact). It carries the skills-first rule, the gates, and the mode map. Target: under 60 lines.
-   - Tier 2, the model-invoked core: the only skills whose descriptions sit in Claude's listing. A skill enters this tier only if it must fire without being asked (a discipline the model applies mid-work) or another skill calls it mid-flow through the Skill tool. Target: at most 15 skills.
+   - Tier 2, the model-invoked core: the only skills whose descriptions sit in Claude's listing. A skill enters this tier only if it must fire without being asked (a discipline the model applies mid-work) or another skill calls it mid-flow through the Skill tool. Target: at most 16 skills.
    - Tier 3, user-invoked skills and reference files: everything else. User-invoked skills carry `disable-model-invocation: true` and cost nothing until typed. Reference files are plain markdown inside a skill directory, reached by pointers, and cost nothing until read.
 
 3. **User-invoked is the default.** Every new skill is born with `disable-model-invocation: true`. A slot in the model-invoked listing must be justified in the skill's provenance note under the tier 2 test. This inverts the mattpocock/skills default on purpose: that repo has 25 skills, this machine has a zoo.
@@ -57,6 +57,7 @@ A fourth problem surfaced in the first grill round: process artifacts (specs, pl
 13. **unlazy is vendored whole and is the proof layer.** Added 2026-09-02 (ADR-0006). The skill keeps its name and enters tier 2: the model reaches for it on substantial multi-part autonomous work, which is the point of a completion ledger. Its state moves under Lucy's working area: `.unlazy/<scope>/` becomes `.lucy/gates/<scope>/`, the solo ledger lives at `.lucy/gates/GATES.md`, hook state moves under `.lucy/gates/`, and the approval store moves from `~/.unlazy/approved` to `~/.lucy/approved`. Its Stop hook ships in Lucy's hooks/hooks.json for every project; it is scan-only and allows the stop when no ledger exists. Orchestrated mode is vendored too, under one rule: execute drives, unlazy proves. execute remains the executor of plans, each task may carry gates, finish requires ALL MET on the task ledgers, and unlazy's own orchestrated mode runs only when execute is not driving. Two fold-ins: plan adopts the contract inventory table (every independently omittable outcome mapped to an owner and an observing gate), and verify names a gate ledger as the form of evidence for substantial work.
 
 14. **craft holds Lucy's playbooks.** Added 2026-10-27 (ADR-0008). One model-invoked skill carries every playbook for an implementation area where agents cut corners, starting with forms; its core detects the stack and inventories components through the vendor tools, and each playbook ends with a dependency-free scan. It is the fifteenth tier 2 skill; later playbooks add a trigger to its description and never take a slot. The constitution gains the forms gate; plan, execute, review-changes, and verify each gain one line.
+15. **inspect holds Lucy's reviewers.** Added 2026-10-27 (ADR-0009). Quality assessment moves out of craft into one model-invoked skill: the scan, the forms checklist, and a per-form reviewer prompt, on the current diff by default or a named scope. Every finding points at the craft section that fixes it; inspect never fixes code. It is the sixteenth tier 2 skill; later reviewers share its slot. review-changes, verify, execute, plan, and craft's proof step call it.
 
 ## Tier 1: the constitution
 
@@ -80,7 +81,7 @@ Budget: under 60 lines, roughly 500 tokens. superpowers injects about 70 lines a
 
 ## Tier 2: the model-invoked core
 
-Fifteen skills, each with a reason it needs the listing.
+Sixteen skills, each with a reason it needs the listing.
 
 | Skill | Source | Why it needs the listing |
 |---|---|---|
@@ -99,6 +100,7 @@ Fifteen skills, each with a reason it needs the listing.
 | unslop | existing | existing decision: must always apply |
 | unlazy | Leonxlnx/unlazy 473d4b8, re-pathed to .lucy/ | fires on substantial multi-part autonomous work; a completion ledger only helps if the model reaches for it unasked |
 | craft | authored for Lucy from 16 studied sources (ADR-0008) | fires when the agent builds or changes a form; a playbook only helps if the model reaches for it unasked |
+| inspect | split from craft (ADR-0009) | review-changes and craft call it mid-flow; checks a diff or a named scope against a reviewer's factors |
 
 Every description is written trigger-first and kept short. The listing caps each entry at 1,536 characters and shortens entries under budget pressure, so the first clause must carry the trigger.
 
@@ -245,7 +247,7 @@ lucy/
 └── docs/
 ```
 
-Twenty-six skill directories: fifteen in tier 2, eleven in tier 3. Each directory: SKILL.md, agents/openai.yaml, its reference files, LICENSE, and PROVENANCE.md where more than one source contributed.
+Twenty-seven skill directories: sixteen in tier 2, eleven in tier 3. Each directory: SKILL.md, agents/openai.yaml, its reference files, LICENSE, and PROVENANCE.md where more than one source contributed.
 
 ## Context budget
 
@@ -253,7 +255,7 @@ Estimates, measured at validation with the Skills row of `/context` and with `/d
 
 - superpowers today: the using-superpowers injection (about 70 lines) plus 14 descriptions.
 - A naive union of the three corpora: 40 descriptions plus the injection.
-- Lucy target: a constitution under 60 lines plus 15 short, trigger-first descriptions.
+- Lucy target: a constitution under 60 lines plus 16 short, trigger-first descriptions.
 
 Success criterion: after Lucy replaces superpowers, the Skills row of `/context` is not larger than it was with superpowers installed, and the constitution stays under 60 lines.
 

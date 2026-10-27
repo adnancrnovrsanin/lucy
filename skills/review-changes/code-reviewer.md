@@ -93,10 +93,10 @@ Subagent (general-purpose):
     - DRY without premature abstraction?
     - Edge cases handled?
 
-    **Forms:**
-    - When the diff builds or changes a form, check it against the craft
-      skill's forms checklist and run the craft scan on the changed files;
-      an error finding is Critical.
+    **Inspect:**
+    - When the diff touches an area in the inspect skill's reviewer table
+      (forms today), invoke inspect through the host's skill mechanism on
+      the diff with base [BASE_SHA]; an error finding is Critical.
 
     **Architecture:**
     - Sound design decisions?

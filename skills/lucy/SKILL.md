@@ -20,7 +20,7 @@ Keep steps 1 and 2 in one context window. Each `execute` run starts fresh from t
 
 ## Discipline that applies itself
 
-These skills fire on their own; you can also invoke them through the host's skill syntax. tdd when writing code. craft when building or changing a form. diagnose when something is broken. verify before claiming done. unlazy for substantial autonomous work: gates first. review-changes when a diff needs review. review-feedback when feedback arrives. worktree for isolation. resolve-conflicts when a merge stops. writing-for-agents when writing for an agent or dispatching one. grilling, domain-modeling, and codebase-design are the interview and vocabulary primitives the flows use. unslop applies to any prose.
+These skills fire on their own; you can also invoke them through the host's skill syntax. tdd when writing code. craft when building or changing a form. inspect when checking an implementation against its quality factors, a diff or a named scope. diagnose when something is broken. verify before claiming done. unlazy for substantial autonomous work: gates first. review-changes when a diff needs review. review-feedback when feedback arrives. worktree for isolation. resolve-conflicts when a merge stops. writing-for-agents when writing for an agent or dispatching one. grilling, domain-modeling, and codebase-design are the interview and vocabulary primitives the flows use. unslop applies to any prose.
 
 ## Modes
 

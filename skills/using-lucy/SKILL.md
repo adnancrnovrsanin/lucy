@@ -30,7 +30,7 @@ Development is the default. Three modes change what a session is for; the user e
 
 ## Working area
 
-Flows write their artifacts under .lucy/ in the project: specs/, plans/, runs/, notes/, handoffs/, ideas/, gates/. Only the `promote` skill moves anything from .lucy/ into the project's own files.
+Flows write their artifacts under .lucy/ in the project: specs/, plans/, runs/, notes/, handoffs/, ideas/, gates/, inspections/. Only the `promote` skill moves anything from .lucy/ into the project's own files.
 
 ## Where to look
 

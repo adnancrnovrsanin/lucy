@@ -132,7 +132,7 @@ git commit -m "feat: add specific feature"
 
 Blocked by names the tasks whose outputs this task consumes; execute works the frontier of unblocked tasks. Gates names an unlazy ledger when the task's completion should be proven by runnable checks rather than review alone.
 
-A task that builds or changes a form says so in its title, tells the implementer to apply the `craft` skill, and makes the craft scan on its changed files part of its check.
+A task that builds or changes a form says so in its title, tells the implementer to apply the `craft` skill, and makes an inspect run on its changed files part of its check.
 
 ## No placeholders
 
