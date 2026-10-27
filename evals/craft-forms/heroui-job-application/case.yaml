@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: heroui-job-application
+context:
+  scaffold_script: setup.sh
