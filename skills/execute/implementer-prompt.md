@@ -32,10 +32,12 @@ Subagent (general-purpose):
     ## Your job
 
     Once you're clear on requirements:
-    1. Implement exactly what the task specifies
+    1. Implement exactly what the task specifies; when it builds or changes
+       a form, apply the craft skill through the host's skill mechanism
     2. Write tests, following the tdd skill if the task says to
     3. Verify the implementation works, following the verify skill: run the
-       command, read the output, then claim
+       command, read the output, then claim; for form work that includes
+       the craft scan, and its summary line goes in your report
     4. Commit your work
     5. Self-review (see below)
     6. Report back

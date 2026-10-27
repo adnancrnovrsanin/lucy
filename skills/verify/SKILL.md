@@ -46,6 +46,7 @@ Skip any step = lying, not verifying
 | Regression test works | Red-green cycle verified | Test passes once |
 | Agent completed | VCS diff shows changes | Agent reports "success" |
 | Requirements met | Line-by-line checklist | Tests passing |
+| Form done | craft scan on the changed files: exit 0, and the forms checklist walked | Screenshot looks right, tests pass |
 
 ## Red flags that mean stop
 

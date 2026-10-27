@@ -7,7 +7,8 @@ Lucy replaces the superpowers plugin. Its skills are merged from superpowers 6.3
 ## How it is organised
 
 - The constitution (skills/using-lucy) is injected into every session by a SessionStart hook: the skills-first rule, the gates, the mode map.
-- Fourteen model-invoked skills are the only ones in the model's listing: tdd, diagnose, verify, writing-for-agents, review-feedback, grilling, domain-modeling, codebase-design, review-changes, worktree, finish, resolve-conflicts, unslop, unlazy.
+- Fifteen model-invoked skills are the only ones in the model's listing: tdd, diagnose, verify, writing-for-agents, review-feedback, grilling, domain-modeling, codebase-design, review-changes, worktree, finish, resolve-conflicts, unslop, unlazy, craft.
+- craft holds playbooks for implementation areas where agents cut corners, forms first. A playbook ends with skills/craft/scripts/scan.mjs, which exits non-zero on error findings.
 - The remaining user-invoked skills are brainstorm, plan, execute, promote, handoff, wizard, idea, explore, teach, and lucy.
 - Flows write under .lucy/ in the project (specs, plans, runs, notes, handoffs, ideas, gates). Only promote moves anything into the project's own files. unlazy's Stop hook keeps a session from ending while gates are unmet.
 

@@ -93,6 +93,11 @@ Subagent (general-purpose):
     - DRY without premature abstraction?
     - Edge cases handled?
 
+    **Forms:**
+    - When the diff builds or changes a form, check it against the craft
+      skill's forms checklist and run the craft scan on the changed files;
+      an error finding is Critical.
+
     **Architecture:**
     - Sound design decisions?
     - Reasonable scalability and performance?
