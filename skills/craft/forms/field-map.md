@@ -41,7 +41,7 @@ Resolve each field in this order: a convention the project already follows, then
 ## Numbers and money
 
 - Numbers that are not quantities (codes, phone, postal, card, account): text with `inputmode="numeric"`.
-- Decimals: text with `inputmode="decimal"`, accepting a decimal comma, coerced in the schema (`z.coerce.number()` only after `""` is mapped away).
+- Decimals: text with `inputmode="decimal"`, accepting a decimal comma, coerced in the schema. Trim the string and replace the comma with a point first, and map `""` away, before `z.coerce.number()` or the schema's number parse, or "1,5" becomes NaN.
 - `type="number"` only for true quantities (guests, items).
 - Money: stored as the model stores it (integer minor units or a decimal string). The unit sits outside the input and in the label. Display with `Intl.NumberFormat(locale, { style: "currency", currency })` using the record's currency.
 

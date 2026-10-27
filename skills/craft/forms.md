@@ -65,4 +65,7 @@ Done when every field in the table renders with its mapped control and the proje
 2. Fix every error finding. When a finding is wrong for this code, suppress it on the line above with `// craft-scan-ignore <rule-id>: <reason>`. Read the warnings and fix the ones that apply.
 3. Walk [forms/checklist.md](forms/checklist.md).
 
-Done when the scan exits 0 and every checklist item is checked. Report the scan's summary line, every suppression with its reason, and every checklist item you could not check, marked "Not verified".
+4. Check the summary's `files N`. It must count the form's files. When it shows 0 or misses them (nothing changed since the merge base, or the form is already committed), run the scan again with the form's paths passed explicitly. A scan that checked no form file proves nothing.
+5. The scan sees an enum only when it is declared in the same file as the control. Check every enum field's control against the field table by hand.
+
+Done when the scan exits 0, its `files N` counts the form's files, and every checklist item is checked. Report the scan's summary line, every suppression with its reason, and every checklist item you could not check, marked "Not verified".

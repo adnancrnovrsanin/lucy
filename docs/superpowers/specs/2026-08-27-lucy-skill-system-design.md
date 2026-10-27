@@ -31,7 +31,7 @@ A fourth problem surfaced in the first grill round: process artifacts (specs, pl
 
 2. **Three tiers, by standing context cost.**
    - Tier 1, the constitution: a short document injected by Lucy's SessionStart hook into every session (startup, clear, compact). It carries the skills-first rule, the gates, and the mode map. Target: under 60 lines.
-   - Tier 2, the model-invoked core: the only skills whose descriptions sit in Claude's listing. A skill enters this tier only if it must fire without being asked (a discipline the model applies mid-work) or another skill calls it mid-flow through the Skill tool. Target: at most 14 skills.
+   - Tier 2, the model-invoked core: the only skills whose descriptions sit in Claude's listing. A skill enters this tier only if it must fire without being asked (a discipline the model applies mid-work) or another skill calls it mid-flow through the Skill tool. Target: at most 15 skills.
    - Tier 3, user-invoked skills and reference files: everything else. User-invoked skills carry `disable-model-invocation: true` and cost nothing until typed. Reference files are plain markdown inside a skill directory, reached by pointers, and cost nothing until read.
 
 3. **User-invoked is the default.** Every new skill is born with `disable-model-invocation: true`. A slot in the model-invoked listing must be justified in the skill's provenance note under the tier 2 test. This inverts the mattpocock/skills default on purpose: that repo has 25 skills, this machine has a zoo.
@@ -253,7 +253,7 @@ Estimates, measured at validation with the Skills row of `/context` and with `/d
 
 - superpowers today: the using-superpowers injection (about 70 lines) plus 14 descriptions.
 - A naive union of the three corpora: 40 descriptions plus the injection.
-- Lucy target: a constitution under 60 lines plus 14 short, trigger-first descriptions.
+- Lucy target: a constitution under 60 lines plus 15 short, trigger-first descriptions.
 
 Success criterion: after Lucy replaces superpowers, the Skills row of `/context` is not larger than it was with superpowers installed, and the constitution stays under 60 lines.
 

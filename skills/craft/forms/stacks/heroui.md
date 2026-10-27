@@ -111,7 +111,7 @@ Neither HeroUI nor React Aria documents TanStack Form. Wire it the same way: `va
 | Instant plus a stored IANA zone | `parseZonedDateTime("...[America/Los_Angeles]")` | `toAbsoluteString()` for the instant, and keep `value.timeZone` in its own column |
 | Wall-clock timestamp (no zone) | `parseDateTime(s)` gives CalendarDateTime | `value.toString()` |
 | Time ("09:00") | `parseTime(s)` gives Time | `value.toString()` |
-| JS Date or epoch milliseconds | `fromDate(d, zone)` or `fromAbsolute(ms, zone)` | `value.toDate(zone)` (the zone is required) |
+| JS Date or epoch milliseconds | `fromDate(d, zone)` or `fromAbsolute(ms, zone)` | `value.toDate(zone)` for CalendarDate and CalendarDateTime (the zone is required); a ZonedDateTime's `toDate()` takes no zone |
 | Today and now | `today(getLocalTimeZone())`, `now(getLocalTimeZone())` | not applicable |
 
 - A date-only value never goes through JS Date: `toDate` plus `toISOString` can move the day (scan rule `picker-value-through-date`).

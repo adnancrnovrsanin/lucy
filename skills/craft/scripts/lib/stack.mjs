@@ -74,6 +74,7 @@ export function detectStack(root) {
 
 function shadcnBase(config, has) {
   if (config.base === 'base' || config.base === 'radix') return config.base;
+  if (typeof config.base === 'string' && config.base) return config.base;
   if (typeof config.style === 'string' && config.style.startsWith('base-')) return 'base';
   if (has('@base-ui/react') || has('@base-ui-components/react')) return 'base';
   return 'radix';

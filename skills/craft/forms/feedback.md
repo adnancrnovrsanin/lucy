@@ -5,7 +5,7 @@
 - Small forms validate first on blur, medium forms on submit, large forms when a section is finished (a step's Continue, or focus leaving a fieldset on a long single page, which triggers that fieldset's fields).
 - Every size revalidates live after the first check.
 - Early in any size: character overflow, debounced async checks after the user finishes typing, and non-blocking warnings.
-- React Hook Form: `mode: "onTouched"` for small; `mode: "onSubmit"` with `reValidateMode: "onChange"` for medium. For large forms `reValidateMode` applies only after a submit, so use `mode: "onChange"` and show a field's error only once its section is finished or after a submit attempt. A section's Continue calls `trigger(sectionFields, { shouldFocus: true })` and marks the section finished, and from then on its fields revalidate live. The stack notes give the TanStack Form and React Aria equivalents.
+- React Hook Form: `mode: "onTouched"` for small; `mode: "onSubmit"` with `reValidateMode: "onChange"` for medium. For large forms `reValidateMode` applies only after a submit, so use `mode: "onChange"` and show a field's error, and set its invalid flags (`aria-invalid`, `data-invalid`, `isInvalid`), only once its section is finished or after a submit attempt. A section's Continue calls `trigger(sectionFields, { shouldFocus: true })` and marks the section finished, and from then on its fields revalidate live. The stack notes give the TanStack Form and React Aria equivalents.
 
 Checked facts (https://react-hook-form.com/docs/useform and its `trigger` page, read 2026-10-27): `mode` defaults to `"onSubmit"`, `reValidateMode` to `"onChange"`, `shouldFocusError` to `true`, `shouldUnregister` to `false`. `trigger(name?, { shouldFocus, shouldTouch })` returns a promise of a boolean; `shouldFocus` (since v7.7.0) focuses the input when trigger sets an error on it, and works only on inputs registered through `register`, not a custom register.
 
@@ -18,7 +18,7 @@ First match wins:
 3. A non-urgent message without a control uses `role="status"`.
 4. An urgent one uses `role="alert"`.
 
-Live regions are in the page before their text arrives. Use `aria-live="polite"` through `role="status"` and keep assertive regions out.
+Live regions are in the page before their text arrives. Use `aria-live="polite"` through `role="status"` and do not set `aria-live="assertive"`; `role="alert"` is the urgent channel.
 
 ## Error summary
 

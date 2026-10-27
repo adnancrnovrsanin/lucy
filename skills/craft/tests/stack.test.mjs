@@ -79,3 +79,9 @@ test('serializeStack turns the component set into a sorted array', () => {
   const s = serializeStack(detectStack(fixture('shadcn-radix')));
   assert.deepEqual(s.components, ['calendar', 'field', 'select']);
 });
+
+test('shadcn with an unknown base reports it instead of radix', () => {
+  const s = detectStack(fixture('shadcn-aria'));
+  assert.equal(s.ui, 'shadcn');
+  assert.equal(s.base, 'aria');
+});

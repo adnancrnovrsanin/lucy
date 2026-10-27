@@ -7,6 +7,7 @@ shadcn components are copied into the project, so the installed files are the AP
 - `components.json`: `style` and `aliases.ui` (where the components live).
 - `npx shadcn@latest info --json`: the base (Radix or Base UI) and the installed components.
 - The base decides the API of Select, Combobox, triggers, and `asChild` versus `render`. Read the base before reusing any docs snippet.
+- When the base is neither Radix nor Base UI (for example `aria`), this note's snippets do not apply as written. Read the installed component files and the shadcn docs for that base before reusing any of them.
 
 Done when the stack line names the base and the form library.
 
@@ -99,8 +100,8 @@ The example is the Radix shape. Base UI needs the changes in the Base UI and Rad
 - `form.Field` with `children`; the render function gets `field`.
 - Every control gets `onBlur={field.handleBlur}` and `onChange` or `onValueChange` calling `field.handleChange`.
 - Arrays: `mode="array"` on the Field, `field.pushValue` to add, `field.removeValue(index)` to remove.
-- Error visibility: `const invalid = field.state.meta.isTouched && !field.state.meta.isValid`; then `data-invalid={invalid}`, `aria-invalid={invalid}`, and `<FieldError errors={field.state.meta.errors} />`.
-- Timing: `validators` keyed by event. Small forms use `onBlur` plus `onChange` after the first blur. Medium forms use `validationLogic: revalidateLogic({ mode: "submit", modeAfterSubmission: "change" })` with `validators: { onDynamic: schema }`. Large forms validate on change and show a field's error only once its section is finished or after a submit attempt; the section's Continue calls `form.validateField` for each of its fields.
+- Error visibility: `const invalid = field.state.meta.isBlurred && !field.state.meta.isValid` (`isTouched` is set by a change, so it would show errors while the user types); then `data-invalid={invalid}`, `aria-invalid={invalid}`, and `<FieldError errors={field.state.meta.errors} />`.
+- Timing: `validators` keyed by event. Small forms use `validationLogic: revalidateLogic({ mode: "blur", modeAfterSubmission: "change" })` with `validators: { onDynamic: schema }`, so the first check runs on blur and later checks run on change. Medium forms use `validationLogic: revalidateLogic({ mode: "submit", modeAfterSubmission: "change" })` with `validators: { onDynamic: schema }`. Large forms validate on change and show a field's error, and set `data-invalid` and `aria-invalid`, only once its section is finished or after a submit attempt (this gate replaces the blur rule above); the section's Continue calls `form.validateField` for each of its fields.
 
 ## Base UI and Radix
 

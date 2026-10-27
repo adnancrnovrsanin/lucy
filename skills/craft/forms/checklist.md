@@ -12,6 +12,7 @@ Answer each check yes or no. `[static]` means reading the code settles it; `[bro
 
 - [ ] Every control comes from the library inventory. [static]
 - [ ] Option counts match the thresholds in the field map. [static]
+- [ ] Every enum field's control was checked against the field table by hand, because the scan sees only enums declared in the same file. [static]
 - [ ] Dates use the picker or the memorable-date inputs. [static]
 - [ ] No `type="number"` outside quantities. [static]
 
@@ -49,4 +50,4 @@ Answer each check yes or no. `[static]` means reading the code settles it; `[bro
 - [ ] Pasted values with spaces are accepted. [browser]
 - [ ] A slow network shows the pending states. [browser]
 
-Every check you could not run is reported as "Not verified", never assumed.
+Every check you could not run is reported as "Not verified", never assumed. Report the scan summary only when its `files N` counts the form's files; otherwise pass the form paths explicitly and run it again.
