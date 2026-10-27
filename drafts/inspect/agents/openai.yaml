@@ -1,0 +1,3 @@
+interface:
+  display_name: "Inspect"
+  short_description: "Reviewers that judge work against quality factors"
