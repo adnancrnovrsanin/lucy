@@ -4,5 +4,7 @@
   "description": "Adnan's personal plugin: his own skills and hooks, merged from superpowers, mattpocock/skills, and unlazy.",
   "author": {
     "name": "Adnan Crnovrsanin"
-  }
+  },
+  "license": "Apache-2.0",
+  "icon": ".claude-plugin/icon.png"
 }

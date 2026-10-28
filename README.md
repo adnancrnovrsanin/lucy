@@ -63,7 +63,8 @@ Invoke a Lucy skill in Codex with its plugin-qualified selector, for example `$l
 
 ## Layout
 
-- AGENTS.md: the rules for working in this repo, for any agent. CLAUDE.md only imports it.
+- AGENTS.md: the rules for working in this repo, for any agent. .claude/CLAUDE.md only imports it.
+- LICENSE and NOTICE: Lucy is Apache-2.0; vendored or adapted skills keep the licence in their own LICENSE file.
 - .claude-plugin/: Claude Code plugin and marketplace manifests
 - .codex-plugin/: Codex plugin manifest
 - .agents/plugins/marketplace.json: Codex marketplace manifest

@@ -2,19 +2,19 @@
 
 Lucy is Adnan's personal plugin system: his own skills, commands, hooks, and agents. It supports Claude Code and Codex, with an OpenCode version planned. The repo root contains provider-specific packages that share one skills tree. Design specs: docs/superpowers/specs/2026-08-26-lucy-claude-plugin-foundation-design.md (foundation), docs/superpowers/specs/2026-08-27-lucy-skill-system-design.md (skill system), and docs/superpowers/specs/2026-09-04-lucy-codex-plugin-design.md (Codex). Structural decisions live in docs/adr/.
 
-This file is the single source of instructions for any agent working in this repo. Provider files, meaning CLAUDE.md today plus any Codex or OpenCode equivalent added later, only point here and carry no rules of their own. Why, and what each harness reads, is recorded in docs/adr/0002-agents-md-as-the-instruction-source.md.
+This file is the single source of instructions for any agent working in this repo. Provider files, meaning .claude/CLAUDE.md today plus any Codex or OpenCode equivalent added later, only point here and carry no rules of their own. Why, and what each harness reads, is recorded in docs/adr/0002-agents-md-as-the-instruction-source.md.
 
 ## Invariants
 
 - Rules live in this file. Never add a rule to a provider file; add it here, where every harness sees it.
 - skills/ holds only shipped skills. Work in progress lives in drafts/, retired skills in deprecated/. Promotion is moving the directory. The Claude manifest omits a skills array, while the Codex manifest points to `./skills/`.
 - After adding, renaming, or removing a skill, re-run scripts/link-skills.sh.
-- After touching anything in .claude-plugin/, validate both manifests. The directory form only reaches the marketplace manifest, so the plugin needs its own call:
+- After touching anything in .claude-plugin/, LICENSE, NOTICE, or .claude/CLAUDE.md, validate the marketplace and the plugin. Both must pass with no warnings:
 
       claude plugin validate . --strict
-      claude plugin validate .claude-plugin/plugin.json
+      claude plugin validate .claude-plugin/plugin.json --strict
 
-  The second command prints one known warning, that CLAUDE.md at the plugin root is not loaded as project context, and still exits 0. That warning is expected and accepted: CLAUDE.md is a pointer for people and agents working here, not content shipped to plugin consumers. Do not add --strict to the second command, which turns that warning into a failure, and do not delete CLAUDE.md to silence it, because Claude Code would then read no rules at all.
+  The Claude pointer lives at .claude/CLAUDE.md, not the repo root, because the validator treats the repo root as the plugin and warns about a root CLAUDE.md (ADR-0010). Keep it there: Claude Code reads .claude/CLAUDE.md as project memory, and without a pointer it would read no rules at all.
 - After changing .codex-plugin/ or .agents/plugins/marketplace.json, run `node scripts/validate-codex-plugin.mjs`.
 - Structural decisions get an ADR in docs/adr/.
 - A vendored third-party skill keeps its license file in its directory plus a provenance line naming the source repo, path, and commit.

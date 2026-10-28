@@ -1,0 +1,8 @@
+Lucy
+Copyright 2026 Adnan Crnovrsanin
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Skills and scripts that carry their own LICENSE file, such as vendored or adapted
+material under skills/ and scripts/install-dev-hooks.LICENSE, remain under the
+licences stated in those files, with provenance in each PROVENANCE.md.

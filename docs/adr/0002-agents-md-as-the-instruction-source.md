@@ -1,7 +1,7 @@
 # 0002: AGENTS.md is the single source of agent instructions
 
 Date: 2026-08-26
-Status: accepted
+Status: accepted; amended by ADR-0010 (the pointer moved to .claude/CLAUDE.md)
 
 ## Context
 
