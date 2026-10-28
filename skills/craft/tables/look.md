@@ -20,6 +20,7 @@ This is the modern default for admin tables. Add an opt-in tier only when the ta
 - No zebra stripes in selectable or hoverable tables.
 - A sticky header 36 to 40px tall with an opaque background and a z-index above body cells, set at body size, weight 500, muted, sentence case.
 - No scroll snap. `scroll-padding-top` equals the header height (36 to 40px) so focused rows are not hidden under it.
+- Each header has a menu reachable by keyboard: sort with typed labels ("Oldest first", "Newest first", "A to Z", "Low to high"), filter, hide, and pin.
 
 ## Columns and cells
 

@@ -51,3 +51,5 @@ Rendering is decided after the data flow in [data-flow.md](data-flow.md). Proces
 - react-data-grid: replace only changed row objects.
 - `useDeferredValue` for filter-as-you-type over large client sets.
 - Profile production builds before reaching for experimental options.
+
+Virtualization rules adapted from TanStack Table and TanStack Virtual docs (MIT).

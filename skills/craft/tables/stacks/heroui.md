@@ -30,6 +30,9 @@ HeroUI v3 Table wraps react-aria-components (RAC) one to one and does no data pr
 Adapted from the HeroUI v3 TanStack table demo (Apache-2.0). TanStack v9 owns sort, page, selection, filters, and visibility; HeroUI renders. Feature names follow [tanstack.md](tanstack.md); confirm them against the installed table-core.
 
 ```tsx
+const ROW_HEADER_ID = "number"; // the id of the identifier column
+const skeletonRowIds = Array.from({ length: 10 }, (_, i) => `skeleton-${i}`);
+
 const features = tableFeatures({ rowSortingFeature, rowPaginationFeature, rowSelectionFeature });
 const table = useTable(useMemo(() => ({
   features, columns, data: query.data?.rows ?? emptyRows,
@@ -71,14 +74,22 @@ const fromKeys = (keys: Selection, pageIds: string[]): RowSelectionState =>
       </Table.Column>
     ))}
   </Table.Header>
-  <Table.Body renderEmptyState={() => (query.isError ? <ErrorState /> : query.isPending ? <Spinner /> : <NoResults />)}>
-    {table.getRowModel().rows.map((row) => (
-      <Table.Row key={row.id} id={row.id}>{/* row <Checkbox slot="selection"> first */}
-        {row.getVisibleCells().map((c) => (
-          <Table.Cell key={c.id}>{flexRender(c.column.columnDef.cell, c.getContext())}</Table.Cell>
+  <Table.Body renderEmptyState={() => (query.isError ? <ErrorState /> : <NoResults />)}>
+    {query.isPending
+      ? skeletonRowIds.map((id) => (
+          <Table.Row key={id} id={id}>{/* first load: skeleton rows in the real frame */}
+            {table.getVisibleLeafColumns().map((col) => (
+              <Table.Cell key={col.id}><Skeleton className="h-4 w-full rounded" /></Table.Cell>
+            ))}
+          </Table.Row>
+        ))
+      : table.getRowModel().rows.map((row) => (
+          <Table.Row key={row.id} id={row.id}>{/* row <Checkbox slot="selection"> first */}
+            {row.getVisibleCells().map((c) => (
+              <Table.Cell key={c.id}>{flexRender(c.column.columnDef.cell, c.getContext())}</Table.Cell>
+            ))}
+          </Table.Row>
         ))}
-      </Table.Row>
-    ))}
   </Table.Body>
 </Table.Content>
 ```
@@ -100,6 +111,7 @@ The selection bridge and the manual flags are a restatement; run them before rel
 - The keyboard default is `"tab"`. Keep it when cells hold controls, and set `keyboardNavigationBehavior="arrow"` for read-only tables.
 - Pagination items are buttons carrying `aria-current="page"`. Use HeroUI Pagination with a router push to keep the page in the URL. The links rule of [look.md](../look.md) does not apply here.
 - Virtualize with React Aria's `Virtualizer` and `TableLayout` inside a fixed-height scroll container. Rows become divs with `aria-rowcount`. Never add a second virtualizer on top.
+- Under `TableLayout`, pin the identifier column with sticky positioning only after checking in the running app that it sticks. If it does not, keep the identifier as the first column, unpinned.
 - Set `aria-busy` on the table during a refetch yourself (see Checked facts).
 - If the sort cannot return to unsorted, offer a Clear sort control.
 
@@ -108,6 +120,10 @@ The selection bridge and the manual flags are a restatement; run them before rel
 - Keep `@heroui/table` in v2 projects, with TanStack for state.
 - `isVirtualized` needs `rowHeight` and `maxTableHeight`. The documented automatic virtualization above 50 rows does not happen.
 - Migrate to v3 only when asked.
+- v2 to v3 mapping: `TableHeader` to `Table.Header`, `TableColumn` to `Table.Column`, `TableBody` to `Table.Body`, `TableRow` to `Table.Row`, `TableCell` to `Table.Cell`.
+- `loadingState` becomes `Table.LoadMore` plus your own refetch indicator.
+- `emptyContent` becomes `renderEmptyState` on `Table.Body`.
+- `isVirtualized` becomes React Aria's `Virtualizer` with `TableLayout`.
 
 ## Pro DataGrid
 
@@ -136,4 +152,5 @@ HeroUI at commit 70a11531, react-spectrum at commit 3280ed4b, both under `.lucy/
 - `aria-sort` is the direction on the sorted column and `none` on other sortable columns, skipped on Android, where sort details go through `aria-describedby`: `react-spectrum/packages/react-aria/src/table/useTableColumnHeader.ts:89-101`.
 - `aria-busy` is not forwarded: no match for it in `react-aria-components/src/Table.tsx`, `react-aria/src/table`, or `react-aria/src/grid`. Set it yourself.
 - Whether the sort cycle returns to unsorted: Not verified. The header calls `state.sort(node.key)` (`useTableColumnHeader.ts:81`), and the stately table package is not in the clone. The Clear sort rule does not depend on it.
+- Sticky pinning under `TableLayout`: Not verified. The pinning rule above checks it in the running app and falls back to an unpinned first column, so it does not depend on this.
 - v2 `isVirtualized` needs `rowHeight` and `maxTableHeight`, v2 and Pro DataGrid details: taken from `.lucy/notes/2026-10-27-tables-research/report-engines-extra.md`, section 2, not re-read in code.

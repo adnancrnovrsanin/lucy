@@ -33,6 +33,9 @@ Columns take their control from the kind table in [column-kinds.md](column-kinds
 | tags | has any of, has all of, has none of | has any of |
 | boolean | any, yes, no | yes |
 | relation async combobox | is any of, is none of, is empty | is any of |
+| identifier or code | is, is any of (a pasted list) | is |
+| file presence | has file, no file | has file |
+| relation to-many async combobox | has any of, has none of, is empty | has any of |
 
 - The default operator always takes a value, so a new filter is never active empty. "Any" on a boolean clears the filter.
 - The operator list follows the number of values: "is" becomes "is any of" when a second value is added.

@@ -25,29 +25,29 @@ Resolve a column's kind in this order:
 
 ## Kind table
 
-| Kind | Presentation | Align | Sort | Filter (default operator) | Export |
-| --- | --- | --- | --- | --- | --- |
-| text | Plain text that wraps | Left | Locale collation | Contains | Raw string |
-| long text | Two-line clamp, hidden by default, full value in the peek or detail page | Left | None | Contains, or full-text search where the backend has it | Raw string |
-| identifier or code | Monospace with a copy action | Left | Locale collation | Exact match, or a pasted list (is any of) | Raw string |
-| internal id | Not a column by default; if shown, monospace, shortened, copy action, never first | Left | None | Exact match | Full id |
-| quantity or count | `Intl.NumberFormat`, tabular figures | Right | Numeric | Range (eq, between, gt, lt) | Plain number |
-| money | `Intl.NumberFormat` currency style, fixed fraction digits, tabular figures | Right | Numeric | Range in major units (between) | Decimal string plus a currency code column |
-| percent | `Intl` percent style over a stated scale (0 to 1 or 0 to 100) | Right | Numeric | Range (between) | Plain number with the scale in the header |
-| duration | Compact form ("2h 5m"), exact value in a tooltip | Right | Numeric | Range with unit presets | Seconds as a number |
-| date | Locale short date, never shifted by time zone | Left | Chronological | Presets plus custom range (between) | ISO 8601 date |
-| timestamp | Relative within 7 days, then absolute, absolute value in a tooltip | Left | Chronological | Presets plus custom range (between) | ISO 8601 with offset |
-| enum or status | Badge with icon or dot plus a label from a label map | Left | Declared order | Faceted multi-select with counts (is any of) | Label text |
-| multi-enum or tags | At most two badges plus "+N" | Left | None | Has any of, has all of, has none of | Labels joined by a delimiter |
-| boolean | Domain words ("Active", "Archived"), never a checkbox | Left | False before true | Any, yes, or no | true or false |
-| relation to-one | Display field as a link | Left | Display field | Async combobox over the display field (is any of, is empty) | Display field |
-| relation to-many | Count ("3 projects") or at most two chips plus "+N" | Right for a count | Count | Has any of, async combobox | Display fields joined by a delimiter |
-| person or user | 20px avatar plus the name | Left | Name | Async combobox, "Me" first (is any of) | Name |
-| email | Text, mailto link only when the app sends mail that way | Left | Locale collation | Contains | Address |
-| URL | Hostname, full URL in the link, external marker | Left | Locale collation | Contains | Full URL |
-| phone | Project phone library format when it has one, `tel:` link | Left | Locale collation | Contains | E.164 |
-| file or image | 24 to 32px thumbnail or file icon plus the name | Left | None | Has file or no file | File name or URL |
-| JSON or object | Not a column by default; shown in the peek or detail page | Left | None | None | Serialized JSON |
+| Kind | Presentation | Align | Sort | Filter (default operator) | Export | Server |
+| --- | --- | --- | --- | --- | --- | --- |
+| text | Plain text that wraps | Left | Locale collation | Contains | Raw string | Escaped contains; an index or collation that matches the sort |
+| long text | Two-line clamp, hidden by default, full value in the peek or detail page | Left | None | Contains, or full-text search where the backend has it | Raw string | Full-text index when the column is filtered |
+| identifier or code | Monospace with a copy action | Left | Locale collation | Exact match, or a pasted list (is any of) | Raw string | Exact match on an indexed column |
+| internal id | Not a column by default; if shown, monospace, shortened, copy action, never first | Left | None | Exact match | Full id | Never filterable from the URL unless by exact match |
+| quantity or count | `Intl.NumberFormat`, tabular figures | Right | Numeric | Range (eq, between, gt, lt) | Plain number | Numeric compare on the stored unit |
+| money | `Intl.NumberFormat` currency style, fixed fraction digits, tabular figures | Right | Numeric | Range in major units (between) | Decimal string plus a currency code column | Numeric compare on the stored unit, in minor units |
+| percent | `Intl` percent style over a stated scale (0 to 1 or 0 to 100) | Right | Numeric | Range (between) | Plain number with the scale in the header | Numeric compare on the stored unit and scale |
+| duration | Compact form ("2h 5m"), exact value in a tooltip | Right | Numeric | Range with unit presets | Seconds as a number | Numeric compare on the stored unit |
+| date | Locale short date, never shifted by time zone | Left | Chronological | Presets plus custom range (between) | ISO 8601 date | Compare as a date, with no time zone shift |
+| timestamp | Relative within 7 days, then absolute, absolute value in a tooltip | Left | Chronological | Presets plus custom range (between) | ISO 8601 with offset | Time zone stated; a range end is inclusive to the end of that day in that zone |
+| enum or status | Badge with icon or dot plus a label from a label map | Left | Declared order | Faceted multi-select with counts (is any of) | Label text | Facet counts from the server, excluding the column's own filter |
+| multi-enum or tags | At most two badges plus "+N" | Left | None | Has any of, has all of, has none of | Labels joined by a delimiter | Array operators (overlap, contains, not overlap) |
+| boolean | Domain words ("Active", "Archived"), never a checkbox, never centered | Left | False before true | Any, yes, or no | true or false | A nullable column means three states: yes, no, and empty |
+| relation to-one | Display field as a link | Left | Display field | Async combobox over the display field (is any of, is empty) | Display field | Display field joined in the same query; sort by it |
+| relation to-many | Count ("3 projects") or at most two chips plus "+N" | Right for a count | Count | Async combobox: has any of, has none of, is empty (has any of) | Display fields joined by a delimiter | Count subquery for sort; has any of through a join or exists |
+| person or user | 20px avatar plus the name | Left | Name | Async combobox, "Me" first (is any of) | Name | "Me" resolved on the server from the session |
+| email | Text, mailto link only when the app sends mail that way | Left | Locale collation | Contains | Address | Plain contains or exact match |
+| URL | Hostname, full URL in the link, external marker | Left | Locale collation | Contains | Full URL | Plain contains or exact match |
+| phone | Project phone library format when it has one, otherwise as stored, `tel:` link | Left | Locale collation | Contains | E.164 | Plain contains or exact match |
+| file or image | 24 to 32px thumbnail or file icon plus the name | Left | None | Has file or no file | File name or URL | Exists check |
+| JSON or object | Not a column by default; shown in the peek or detail page | Left | None | None | Serialized JSON | Not filterable |
 
 Operators per filter control are in the filtering reference; components per kind are in the stack notes.
 
@@ -81,7 +81,7 @@ Operators per filter control are in the filtering reference; components per kind
 - An enum shows a badge with an icon or dot plus a label from a label map, never color alone. Options and order come from the schema, and sorting follows declared order.
 - The enum filter is a faceted multi-select with counts ("is any of"). On server tables the counts come from the server and exclude the column's own filter.
 - Tags show at most two badges plus "+N", and filter with has any of, has all of, or has none of.
-- A boolean shows domain words ("Active", "Archived"), never a checkbox control in a read-only cell. It filters with any, yes, or no.
+- A boolean shows domain words ("Active", "Archived"), never a checkbox control in a read-only cell, and is never centered. It filters with any, yes, or no.
 
 ## Relations and people
 
@@ -94,7 +94,7 @@ Operators per filter control are in the filtering reference; components per kind
 
 - Email is text, with a mailto link only when the app sends mail that way.
 - A URL shows its hostname, with the full URL in the link and an external marker.
-- A phone number is formatted with the project's phone library when it has one, and is a `tel:` link.
+- A phone number is formatted with the project's phone library when it has one, otherwise shown as stored, and is a `tel:` link.
 - A file shows a 24 to 32px thumbnail or a file icon plus the name, never a raw path.
 - JSON is shown only in the peek or the detail page.
 
