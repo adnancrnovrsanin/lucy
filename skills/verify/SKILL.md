@@ -48,6 +48,7 @@ Skip any step = lying, not verifying
 | Requirements met | Line-by-line checklist | Tests passing |
 | Form done | inspect on the changed files: no error findings, the form files counted, the checklist walked | Screenshot looks right, tests pass |
 | Table done | inspect on the changed files: no error findings, the table files counted, the checklist walked | Screenshot looks right, tests pass |
+| Details page done | inspect on the changed files: no error findings, the page files counted, the checklist walked | Screenshot looks right, tests pass |
 
 ## Red flags that mean stop
 

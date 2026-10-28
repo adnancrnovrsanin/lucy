@@ -34,7 +34,7 @@ function expectEqual(actual, expected, label) {
 
 function validatePlugin(plugin) {
   expectEqual(plugin.name, "lucy", ".codex-plugin/plugin.json name");
-  expectEqual(plugin.version, "0.5.0", ".codex-plugin/plugin.json version");
+  expectEqual(plugin.version, "0.6.0", ".codex-plugin/plugin.json version");
   expectEqual(plugin.skills, "./skills/", ".codex-plugin/plugin.json skills");
 }
 
