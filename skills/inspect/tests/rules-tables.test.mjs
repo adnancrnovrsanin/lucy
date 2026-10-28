@@ -96,3 +96,21 @@ test('the tables table holds exactly the 55 rules of the plan', () => {
   assert.equal(rules.length, 55);
   assert.deepEqual(Object.fromEntries(rules.map((r) => [r.id, `${r.severity} ${r.platform}`])), EXPECTED);
 });
+
+const byId = (id) => rules.find((r) => r.id === id);
+const countOf = (id, example) => runExample(byId(id), example).findings.filter((f) => f.rule === id).length;
+
+test('raw-sql-filter-field reports sql.raw with an interpolated template once', () => {
+  assert.equal(countOf('raw-sql-filter-field', { code: 'const order = sql.raw(`${sortField} ${dir}`);', file: 'app/invoices/queries.ts' }), 1);
+  assert.equal(countOf('raw-sql-filter-field', { code: 'const q = knex("t").orderByRaw(`${field} desc`);', file: 'app/invoices/queries.ts' }), 1);
+});
+
+test('order-by-interpolated still fires on a returned untagged template', () => {
+  assert.equal(countOf('order-by-interpolated', { code: 'const f = () => { return `SELECT * FROM t ORDER BY ${field}`; };', file: 'app/invoices/queries.ts' }), 1);
+});
+
+test('icon-action-without-name ignores comments and lone elements in braces', () => {
+  const head = 'import { useTable } from "@tanstack/react-table";\n';
+  assert.equal(countOf('icon-action-without-name', { code: `${head}const a = <Button size="icon">{/* add */}<Plus /></Button>;` }), 1);
+  assert.equal(countOf('icon-action-without-name', { code: `${head}const a = <Button size="icon">{<Plus />}</Button>;` }), 1);
+});

@@ -1,4 +1,4 @@
-import { has, str, attr, ancestors, descendants, inLibraryDir, classOf, HEAD_TAGS, ROW_TAGS } from '../../lib/helpers.mjs';
+import { has, str, attr, isTrue, ancestors, descendants, inLibraryDir, classOf, HEAD_TAGS, ROW_TAGS } from '../../lib/helpers.mjs';
 
 const BUTTONS = new Set(['button', 'Button']);
 const NAMED_TABLES = new Set(['table', 'Table']);
@@ -49,12 +49,15 @@ export default [
     check: ({ source, stack, path }) => (inLibraryDir(path) ? [] : source.elements
       .filter((el) => NAMED_TABLES.has(el.tag) && !(el.tag === 'Table' && stack.ui === 'heroui'))
       .filter((el) => el.spreads.length === 0 && !has(el, 'aria-label', 'aria-labelledby') && !el.children.some((c) => c.tag === 'caption' || c.tag === 'TableCaption'))
+      .filter((el) => !ancestors(el).some((a) => isTrue(a, 'aria-hidden')))
       .map((el) => ({ line: el.line, message: `<${el.tag}> without a caption or label` }))),
     good: [
       { code: 'const a = <Table aria-labelledby="invoices-heading"><TableBody /></Table>;' },
       { code: 'const a = <table><caption>Invoices</caption><tbody /></table>;' },
       { code: 'export const Table = (p) => <table {...p} />;', file: 'components/ui/table.tsx' },
       { code: 'export const DataTable = (props) => <Table {...props} />;', file: 'app/invoices/data-table.tsx' },
+      { code: 'const a = <div aria-hidden="true"><Table><TableBody /></Table></div>;' },
+      { code: 'const a = <div aria-hidden><table><tbody /></table></div>;' },
     ],
     bad: [{ code: 'const a = <Table><TableHeader /><TableBody /></Table>;' }],
   },

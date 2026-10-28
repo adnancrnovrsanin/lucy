@@ -1,8 +1,38 @@
-import { hits, lineText } from '../../lib/helpers.mjs';
+import { hits, lineText, isTableFile } from '../../lib/helpers.mjs';
 
 const LIT = String.raw`(?:'[^']*'|"[^"]*"|`+'`[^`$]*`'+String.raw`)`;
 const LITERAL_ARG = new RegExp(`^\\s*(?:${LIT}|[\\w$.]+\\s*(?:===?|!==?)\\s*${LIT}\\s*\\?\\s*${LIT}\\s*:\\s*${LIT})\\s*$`);
 const isLiteralSql = (arg) => LITERAL_ARG.test(arg);
+
+// The source of the first argument of the call whose "(" sits at `open`. Brackets are counted on
+// the masked text, where string and template contents are blank, so a ")" inside a literal such
+// as "count(*)" never ends the argument.
+function firstArg(source, open) {
+  const m = source.masked;
+  let depth = 0;
+  let i = open + 1;
+  for (; i < m.length; i++) {
+    const c = m[i];
+    if (c === '(' || c === '[' || c === '{') depth++;
+    else if (c === ')' || c === ']' || c === '}') {
+      if (depth === 0) break;
+      depth--;
+    } else if (c === ',' && depth === 0) break;
+  }
+  return source.text.slice(open + 1, i);
+}
+
+const RAW_CALL = /(\bsql\.raw|\$(?:query|execute)RawUnsafe|\.(?:raw|whereRaw|orderByRaw))\s*\(/g;
+const TAG_KEYWORDS = new Set(['return', 'typeof', 'await', 'yield', 'case', 'in', 'of', 'else', 'void', 'delete', 'throw', 'new', 'instanceof', 'do']);
+
+// True when the template literal starting at `start` is tagged, as in sql`...` or db.sql`...`.
+function isTagged(source, start) {
+  const m = /([\w$][\w$.]*)\s*$/.exec(source.masked.slice(Math.max(0, start - 80), start));
+  return Boolean(m) && !TAG_KEYWORDS.has(m[1]);
+}
+
+// Words that put a file in filter or query territory for dynamic-code-in-filter.
+const FILTER_CONTEXT = /\b(?:filters?|where|operators?|query)\b/;
 
 export default [
   {
@@ -12,22 +42,21 @@ export default [
     why: 'A raw SQL fragment is built from a variable, so a filter or sort field from the client can inject SQL.',
     fix: 'Map every field through the server column registry (an allow-list) to a column object, take operators from a server switch, and bind values as parameters.',
     ref: 'react-querybuilder server usage; OWASP SQL injection',
-    check: ({ source }) => [
-      ...[...source.text.matchAll(/\bsql\.raw\s*\(\s*([^)]*)\)/g)]
-        .filter((m) => !isLiteralSql(m[1]))
-        .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
-      ...[...source.text.matchAll(/\$(?:query|execute)RawUnsafe\s*\(\s*([^)]*)/g)]
-        .filter((m) => !/^(?:'[^']*'|"[^"]*"|`[^`$]*`)\s*(?:,|$)/.test(m[1]))
-        .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
-      ...[...source.text.matchAll(/\.(?:raw|whereRaw|orderByRaw)\s*\(\s*`[^`]*\$\{/g)]
-        .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
-    ],
+    check: ({ source }) => [...source.masked.matchAll(RAW_CALL)]
+      .filter((m) => {
+        const arg = firstArg(source, m.index + m[0].length - 1);
+        if (m[1].startsWith('.')) return /^\s*`/.test(arg) && arg.includes('${');
+        return !isLiteralSql(arg);
+      })
+      .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
     good: [
       { code: 'const where = and(...filters.map((f) => toCondition(COLUMNS[f.field], f)));', file: 'app/invoices/queries.ts' },
       { code: 'const dir = sql.raw("ASC");', file: 'app/invoices/queries.ts' },
       { code: 'const dir = sql.raw(`ASC`);', file: 'app/invoices/queries.ts' },
       { code: 'const dir = sql.raw(order === "desc" ? "DESC" : "ASC");', file: 'app/invoices/queries.ts' },
       { code: 'const rows = await prisma.$queryRawUnsafe("SELECT 1");', file: 'app/invoices/queries.ts' },
+      { code: 'const total = sql.raw("count(*)");', file: 'app/invoices/queries.ts' },
+      { code: 'const rows = await prisma.$queryRawUnsafe("SELECT count(*) FROM t");', file: 'app/invoices/queries.ts' },
     ],
     bad: [
       { code: 'const order = sql.raw(`${sortField} ${dir}`);', file: 'app/invoices/queries.ts' },
@@ -66,10 +95,13 @@ export default [
     why: 'An ORDER BY clause interpolates a variable, so a sort field from the client can inject SQL.',
     fix: 'Look the sort id up in the server column registry and order by the column object; reject unknown ids.',
     ref: 'secondsky tanstack-table server patterns; OWASP SQL injection',
-    check: ({ source }) => [...source.text.matchAll(/ORDER\s+BY\s+((?:(?!\b(?:LIMIT|OFFSET)\b)[^`'"])*)\$\{/gi)].map((m) => ({ index: m.index, message: 'ORDER BY with an interpolated value' })),
+    check: ({ source }) => source.strings
+      .filter((s) => s.quote === '`' && /ORDER\s+BY\s+((?:(?!\b(?:LIMIT|OFFSET)\b)[^`'"])*)\$\{/i.test(s.value) && !isTagged(source, s.start))
+      .map((s) => ({ index: s.start, message: 'ORDER BY with an interpolated value' })),
     good: [
       { code: 'const rows = await db.select().from(invoices).orderBy(desc(SORTABLE[sort.id]), asc(invoices.id));', file: 'app/invoices/queries.ts' },
       { code: 'const text = `SELECT * FROM invoices ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;', file: 'app/invoices/queries.ts' },
+      { code: 'const q = sql`SELECT * FROM invoices ORDER BY ${SORTABLE[sort.id]} DESC, ${invoices.id}`;', file: 'app/invoices/queries.ts' },
     ],
     bad: [{ code: 'const text = `SELECT * FROM invoices ORDER BY ${sort.id} ${sort.desc ? "DESC" : "ASC"}`;', file: 'app/invoices/queries.ts' }],
   },
@@ -80,9 +112,17 @@ export default [
     why: 'Code is built at runtime with new Function or eval, which runs whatever a filter or query string contains and fails under a strict CSP.',
     fix: 'Evaluate filters by walking the filter tree with a switch over known operators.',
     ref: 'craft tables research, liqe hydrateAst',
-    check: ({ source }) => hits(source, /\bnew\s+Function\s*\(|(?<![\w$.])eval\s*\(/g).map((h) => ({ index: h.index, message: 'runtime code generation' })),
-    good: [{ code: 'const matches = (row, c) => (c.op === "eq" ? row[c.field] === c.value : false);' }],
-    bad: [{ code: 'const getValue = new Function("row", `return row.${path}`);' }],
+    check: ({ source }) => (isTableFile(source) || FILTER_CONTEXT.test(source.masked)
+      ? hits(source, /\bnew\s+Function\s*\(|(?<![\w$.])eval\s*\(/g).map((h) => ({ index: h.index, message: 'runtime code generation' }))
+      : []),
+    good: [
+      { code: 'const matches = (row, c) => (c.op === "eq" ? row[c.field] === c.value : false);' },
+      { code: 'const globalObject = new Function("return this")();', file: 'scripts/build.js' },
+    ],
+    bad: [
+      { code: 'const toPredicate = (filter) => new Function("row", `return row.${filter.field}`);' },
+      { code: ['import { useReactTable } from "@tanstack/react-table";', 'const getValue = new Function("row", `return row.${path}`);'].join('\n') },
+    ],
   },
   {
     id: 'query-data-copied-to-state',

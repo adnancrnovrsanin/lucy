@@ -1,14 +1,45 @@
-import { has, str, expr, attr, ancestors, descendants, inLibraryDir, classOf, isTableFile, HEAD_TAGS, ROW_TAGS, TABLE_TAGS } from '../../lib/helpers.mjs';
+import { has, str, expr, attr, ancestors, descendants, inLibraryDir, classOf, isTableFile, innerSource, HEAD_TAGS, ROW_TAGS, TABLE_TAGS } from '../../lib/helpers.mjs';
 
 const LINKS = new Set(['a', 'Link', 'NextLink']);
 const BUTTONS = new Set(['button', 'Button']);
 const FILTER_CONTROLS = new Set(['input', 'Input', 'select', 'Select', 'Combobox', 'DatePicker', 'SearchField', 'TextField']);
 const NON_FILTER_INPUT = (el) => el.tag === 'input' && /^(checkbox|radio)$/.test(str(el, 'type') ?? '');
 const STICKY_HEAD = new Set(['thead', 'TableHeader', 'tr', 'TableRow', 'th', 'TableHead']);
-const isIcon = (el) => el.tag === 'svg' || (/^[A-Z]/.test(el.tag) && el.selfClosing && el.children.length === 0);
+// A self-closing component is taken for an icon unless it carries a prop that renders text,
+// as <FacetedValue placeholder={...} /> or <SelectValue value={...} /> do.
+const CONTENT_PROPS = ['placeholder', 'value', 'label', 'text', 'children'];
+const isIcon = (el) => el.tag === 'svg' || (/^[A-Z]/.test(el.tag) && el.selfClosing && el.children.length === 0 && !has(el, ...CONTENT_PROPS));
 const named = (el) => has(el, 'aria-label', 'aria-labelledby', 'title') || descendants(el).some((d) => /\bsr-only\b/.test(classOf(d)))
   || el.text.trim().length > 0 || descendants(el).some((d) => d.text.trim().length > 0)
   || (el.parent && has(el.parent, 'asChild') && has(el.parent, 'aria-label', 'aria-labelledby'));
+
+// True when the element's children include a {...} expression that may render text, such as
+// {label}, {t("key")}, or {cond ? "Stop" : "Run"}. Child elements are skipped; an empty or
+// comment-only expression, or one holding a lone JSX element, does not count.
+const rendersExpression = (source, el) => {
+  if (el.selfClosing) return false;
+  const inner = innerSource(source, el);
+  const from = el.end;
+  const to = from + inner.length;
+  const m = source.masked;
+  const childAt = new Map(el.children.map((c) => [c.start, c]));
+  for (let i = from; i < to; i++) {
+    const child = childAt.get(i);
+    if (child) { i = child.close - 1; continue; }
+    if (m[i] !== '{') continue;
+    let depth = 0;
+    let j = i;
+    for (; j < to; j++) {
+      if (m[j] === '{') depth++;
+      else if (m[j] === '}' && --depth === 0) break;
+    }
+    const body = m.slice(i + 1, j).trim();
+    const loneElement = el.children.some((c) => c.start > i && c.close <= j && m.slice(i + 1, c.start).trim() === '' && m.slice(c.close, j).trim() === '');
+    if (body && !loneElement) return true;
+    i = j;
+  }
+  return false;
+};
 
 export default [
   {
@@ -45,11 +76,16 @@ export default [
     fix: 'Name icon buttons with aria-label that includes the row identity, such as "Actions for invoice 1042".',
     ref: 'WCAG 4.1.2 Name, Role, Value',
     check: ({ source, path }) => (inLibraryDir(path) || !isTableFile(source) ? [] : source.elements
-      .filter((el) => BUTTONS.has(el.tag) && el.children.length > 0 && el.children.every(isIcon) && !named(el))
+      .filter((el) => BUTTONS.has(el.tag) && el.spreads.length === 0 && el.children.length > 0 && el.children.every(isIcon) && !named(el) && !rendersExpression(source, el))
       .map((el) => ({ line: el.line, message: `icon-only <${el.tag}> without a name` }))),
     good: [
       { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button variant="ghost" size="icon" aria-label={`Actions for ${row.original.number}`}><MoreHorizontal /></Button>;'].join('\n') },
       { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <SortableItemHandle aria-label={`Reorder ${label}`} asChild><Button size="icon"><GripVertical /></Button></SortableItemHandle>;'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button onClick={add}><Plus />{t("invoices.add")}</Button>;'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button><PlusCircle />{title}</Button>;'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button {...props}><GripVertical /></Button>;'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button onClick={toggle}><Play />{running ? "Stop" : "Run"}</Button>;'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button id={inputId} variant="outline"><FacetedValue placeholder={placeholder} /></Button>;'].join('\n') },
     ],
     bad: [
       { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button variant="ghost" size="icon"><MoreHorizontal /></Button>;'].join('\n') },

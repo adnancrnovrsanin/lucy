@@ -13,9 +13,12 @@ export default [
     fix: 'Give Table.Content aria-label or aria-labelledby pointing at the page or card heading.',
     ref: 'WCAG 1.3.1; HeroUI Table docs',
     check: ({ source }) => source.elements
-      .filter((el) => el.tag === 'Table.Content' && !has(el, 'aria-label', 'aria-labelledby'))
+      .filter((el) => el.tag === 'Table.Content' && el.spreads.length === 0 && !has(el, 'aria-label', 'aria-labelledby'))
       .map((el) => ({ line: el.line, message: '<Table.Content> without a name' })),
-    good: [{ code: 'const a = <Table.Content aria-label="Orders"><Table.Header /><Table.Body /></Table.Content>;', stack: { ui: 'heroui' } }],
+    good: [
+      { code: 'const a = <Table.Content aria-label="Orders"><Table.Header /><Table.Body /></Table.Content>;', stack: { ui: 'heroui' } },
+      { code: 'export const OrdersTable = (props) => <Table.Content {...props}><Table.Header /><Table.Body /></Table.Content>;', stack: { ui: 'heroui' } },
+    ],
     bad: [{ code: 'const a = <Table.Content><Table.Header /><Table.Body /></Table.Content>;', stack: { ui: 'heroui' } }],
   },
   {
