@@ -42,11 +42,11 @@ Field does not connect the control to FieldDescription or FieldError. Give the d
 | One-time code | InputOTP |
 | Choice cards | Field inside FieldLabel |
 
-Combobox is built on Base UI even in a Radix project. Read the installed `combobox.tsx` before coding against it. Records use `itemToStringValue` for their label; many-to-many uses `multiple` with chips. Relations follow field-map.md: item id is the primary key.
+Combobox is built on Base UI even in a Radix project. Read the installed `combobox.tsx` before coding against it. Records use `itemToStringValue` for their label; many-to-many uses `multiple` with chips. Relations follow the field map's relations section: item id is the primary key.
 
 ## Async combobox
 
-For relations (field-map.md), use the Combobox with its own state:
+For relations (the field map's relations section), use the Combobox with its own state:
 
 - Control the input text with `onInputValueChange` and debounce the fetch (300 to 500 ms), with the query passed through `encodeURIComponent` and an `AbortController` that cancels the previous request.
 - Pass `filter={null}` to the Combobox so Base UI keeps the server results instead of filtering them again on the client.

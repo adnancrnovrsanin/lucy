@@ -65,3 +65,8 @@ test('value kinds live in craft/kinds.md, not in the tables projection', () => {
   const moved = ['money-raw-or-tofixed', 'hardcoded-number-locale', 'placeholder-cell-glyph', 'truncate-without-full-value'];
   assert.deepEqual(moved.filter((id) => !TABLES_FIX_BY[id].startsWith('craft/kinds.md#')), []);
 });
+
+test('forms field-map pointers use the value-kind sections', () => {
+  const old = /field-map\.md#(fixed-sets-of-values|relations|dates-and-times|text-fields|files)$/;
+  assert.deepEqual(rules.filter((r) => old.test(r.fixBy)).map((r) => r.id), []);
+});

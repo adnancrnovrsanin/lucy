@@ -22,7 +22,7 @@ Done when you can name the file that defines every field, or the proposed schema
 
 Write one row per field of the model: key, kind (string, number, decimal, boolean, enum, date, timestamp, time, relation, array, object, file), required or nullable, default, constraints (length, range, pattern, precision), options for enums, and where the value comes from.
 
-A kind that [forms/field-map.md](forms/field-map.md) does not cover stops you: say so and decide with the user. It never becomes a text input by default.
+Identify the field's value kind with [kinds.md](kinds.md). A kind that [forms/field-map.md](forms/field-map.md) does not cover stops you: say so and decide with the user. It never becomes a text input by default.
 
 Done when every field of the model has a row.
 

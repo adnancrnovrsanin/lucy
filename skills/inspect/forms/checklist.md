@@ -13,9 +13,9 @@ A failed item is an error when it leaves free text where the model has a fixed s
 ## Controls
 
 - [ ] `library-controls` Every control comes from the library inventory. [static] Fix by: craft/SKILL.md#2-inventory-the-components
-- [ ] `option-thresholds` Option counts match the thresholds in the field map. [static] Fix by: craft/forms/field-map.md#fixed-sets-of-values
-- [ ] `enum-controls` Every enum field's control matches the field table, checked by hand because the scan sees only enums declared in the same file. [static] Fix by: craft/forms/field-map.md#fixed-sets-of-values
-- [ ] `date-controls` Dates use the picker or the memorable-date inputs. [static] Fix by: craft/forms/field-map.md#dates-and-times
+- [ ] `option-thresholds` Option counts match the thresholds in the field map. [static] Fix by: craft/forms/field-map.md#enums-and-booleans
+- [ ] `enum-controls` Every enum field's control matches the field table, checked by hand because the scan sees only enums declared in the same file. [static] Fix by: craft/forms/field-map.md#enums-and-booleans
+- [ ] `date-controls` Dates use the picker or the memorable-date inputs. [static] Fix by: craft/forms/field-map.md#dates-and-durations
 - [ ] `number-types` No `type="number"` outside quantities. [static] Fix by: craft/forms/field-map.md#numbers-and-money
 
 ## Input help
@@ -48,7 +48,7 @@ A failed item is an error when it leaves free text where the model has a fixed s
 ## Real data
 
 - [ ] `longest-values` The longest value each column allows fits and submits. [browser] Fix by: craft/forms/field-map.md#value-rules
-- [ ] `international-names` Names with accents, apostrophes, and non-Latin scripts work. [browser] Fix by: craft/forms/field-map.md#text-fields
+- [ ] `international-names` Names with accents, apostrophes, and non-Latin scripts work. [browser] Fix by: craft/forms/field-map.md#text-and-identifiers
 - [ ] `pasted-spaces` Pasted values with spaces are accepted. [browser] Fix by: craft/forms/field-map.md#value-rules
 - [ ] `slow-network` A slow network shows the pending states. [browser] Fix by: craft/forms/feedback.md#pending
 
