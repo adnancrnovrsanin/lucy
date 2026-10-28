@@ -25,14 +25,14 @@ This is the modern default for admin tables. Add an opt-in tier only when the ta
 ## Columns and cells
 
 - An always-visible checkbox column 40px wide.
-- The identifier is a real link, sticky on horizontal scroll with an edge shadow.
+- When the record has a details page, the identifier is a real link, sticky on horizontal scroll with an edge shadow.
 - Data columns follow their kind. Rows are 40px with hover and selected tints.
 - Text and dates are left-aligned, numbers right-aligned, never centered. A full-width message cell (with `colSpan`) may be centered.
 - Cells are read-only by default; editing is the grid mode tier.
 
 ## Row open and peek
 
-- The identifier links to the details page. A row click may delegate to that link.
+- When the record has a details page, the identifier links to it. A row click may delegate to that link.
 - The peek is an opt-in tier for triage tables:
   - a right sheet about 480px wide with `?peek=<id>` in the URL;
   - previous and next buttons plus arrow keys;

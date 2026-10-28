@@ -15,6 +15,7 @@ Identify each field's value kind with [../kinds.md](../kinds.md). Then resolve i
 | timestamp, duration | Library date and time fields |
 | quantity or count | `type="number"` |
 | money, percent | Text with `inputmode="decimal"`, unit outside the input |
+| password or secret | Library password field with a show and hide toggle (type="button") |
 | identifier or code | Text, spellcheck off, `inputmode="numeric"` for digits |
 | text, long text | Input or Textarea with a character count |
 | email, phone, URL | `type="email"`, `type="tel"`, `type="url"` with their autocomplete tokens |

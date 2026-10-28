@@ -59,9 +59,9 @@ Done when you can list the filterable columns with their controls and the surfac
 
 Apply the modern default in [tables/look.md](tables/look.md). Add an opt-in tier (peek, power keyboard, grouping, totals, grid mode, facet sidebar, saved views, AI filters) only when the table's job needs it, and name the reason.
 
-Then show the table plan: the column inventory, the data-flow choice, the rendering choice, the filter surface with the filterable columns, and the opt-in tiers. Wait for approval. One exception: a client-side, read-only table with at most 5 columns and no filters goes straight to step 8, with the plan in your reply. In a plan or an autonomous run, the table plan goes into the plan or spec, where it is approved.
+Then show the table plan: the column inventory, the data-flow choice, the rendering choice, the filter surface with the filterable columns, and the opt-in tiers. Wait for approval. One exception: a client-side, read-only table with at most 5 columns and no filters goes straight to step 8, with the plan in your reply. In a plan or an autonomous run, the table plan goes into the plan or spec, where it is approved. When the user approved in advance, still show the plan in your reply (with every column's value kind) before building, then build without waiting.
 
-Done when the table plan is approved, or written in the reply for a table that meets the exception.
+Done when the table plan is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a table that meets the exception.
 
 ## Step 8: Build
 
@@ -77,8 +77,8 @@ Done when every column renders through the kind layer and the project's type che
 
 ## Step 9: Prove
 
-Invoke `inspect` through the host's skill mechanism on your changes. It runs the scan, walks the tables checklist, and reports each finding with the section of this playbook that fixes it. A server-side table also needs a test that the column registry and the server agree: the same columns filter, with the same kinds, and the same columns sort.
+Invoke `inspect` through the host's skill mechanism on your changes; that invocation is the step, and reading inspect's files or running scan.mjs yourself does not replace it. It runs the scan, walks the tables checklist, and reports each finding with the section of this playbook that fixes it. A server-side table also needs a test that the column registry and the server agree: the same columns filter, with the same kinds, and the same columns sort.
 
-Fix every error finding by applying the section it points at. When a scan finding is wrong for this code, suppress it on the line above with `// inspect-ignore <rule-id>: <reason>`. Read the warnings and fix the ones that apply.
+Fix every error finding by applying the section it points at. When a scan finding is wrong for this code, suppress it on the line above with `// inspect-ignore <rule-id>: <reason>`. If a fix needs a library component that is not installed and cannot be installed, add it by hand from the library's documented source, or suppress the finding with the reason; do not finish with an open error finding. Read the warnings and fix the ones that apply.
 
-Done when inspect reports no error findings, its scan counted the table's files, and every checklist item is checked. Report inspect's summary, every suppression with its reason, and every item marked "Not verified".
+Done when inspect was invoked, it reports no error findings, its scan counted the table's files, and every checklist item is checked. Report inspect's summary, every suppression with its reason, and every item marked "Not verified".

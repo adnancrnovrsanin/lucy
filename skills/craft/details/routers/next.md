@@ -26,6 +26,8 @@ Next.js 16 App Router; check the installed major first.
 - Client: `useSuspenseQuery(orderQuery(id))` with the same factory.
 - The server query client sets `shouldRedactErrors: () => false`.
 - To stream a pending query, the server query client's `dehydrate.shouldDehydrateQuery` returns true for `defaultShouldDehydrateQuery(query) || query.state.status === 'pending'`, and the server client sets a default `staleTime` above 0.
+- A project with no query client or provider gets one as part of the query-factory step: a per-request `getQueryClient()` on the server, a singleton in the browser, and a `QueryClientProvider` in the root layout.
+- A read-only page still loads through the factory: a bare `fetch` or React `cache` in the page does not replace it.
 - A Server Action is not a `queryFn`; Server Actions run serially.
 
 ## Peek routes

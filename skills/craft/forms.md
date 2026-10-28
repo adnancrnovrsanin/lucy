@@ -30,17 +30,17 @@ Done when every field of the model has a row.
 
 Audit each row before choosing its control:
 
-- Set by the server (id, timestamps, owner from the session, slug, status): not rendered.
+- Set by the server (id, timestamps, owner from the session, slug, a status only the workflow changes): not rendered. An enum the person may reasonably choose on create (an invoice status, a priority) stays visible, preselected to its default; hide it only when the code sets it.
 - Known from the signed-in user or an earlier step: prefilled or skipped.
 - Derivable (country and time zone from Intl, company from the email domain): derived, and editable when shown.
 - Nullable and not needed for this action: propose deferring it. A NOT NULL column with no default is asked; deferring it needs a schema change, so ask the user.
 - A confirmation duplicate, such as a second email field: dropped.
 
-Give each remaining field its control from [forms/field-map.md](forms/field-map.md), its autocomplete token and any input help from [forms/autofill.md](forms/autofill.md), its constraints, and its help text. Then count: the form size is small up to 4 visible fields, medium from 5 to 8, large above 8 or with 3 or more sections.
+Give each remaining field its control from [forms/field-map.md](forms/field-map.md) (read the field map's section for each field's kind, even for a small form), its autocomplete token and any input help from [forms/autofill.md](forms/autofill.md), its constraints, and its help text. Then count: the form size is small up to 4 visible fields, medium from 5 to 8, large above 8 or with 3 or more sections.
 
-For medium and large forms, show the table (field, control, validation, autocomplete) and wait for approval. Small forms go straight to code, with the table in your reply. In a plan or an autonomous run the table goes into the plan or spec, where it is approved.
+For medium and large forms, show the table (field, control, validation, autocomplete) and wait for approval. Small forms go straight to code, with the table in your reply. In a plan or an autonomous run the table goes into the plan or spec, where it is approved. When the user approved in advance, still show the table in your reply (with every field's control and validation) before building, then build without waiting.
 
-Done when every visible field has a control from the inventory, every personal-data field has an autocomplete token, and the table is approved or, for a small form, written in the reply.
+Done when every visible field has a control from the inventory, every personal-data field has an autocomplete token, and the table is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a small form.
 
 ## Step 5: Structure
 
@@ -63,8 +63,8 @@ Done when every field in the table renders with its mapped control and the proje
 
 ## Step 7: Prove
 
-Invoke `inspect` through the host's skill mechanism on your changes. It runs the scan, walks the forms checklist, and reports each finding with the section of this playbook that fixes it.
+Invoke `inspect` through the host's skill mechanism on your changes; that invocation is the step, and reading inspect's files or running scan.mjs yourself does not replace it. It runs the scan, walks the forms checklist, and reports each finding with the section of this playbook that fixes it.
 
 Fix every error finding by applying the section it points at. When a scan finding is wrong for this code, suppress it on the line above with `// inspect-ignore <rule-id>: <reason>`. Read the warnings and fix the ones that apply.
 
-Done when inspect reports no error findings, its scan counted the form's files, and every checklist item is checked. Report inspect's summary, every suppression with its reason, and every item marked "Not verified".
+Done when inspect was invoked, it reports no error findings, its scan counted the form's files, and every checklist item is checked. Report inspect's summary, every suppression with its reason, and every item marked "Not verified".

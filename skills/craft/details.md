@@ -28,7 +28,7 @@ Done when each item names a file or "none".
 
 Write one row per field: field, value kind from [kinds.md](kinds.md), group, placement (header, highlights, section, rail, or More fields), edit surface, and empty-value words. Group fields as the create form groups them. Leave out internal ids and secrets; on a developer record they go to the Inspect section ([details/anatomy.md](details/anatomy.md#inspect-section)). An unclear kind stops you: ask. Above about 15 fields, empty fields go to More fields.
 
-Done when every field has a row and every row has a value kind.
+Done when every field has a row, every row has a value kind, and the record inventory is shown in your reply or the plan.
 
 ## Step 4: Page kind and surfaces
 
@@ -56,9 +56,9 @@ Done when every editable field has a surface and delete has its severity.
 
 ## Step 8: Page plan
 
-Show the page plan: the record inventory, page kind, surfaces, sections or tabs, related records, activity, states, permissions, and edit surfaces. Wait for approval. One exception: a reference-row page that is read-only, has about 6 fields or fewer, and has no tabs and no activity goes straight to step 9 with the plan in your reply. In planned or autonomous work, the page plan goes into the plan or spec, where it is approved.
+Show the page plan: the record inventory, page kind, surfaces, sections or tabs, related records, activity, states, permissions, and edit surfaces. Wait for approval. One exception: a reference-row page that is read-only, has about 6 fields or fewer, and has no tabs and no activity goes straight to step 9 with the plan in your reply. In planned or autonomous work, the page plan goes into the plan or spec, where it is approved. When the user approved in advance, still show the plan in your reply (with every field's value kind) before building, then build without waiting.
 
-Done when the plan is approved, or written in the reply for a page that meets the exception.
+Done when the plan is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a page that meets the exception.
 
 ## Step 9: Build
 
@@ -74,8 +74,8 @@ Done when every field renders through the kind layer and the shell, and the proj
 
 ## Step 10: Prove
 
-Invoke `inspect` through the host's skill mechanism on your changes. It runs the scan, walks the details checklist, and reports each finding with the section that fixes it. When the project has MSW or Playwright, add a test per state: 404, 403, a 500 in one section, Back keeping the list's filters, Escape closing the peek with focus back on the row.
+Invoke `inspect` through the host's skill mechanism on your changes; that invocation is the step, and reading inspect's files or running scan.mjs yourself does not replace it. It runs the scan, walks the details checklist, and reports each finding with the section that fixes it. When the project has MSW or Playwright, add a test per state: 404, 403, a 500 in one section, Back keeping the list's filters, Escape closing the peek with focus back on the row.
 
 Fix every error finding by applying the section it points at. When a scan finding is wrong for this code, suppress it on the line above with `// inspect-ignore <rule-id>: <reason>`. Read the warnings and fix the ones that apply.
 
-Done when inspect reports no error findings, its scan counted the page's files, and every checklist item is checked. Report inspect's summary, every suppression with its reason, and every item marked "Not verified".
+Done when inspect was invoked, it reports no error findings, its scan counted the page's files, and every checklist item is checked. Report inspect's summary, every suppression with its reason, and every item marked "Not verified".
