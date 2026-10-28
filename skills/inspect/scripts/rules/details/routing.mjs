@@ -132,13 +132,21 @@ export default [
       const m = source.masked;
       if (/\bawait\s+(?:[\w$]+\.)?params\b|\buse\s*\(\s*(?:[\w$]+\.)?params\s*\)|\buseParams\s*(?:<[^>]*>)?\s*\(|\bparams\s*\.\s*then\s*\(/.test(m)) return [];
       const hit = /(?<![\w$.])(?:props\s*\.\s*)?params\s*(?:\??\.\s*[\w$]+|\[)|\}\s*=\s*(?:props\s*\.\s*)?params\b/.exec(m);
-      return hit ? [{ index: hit.index, message: 'params read synchronously; await it' }] : [];
+      if (!hit) return [];
+      // Only the route's params count: `props.params`, or `params` destructured from the signature. A local
+      // `const params = useSearchParams()` or `new URLSearchParams()` is not the route's params.
+      const viaProps = /\bprops\s*\.\s*params\b/.test(hit[0]);
+      const fromSignature = /\(\s*\{[^()]*\bparams\b[^()]*\}/.test(m) && !/\b(?:const|let|var)\s+params\b/.test(m);
+      if (!viaProps && !fromSignature) return [];
+      return [{ index: hit.index, message: 'params read synchronously; await it' }];
     },
     good: [
       { code: 'export default async function Page({ params }) { const { id } = await params; const order = await getOrder(id); return <OrderView order={order} />; }', file: 'app/orders/[id]/page.tsx' },
       { code: '"use client";\nimport { use } from "react";\nexport default function Page({ params }) { const { id } = use(params); return <OrderView id={id} />; }', file: 'app/orders/[id]/page.tsx' },
       { code: 'export async function generateMetadata(props) { const params = await props.params; return { title: `Order ${params.id}` }; }', file: 'app/orders/[id]/layout.tsx' },
       { code: 'export default function Page({ params }) { return <OrderView id={params.id} />; }', file: 'app/orders/[id]/page.tsx', stack: { routerMajor: 14 } },
+      { code: 'import { useSearchParams } from "next/navigation";\nexport default function Page() { const params = useSearchParams(); const tab = params.get("tab"); return <Tabs value={tab} />; }', file: 'app/orders/page.tsx' },
+      { code: 'export default function Page() { const params = new URLSearchParams(); params.set("tab", "x"); return <Tabs value={params.get("tab")} />; }', file: 'app/orders/page.tsx' },
       { code: '"use client";\nimport { useParams } from "next/navigation";\nexport default function Page() { const params = useParams<{ id: string }>(); return <OrderView id={params.id} />; }', file: 'app/orders/[id]/page.tsx' },
       { code: 'import type { Route } from "./+types/page";\nexport default function Page({ params }: Route.ComponentProps) { const { orderId } = params; return <OrderView id={orderId} />; }', file: 'app/orders/[orderId]/page.tsx' },
     ],

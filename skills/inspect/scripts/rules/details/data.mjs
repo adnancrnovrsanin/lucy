@@ -249,6 +249,7 @@ export default [
     fix: 'Let the record fetch throw (or throw notFound() on a 404); keep .catch(noop) only for a related-data prefetch that is not awaited.',
     ref: 'TanStack Router docs, data loading and not-found errors; craft details research, report-engineering',
     check: ({ source, path }) => {
+      if (!isDetailsFile(source, path)) return [];
       const inLoader = /\b(?:client)?[lL]oader\b/.test(source.masked) || /(^|[\\/])page\.[jt]sx?$/.test(path);
       if (!inLoader) return [];
       const m = source.masked;
@@ -266,6 +267,7 @@ export default [
     good: [
       { code: 'export const Route = createFileRoute("/orders/$orderId")({ loader: async ({ context, params }) => { context.queryClient.query(orderEventsQuery(params.orderId)).catch(noop); return context.queryClient.query(orderQuery(params.orderId)); } });', file: ROUTE_DETAILS },
       { code: 'export async function loader({ params }) { const order = await getOrder(params.id); if (!order) throw new Response("Not found", { status: 404 }); return { order }; }', file: 'app/routes/orders.$id.tsx' },
+      { code: 'export default async function Page() { const orders = await getOrders().catch(() => []); return <OrderList orders={orders} />; }', file: 'app/orders/page.tsx' },
       { code: 'export default async function Page({ params }) { const { id } = await params; const order = await getOrder(id); if (!order) notFound(); return <OrderView order={order} />; }', file: FILE_DETAILS },
     ],
     bad: [

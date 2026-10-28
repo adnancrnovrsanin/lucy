@@ -83,6 +83,10 @@ const DISPLAY_CONTROLS = new Set(['input', 'textarea', 'Input', 'Textarea', 'Tex
 // `.id`, and identifiers that belong to another system (tracking, transaction, external), are skipped.
 const FOREIGN_ID = /^[a-z_$][\w$]*(?:\??\.[\w$]+)*\??\.([\w$]+?)(Id|_id|ID)$|^[a-z_$][\w$]*(?:\??\.[\w$]+)*\??\.([\w$]+)\??\.id$/;
 const NOT_A_RELATION = /^(display|public|short|human|friendly|sequence|serial|series|external|tracking|transaction|trace|request|correlation|session|idempotency|stripe\w*|payment_?intent|paypal|provider|reference|client|device|vendor_?ref|sku|tax)$/i;
+// Roots that carry the route's own identifiers, not a related record: `params.orderId` names the page's segment.
+const ROUTE_SOURCES = new Set(['params', 'route', 'searchParams']);
+// Wrappers a record is reached through: `props.order.id` and `row.original.id` read the record's own id.
+const RECORD_WRAPPERS = new Set(['props', 'original', 'params', 'route', 'loaderData', 'searchParams']);
 const COPY = /clipboard|copy/i;
 const LINKS = new Set(['a', 'Link', 'NextLink']);
 const DATE_NAME = /(At|_at|Date|_date|date|_on|On|Time|time|timestamp|Timestamp)$/;
@@ -327,6 +331,9 @@ export default [
           const body = p.body.replace(/\s*(\?\?|\|\|)\s*(['"`][^'"`]*['"`]|null|undefined)\s*$/, '');
           const m = FOREIGN_ID.exec(body);
           if (!m) continue;
+          const segs = body.replace(/\?/g, '').split('.');
+          if (segs.some((s) => ROUTE_SOURCES.has(s))) continue;
+          if (segs.length === 3 && segs[2] === 'id' && (RECORD_WRAPPERS.has(segs[0]) || RECORD_WRAPPERS.has(segs[1]))) continue;
           const entity = m[1] ?? m[3];
           if (!entity || NOT_A_RELATION.test(entity) || entity === 'record' || entity === 'data') continue;
           out.push({ index: p.start, message: `raw foreign id {${body}} shown as text` });
@@ -339,6 +346,9 @@ export default [
       { file: DETAILS_FILE, code: PAGE('<dl><div><dt>Order ID</dt><dd className="font-mono">{order.id}</dd></div><div><dt>Tracking</dt><dd>{order.trackingId}</dd></div></dl>') },
       { file: 'src/pages/deals/DealShow.tsx', code: ['export const DealShow = () => {', '  const record = useRecordContext();', '  return <ReferenceField source="company_id" reference="companies" link="show"><TextField source="name" /></ReferenceField>;', '}'].join('\n') },
       { file: DETAILS_FILE, code: PAGE('<div><code>{order.customerId}</code><CopyButton value={order.customerId} /></div>') },
+      { file: DETAILS_FILE, code: PAGE('<dl><div><dt>Order ID</dt><dd>{props.order.id}</dd></div></dl>') },
+      { file: DETAILS_FILE, code: PAGE('<dl><div><dt>Order ID</dt><dd>{row.original.id}</dd></div></dl>') },
+      { file: DETAILS_FILE, code: PAGE('<h1>Order {params.orderId}</h1>') },
     ],
     bad: [
       { file: 'src/pages/posts/show.tsx', code: ['export default function ShowPost() {', '  const { query } = useShow();', '  const post = query.data?.data;', '  return <div><Label>User ID</Label><div className="font-mono">{post.user?.id}</div><Label>Category</Label><div>{post.categoryId}</div></div>;', '}'].join('\n') },
@@ -480,12 +490,17 @@ export default [
       const loadsRecord = /\b[a-z]\w*Id\b|\bparams\b|\buse(?:Suspense)?Query\s*\(|\buse(?:Show|One)\s*\(/.test(source.masked);
       if (!(isRouteFile(path) && isDetailsFile(source, path)) && !(named && loadsRecord)) return [];
       const FORMISH = (el) => el.tag === 'form' || el.tag === 'Form' || (/^[A-Z][\w$]*Form$/.test(el.tag) && !/(Comment|Note|Reply|Message|Chat|Activity|Search|Filter|Feedback)Form$/.test(el.tag));
-      const forms = source.elements.filter(FORMISH);
+      // A literal <form> counts only with an input control inside: a lone button is an action, not an edit form.
+      const forms = source.elements.filter((el) => FORMISH(el) && (el.tag !== 'form' || descendants(el).some((d) => CONTROL_TAGS.has(d.tag))));
       const hook = /\buse(?:App)?Form\s*\(/.exec(source.masked);
       if (!forms.length && !hook) return [];
       if (forms.some((el) => /(Comment|Note|Reply)/i.test(el.tag))) return [];
       if (source.elements.some((el) => ['dl', 'dt', 'DescriptionList', 'Descriptions'].includes(el.tag))) return [];
       const inForm = (el) => FORMISH(el) || ancestors(el).some(FORMISH);
+      // A non-form component given a record prop (`<OrderSummary order={order} />`) means the page shows the record.
+      const showsRecord = source.elements.some((el) => !inForm(el) && /^[A-Z]/.test(el.tag) && !CONTROL_TAGS.has(el.tag)
+        && [...el.attrs.values()].some((a) => a.kind === 'expr' && /^[\w$]+(\??\.[\w$]+)*$/.test(a.value)));
+      if (showsRecord) return [];
       const shown = source.elements.filter((el) => !inForm(el) && !CONTROL_TAGS.has(el.tag))
         .flatMap((el) => pieces(source, el).filter((p) => p.kind === 'expr' && isValueExpr(p.body) && /\w\??\.\w/.test(p.body) && !p.els.length));
       if (shown.length >= 2) return [];
@@ -498,6 +513,8 @@ export default [
       { file: 'app/[workspace]/settings/webhooks/[webhookId]/page.tsx', code: ['export default function Page({ params }) {', '  const webhook = useWebhook(params.webhookId);', '  return <SettingsContentWrapper><WebhookForm onSubmit={save} data={webhook} /></SettingsContentWrapper>;', '}'].join('\n') },
       { file: 'app/orders/[id]/edit/page.tsx', code: ['export default async function Page({ params }) {', '  const order = await getOrder((await params).id);', '  return <OrderForm initialData={order} />;', '}'].join('\n') },
       { file: DETAILS_FILE, code: PAGE('<main><OrderHeader order={order} /><OrderSummary order={order} /></main>') },
+      { file: DETAILS_FILE, code: PAGE('<main><OrderSummary order={order}/><form action={archive}><button>Archive</button></form></main>') },
+      { file: DETAILS_FILE, code: ['export default function Page({ params }) {', '  const { data: order } = useQuery(orderOptions(params.id));', '  const form = useForm();', '  return <main><OrderHeader order={order} /><OrderSummary order={order} /><DeleteOrderDialog order={order} /></main>;', '}'].join('\n') },
     ],
     bad: [
       { file: 'src/features/products/components/product-view-page.tsx', code: ['export default function ProductViewPage({ productId }) {', '  const { data } = useSuspenseQuery(productByIdOptions(productId));', '  return <ProductForm initialData={data.product} pageTitle="Edit Product" />;', '}'].join('\n') },
