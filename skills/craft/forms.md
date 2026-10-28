@@ -38,7 +38,7 @@ Audit each row before choosing its control:
 
 Give each remaining field its control from [forms/field-map.md](forms/field-map.md) (read the field map's section for each field's kind, even for a small form), its autocomplete token and any input help from [forms/autofill.md](forms/autofill.md), its constraints, and its help text. Then count: the form size is small up to 4 visible fields, medium from 5 to 8, large above 8 or with 3 or more sections.
 
-For medium and large forms, show the table (field, control, validation, autocomplete) and wait for approval. Small forms go straight to code, with the table in your reply. When the work comes from a written plan or spec that already holds the table, it is approved there. Otherwise show the table as a message, with every field's control and validation, before you write the first file, even when the user approved in advance; then build without waiting.
+For medium and large forms, show the table (field, control, validation, autocomplete) and wait for approval. Small forms build right after showing the table. When the work comes from a written plan or spec that already holds the table, it is approved there. Otherwise show the table as a message, with every field's control and validation, before you write the first file, even when the user approved in advance; then build without waiting.
 
 Done when every visible field has a control from the inventory, every personal-data field has an autocomplete token, and the table is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a small form.
 

@@ -1,5 +1,6 @@
 ---
-type: llm
-focus: trace
+type: regex
+target: trace
+# Code the agent wrote (a Write content or an Edit new_string) loads the order through queryClient.query or reads it with useSuspenseQuery or useQuery.
+pattern: '"name":"(?:Write|Edit)","input":\{[^\n]*?"(?:content|new_string)":"(?:[^"\\\n]|\\.)*?(?:\.query\(|\buseSuspenseQuery\(|\buseQuery\()'
 ---
-PASS if any prefetch or loader uses queryClient.query, or the page uses useSuspenseQuery or useQuery with a shared queryOptions, and no prefetchQuery or ensureQueryData appears in any file the agent wrote. FAIL otherwise, naming the first miss.

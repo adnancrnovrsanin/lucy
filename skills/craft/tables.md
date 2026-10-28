@@ -1,6 +1,6 @@
 # Tables playbook
 
-This playbook takes a data table from its data model to a proven result. It starts after the craft core's two steps: you have the stack line and the component inventory.
+This playbook takes a data table from its data model to a proven result. It starts after the craft core's two steps: you have the stack line and the component inventory. Step 7 shows the table plan as a message before you write any file, even when the user approved in advance.
 
 Read the stack notes for the detected stack before step 8: [TanStack Table](tables/stacks/tanstack.md) whenever the engine is TanStack, plus [shadcn/ui](tables/stacks/shadcn.md) or [HeroUI](tables/stacks/heroui.md) for the UI library, or [AG Grid](tables/stacks/ag-grid.md). Other engines follow this procedure without a note.
 
@@ -59,9 +59,9 @@ Done when you can list the filterable columns with their controls and the surfac
 
 Apply the modern default in [tables/look.md](tables/look.md). Add an opt-in tier (peek, power keyboard, grouping, totals, grid mode, facet sidebar, saved views, AI filters) only when the table's job needs it, and name the reason.
 
-Then show the table plan: the column inventory, the data-flow choice, the rendering choice, the filter surface with the filterable columns, and the opt-in tiers. Wait for approval. One exception: a client-side, read-only table with at most 5 columns and no filters goes straight to step 8, with the plan in your reply. When the work comes from a written plan or spec that already holds the table plan, it is approved there. Otherwise show the table plan as a message, with every column's value kind, before you write the first file, even when the user approved in advance; then build without waiting.
+Then show the table plan as a message before you write the first file: the column inventory with every column's value kind, the data-flow choice, the rendering choice, the filter surface with the filterable columns, and the opt-in tiers. Showing it is never skipped, and a plan kept in your thinking is not shown. Approval in advance removes only the wait: show the plan, then build. A client-side, read-only table with at most 5 columns and no filters also builds right after showing its plan. Any other table waits for approval. When the work comes from a written plan or spec that already holds the table plan, it is approved there and that document counts as shown.
 
-Done when the table plan is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a table that meets the exception.
+Done when the table plan appeared as a message before the first file was written, or is in the plan document, and is approved or exempt: approved by the user, approved in advance, or a table that meets the exception.
 
 ## Step 8: Build
 

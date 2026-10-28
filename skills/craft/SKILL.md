@@ -42,4 +42,4 @@ Done when every control the form, table, or details page needs maps to a compone
 | Building or changing a data table, or a static table | [tables.md](tables.md) |
 | Building or changing the page for one record: a details page, show page, record page, or its peek | [details.md](details.md) |
 
-Each playbook ends with a proof step that invokes inspect.
+Every playbook has a plan step: the field table, the table plan, or the page plan. Show that plan as a message to the user before you write the first file, even when the user approved in advance; approval in advance removes only the wait for an answer. A plan worked out only in your thinking does not count. Each playbook ends with a proof step that invokes inspect.

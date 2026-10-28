@@ -1,6 +1,6 @@
 # Details playbook
 
-This playbook takes the page for one record (opened from a table row or a link) from its data model to a proven result. It starts after the craft core's two steps: you have the stack line, including the router, and the component inventory.
+This playbook takes the page for one record (opened from a table row or a link) from its data model to a proven result. It starts after the craft core's two steps: you have the stack line, including the router, and the component inventory. Step 8 shows the page plan as a message before you write any file, even when the user approved in advance.
 
 Read the router note for the stack's router before step 9: [Next.js](details/routers/next.md), [TanStack Router](details/routers/tanstack-router.md), [React Router](details/routers/react-router.md), or [Expo Router](details/routers/expo-router.md); and the stack note for the UI library: [shadcn/ui](details/stacks/shadcn.md), [HeroUI](details/stacks/heroui.md), [HeroUI Native](details/stacks/heroui-native.md), [react-admin](details/stacks/react-admin.md) (also shadcn-admin-kit), or [refine](details/stacks/refine.md). Other stacks follow this procedure without a note.
 
@@ -56,9 +56,9 @@ Done when every editable field has a surface and delete has its severity.
 
 ## Step 8: Page plan
 
-Show the page plan: the record inventory, page kind, surfaces, sections or tabs, related records, activity, states, permissions, and edit surfaces. Wait for approval. One exception: a reference-row page that is read-only, has about 6 fields or fewer, and has no tabs and no activity goes straight to step 9 with the plan in your reply. When the work comes from a written plan or spec that already holds the page plan, it is approved there. Otherwise show the page plan as a message, with every field's value kind, before you write the first file, even when the user approved in advance; then build without waiting.
+Show the page plan as a message before you write the first file: the record inventory with every field's value kind, page kind, surfaces, sections or tabs, related records, activity, states, permissions, and edit surfaces. Showing it is never skipped, and a plan kept in your thinking is not shown. Approval in advance removes only the wait: show the plan, then build. A reference-row page that is read-only, has about 6 fields or fewer, and has no tabs and no activity also builds right after showing its plan. Any other page waits for approval. When the work comes from a written plan or spec that already holds the page plan, it is approved there and that document counts as shown.
 
-Done when the plan is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a page that meets the exception.
+Done when the page plan appeared as a message before the first file was written, or is in the plan document, and is approved or exempt: approved by the user, approved in advance, or a page that meets the exception.
 
 ## Step 9: Build
 

@@ -1,5 +1,5 @@
 ---
 type: llm
-focus: trace
+focus: { source: file, path: app/invoices/invoices-table.tsx }
 ---
-PASS if the table code the agent wrote, in any file, sets manualPagination together with manualSorting and manualFiltering (or their v9 equivalents) and passes a row count from the server. FAIL otherwise.
+PASS if this table component sets manualPagination together with manualSorting and manualFiltering (or their TanStack Table v9 equivalents) and passes a row count or page count from the server. FAIL otherwise, naming the first miss.

@@ -15,6 +15,10 @@ This suite measures whether the craft skill fires when a task builds a details p
 
 Every case except not-a-details-page has a craft-fired grader. Each case is seeded from its fixture directory by setup.sh, which runs only with --scaffold.
 
+## Grader design
+
+An llm judge with `focus: trace` sees only the first 12 and the last 12 messages of a run, so it misses a plan or code written mid-run. Grade code with a judge or regex on a file the prompt names. For a property spread across files, use a trace regex scoped to the agent's own Write and Edit inputs (`"name":"(?:Write|Edit)","input":...`), never a bare trace regex, which also matches the skill text the agent reads. A shown plan is a trace regex over the agent's text blocks before its first Write or Edit, naming the fixture's fields with their kinds.
+
 ## Run
 
 ```bash
