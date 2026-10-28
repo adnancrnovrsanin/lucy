@@ -1,6 +1,6 @@
 ---
 name: inspect
-description: "Use when reviewing or checking an implementation against Lucy's quality factors, a diff by default or a named scope such as all forms or all tables: run the scan, walk the reviewer, route findings to the playbook that fixes them."
+description: "Use when reviewing or checking an implementation against Lucy's quality factors, a diff by default or a named scope such as all forms, all tables, or all details pages: run the scan, walk the reviewer, route findings to the playbook that fixes them."
 ---
 
 # Inspect
@@ -13,18 +13,19 @@ Inspect judges an implementation against the quality factors of its area. A revi
 |---|---|---|
 | Forms | [forms/checklist.md](forms/checklist.md), [forms/reviewer.md](forms/reviewer.md) | `node <this skill's directory>/scripts/scan.mjs --inventory forms` lists it |
 | Tables | [tables/checklist.md](tables/checklist.md), [tables/reviewer.md](tables/reviewer.md) | `node <this skill's directory>/scripts/scan.mjs --inventory tables` lists it |
+| Details pages | [details/checklist.md](details/checklist.md), [details/reviewer.md](details/reviewer.md) | `node <this skill's directory>/scripts/scan.mjs --inventory details` lists it |
 
 ## 1. Choose the scope
 
 - No scope named: the current diff, meaning the files changed since the merge base with the default branch plus untracked files. When the caller names a base, such as a review range's starting commit, pass it to every scan command as `--base <ref>`.
-- A scope named, such as "all forms", "all tables", or "forms in app/checkout": that area and those paths; "all" means the whole project.
+- A scope named, such as "all forms", "all tables", "all details pages", or "forms in app/checkout": that area and those paths; "all" means the whole project.
 
 Done when you can state the areas and the file set, for example "forms, diff, 2 files".
 
 ## 2. Run the checks
 
 1. From the project, run `node <this skill's directory>/scripts/scan.mjs` over the scope: no arguments for the diff, `--all`, or the paths.
-2. For each area in the reviewers table, run it again with `--inventory <area>` over the same scope, and group the listed files into items. The files of one form, such as the steps of a multi-step form, belong together. So do the files of one table: its page or component, columns, toolbar, cells, and server query.
+2. For each area in the reviewers table, run it again with `--inventory <area>` over the same scope, and group the listed files into items. The files of one form, such as the steps of a multi-step form, belong together. So do the files of one table: its page or component, columns, toolbar, cells, and server query. So do the files of one details page: its route, page, peek, sections, query factory, and the shell parts it changed.
 3. For the diff, or a scope with one item, review each item here by following steps 1 to 4 of its area's reviewer yourself, with its bracketed values filled in as that file says.
 4. For a scope with more than one item, say how many you found in each area and ask before reviewing them, since each review is a subagent; when the user declines, report the scan findings only. Otherwise invoke `writing-for-agents` through the host's skill mechanism, then dispatch one review subagent per item, at most four at a time, each with its area's reviewer filled in for that item.
 

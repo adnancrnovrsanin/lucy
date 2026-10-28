@@ -82,3 +82,14 @@ test('the details fix-by map covers exactly the details rules, and every pointer
 test('details fix texts name no document path', () => {
   assert.deepEqual(detailsRules.filter((r) => /(details|kinds)[a-z/-]*\.md/.test(r.fix)).map((r) => r.id), []);
 });
+
+test('every details checklist item has a unique id and a fix-by pointer that resolves', () => {
+  const checklist = join(dirname(fileURLToPath(import.meta.url)), '..', 'details', 'checklist.md');
+  const items = readFileSync(checklist, 'utf8').split('\n').filter((line) => line.startsWith('- [ ] '));
+  assert.equal(items.length, 49);
+  const ids = items.map((line) => /^- \[ \] `([a-z0-9-]+)` /.exec(line)?.[1]);
+  assert.ok(ids.every(Boolean), 'every item starts with an id');
+  assert.equal(new Set(ids).size, ids.length, 'ids are unique');
+  const problems = items.map((line) => pointerProblem(/ Fix by: (\S+)$/.exec(line)?.[1])).filter(Boolean);
+  assert.deepEqual(problems, []);
+});
