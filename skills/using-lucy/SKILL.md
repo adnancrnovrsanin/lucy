@@ -12,7 +12,7 @@ Lucy is this machine's skill system. Before you respond or act, check whether on
 
 - The user wants something built or changed and no approved design exists: suggest the `brainstorm` skill and do not implement until the design is approved. A bounded change needs only a short design in chat; the approval is never skipped.
 - Writing implementation code: apply tdd.
-- Building or changing a form: apply craft.
+- Building or changing a form or a data table: apply craft.
 - Something is broken, failing, flaky, or slow: apply diagnose before proposing a fix.
 - About to say complete, fixed, passing, or ready: apply verify first.
 - Substantial multi-part autonomous work: apply unlazy and write the gate ledger before the work.

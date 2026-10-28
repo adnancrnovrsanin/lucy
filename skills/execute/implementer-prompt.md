@@ -33,10 +33,11 @@ Subagent (general-purpose):
 
     Once you're clear on requirements:
     1. Implement exactly what the task specifies; when it builds or changes
-       a form, apply the craft skill through the host's skill mechanism
+       a form or a data table, apply the craft skill through the host's
+       skill mechanism
     2. Write tests, following the tdd skill if the task says to
     3. Verify the implementation works, following the verify skill: run the
-       command, read the output, then claim; for form work that includes
+       command, read the output, then claim; for form or table work that includes
        invoking inspect on your changes, and its summary goes in your report
     4. Commit your work
     5. Self-review (see below)

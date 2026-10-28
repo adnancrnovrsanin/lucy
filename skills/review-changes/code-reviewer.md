@@ -95,7 +95,7 @@ Subagent (general-purpose):
 
     **Inspect:**
     - When the diff touches an area in the inspect skill's reviewer table
-      (forms today), invoke inspect through the host's skill mechanism on
+      (forms and tables today), invoke inspect through the host's skill mechanism on
       the diff with base [BASE_SHA]; an error finding is Critical.
 
     **Architecture:**
