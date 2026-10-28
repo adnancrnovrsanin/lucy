@@ -10,10 +10,27 @@ export default [
     ref: 'Carbon data table, skeleton loading; Primer DataTable',
     check: ({ source }) => {
       if (!isTableFile(source)) return [];
-      return [...source.masked.matchAll(/\bis(?:Loading|Pending|Fetching)\s*(?:\?\s*\(?\s*<\s*(?:Spinner|Loader\w*|CircularProgress|Spin)\b|\)\s*return\s*\(?\s*<\s*(?:Spinner|Loader\w*|CircularProgress|Spin)\b)/g)]
-        .map((m) => ({ index: m.index, message: 'spinner in place of the table' }));
+      const SPIN = '(?:Spinner|Loader\\w*|CircularProgress|Spin)';
+      const TABLE_EL = /^\s*\(?\s*<\s*(?:Table|DataTable|DataGrid|table)\b/;
+      const rendersTable = /<\s*(?:Table|DataTable|DataGrid|table)\b/.test(source.masked);
+      const out = [];
+      for (const m of source.masked.matchAll(new RegExp(`\\bis(?:Loading|Pending)\\s*\\?\\s*\\(?\\s*<\\s*${SPIN}\\b`, 'g'))) {
+        const after = source.masked.slice(m.index + m[0].length, m.index + m[0].length + 300);
+        const colon = after.search(/:\s*\(?\s*(?:<|null)/);
+        if (colon >= 0 && TABLE_EL.test(after.slice(colon + 1))) out.push({ index: m.index, message: 'spinner in place of the table' });
+      }
+      if (rendersTable) {
+        for (const m of source.masked.matchAll(new RegExp(`\\bis(?:Loading|Pending)\\s*\\)\\s*return\\s*\\(?\\s*<\\s*${SPIN}\\b`, 'g'))) {
+          out.push({ index: m.index, message: 'spinner in place of the table' });
+        }
+      }
+      return out;
     },
-    good: [{ code: ['import { useTable } from "@tanstack/react-table";', 'const body = query.isPending ? <SkeletonRows columns={columns.length} /> : <Rows rows={rows} />;'].join('\n') }],
+    good: [
+      { code: ['import { useTable } from "@tanstack/react-table";', '{query.isFetching ? <Spinner /> : null}'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', '{mutation.isPending ? <Loader2 className="animate-spin" /> : <Download />}'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const body = query.isPending ? <SkeletonRows columns={columns.length} /> : <Rows rows={rows} />;'].join('\n') },
+    ],
     bad: [
       { code: ['import { useTable } from "@tanstack/react-table";', 'const view = query.isLoading ? <Spinner /> : <DataTable table={table} />;'].join('\n') },
       { code: ['import { useTable } from "@tanstack/react-table";', 'function T() { if (query.isPending) return <Loader2 className="animate-spin" />; return <DataTable table={table} />; }'].join('\n') },

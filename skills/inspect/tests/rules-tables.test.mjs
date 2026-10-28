@@ -47,7 +47,7 @@ const EXPECTED = {
   'measure-without-data-index': 'warning web',
   'rows-mapped-beside-virtualizer': 'warning web',
   'sortable-th-without-button': 'error web',
-  'aria-sort-misuse': 'error web',
+  'aria-sort-misuse': 'warning web',
   'table-without-name': 'error web',
   'th-without-scope': 'warning web',
   'grid-role-without-keyboard': 'error web',

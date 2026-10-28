@@ -3,8 +3,9 @@ import { has, str, expr, attr, ancestors, descendants, inLibraryDir, classOf, is
 const LINKS = new Set(['a', 'Link', 'NextLink']);
 const BUTTONS = new Set(['button', 'Button']);
 const FILTER_CONTROLS = new Set(['input', 'Input', 'select', 'Select', 'Combobox', 'DatePicker', 'SearchField', 'TextField']);
+const NON_FILTER_INPUT = (el) => el.tag === 'input' && /^(checkbox|radio)$/.test(str(el, 'type') ?? '');
 const STICKY_HEAD = new Set(['thead', 'TableHeader', 'tr', 'TableRow', 'th', 'TableHead']);
-const isIcon = (el) => /Icon$|^Icon|^Lucide|^svg$/.test(el.tag) || /^(MoreHorizontal|MoreVertical|Ellipsis|Trash\w*|Pencil\w*|Edit\w*|X|Check|Copy|Eye\w*)$/.test(el.tag);
+const isIcon = (el) => el.tag === 'svg' || (/^[A-Z]/.test(el.tag) && el.selfClosing && el.children.length === 0);
 const named = (el) => has(el, 'aria-label', 'aria-labelledby', 'title') || descendants(el).some((d) => /\bsr-only\b/.test(classOf(d)))
   || el.text.trim().length > 0 || descendants(el).some((d) => d.text.trim().length > 0)
   || (el.parent && has(el.parent, 'asChild') && has(el.parent, 'aria-label', 'aria-labelledby'));
@@ -50,7 +51,10 @@ export default [
       { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button variant="ghost" size="icon" aria-label={`Actions for ${row.original.number}`}><MoreHorizontal /></Button>;'].join('\n') },
       { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <SortableItemHandle aria-label={`Reorder ${label}`} asChild><Button size="icon"><GripVertical /></Button></SortableItemHandle>;'].join('\n') },
     ],
-    bad: [{ code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button variant="ghost" size="icon"><MoreHorizontal /></Button>;'].join('\n') }],
+    bad: [
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button variant="ghost" size="icon"><MoreHorizontal /></Button>;'].join('\n') },
+      { code: ['import { useTable } from "@tanstack/react-table";', 'const a = <Button size="icon"><Plus /></Button>;'].join('\n') },
+    ],
   },
   {
     id: 'constant-row-checkbox-label',
@@ -153,9 +157,13 @@ export default [
     fix: 'Put filters in the toolbar above the table (chips and "+ Filter") or in the column header menu.',
     ref: 'Adrian Roselli, sortable table columns',
     check: ({ source }) => source.elements
-      .filter((el) => FILTER_CONTROLS.has(el.tag) && ancestors(el).some((a) => HEAD_TAGS.has(a.tag)))
+      .filter((el) => FILTER_CONTROLS.has(el.tag) && !NON_FILTER_INPUT(el) && ancestors(el).some((a) => HEAD_TAGS.has(a.tag)))
       .map((el) => ({ line: el.line, message: `<${el.tag}> inside the table header` })),
-    good: [{ code: 'const a = <div role="toolbar" aria-label="Filters"><Input aria-label="Search invoices" /></div>;' }],
+    good: [
+      { code: 'const a = <div role="toolbar" aria-label="Filters"><Input aria-label="Search invoices" /></div>;' },
+      { code: 'const a = <TableHeader><TableRow><TableHead><Checkbox aria-label="Select all invoices on this page" /></TableHead></TableRow></TableHeader>;' },
+      { code: 'const a = <thead><tr><th scope="col"><input type="checkbox" aria-label="Select all" /></th></tr></thead>;' },
+    ],
     bad: [{ code: 'const a = <TableHeader><TableRow><TableHead><Input aria-label="Filter name" /></TableHead></TableRow></TableHeader>;' }],
   },
 ];

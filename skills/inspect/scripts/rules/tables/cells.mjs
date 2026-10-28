@@ -74,7 +74,7 @@ export default [
     fix: 'Leave an empty cell blank, or say in words what is missing when that matters.',
     ref: 'Primer DataTable, empty cells; Adnan decision 7',
     check: ({ source }) => (isTableFile(source) || source.elements.some((e) => CELL_TAGS.has(e.tag))
-      ? [...source.text.matchAll(/(\?\?|\|\||\?[^:?]{1,80}:)\s*['"`](-|—|–|N\/A|n\/a|x)['"`]/g)].map((m) => ({ index: m.index, message: 'placeholder glyph for an empty value' }))
+      ? [...source.text.matchAll(/(\?\?|\|\||\?[^:?]{1,80}:)\s*['"`](-|\u2014|\u2013|N\/A|n\/a|x)['"`]/g)].map((m) => ({ index: m.index, message: 'placeholder glyph for an empty value' }))
       : []),
     good: [{ code: 'const a = <TableCell>{row.original.note ?? null}</TableCell>;' }],
     bad: [

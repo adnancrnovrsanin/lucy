@@ -1,5 +1,9 @@
 import { hits, lineText } from '../../lib/helpers.mjs';
 
+const LIT = String.raw`(?:'[^']*'|"[^"]*"|`+'`[^`$]*`'+String.raw`)`;
+const LITERAL_ARG = new RegExp(`^\\s*(?:${LIT}|[\\w$.]+\\s*(?:===?|!==?)\\s*${LIT}\\s*\\?\\s*${LIT}\\s*:\\s*${LIT})\\s*$`);
+const isLiteralSql = (arg) => LITERAL_ARG.test(arg);
+
 export default [
   {
     id: 'raw-sql-filter-field',
@@ -8,9 +12,23 @@ export default [
     why: 'A raw SQL fragment is built from a variable, so a filter or sort field from the client can inject SQL.',
     fix: 'Map every field through the server column registry (an allow-list) to a column object, take operators from a server switch, and bind values as parameters.',
     ref: 'react-querybuilder server usage; OWASP SQL injection',
-    check: ({ source }) => [...source.text.matchAll(/\bsql\.raw\s*\(\s*(?!['"][^'"]*['"]\s*\))|\$(?:query|execute)RawUnsafe\s*\(|\.(?:raw|whereRaw|orderByRaw)\s*\(\s*`[^`]*\$\{/g)]
-      .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
-    good: [{ code: 'const where = and(...filters.map((f) => toCondition(COLUMNS[f.field], f)));', file: 'app/invoices/queries.ts' }],
+    check: ({ source }) => [
+      ...[...source.text.matchAll(/\bsql\.raw\s*\(\s*([^)]*)\)/g)]
+        .filter((m) => !isLiteralSql(m[1]))
+        .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
+      ...[...source.text.matchAll(/\$(?:query|execute)RawUnsafe\s*\(\s*([^)]*)/g)]
+        .filter((m) => !/^(?:'[^']*'|"[^"]*"|`[^`$]*`)\s*(?:,|$)/.test(m[1]))
+        .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
+      ...[...source.text.matchAll(/\.(?:raw|whereRaw|orderByRaw)\s*\(\s*`[^`]*\$\{/g)]
+        .map((m) => ({ index: m.index, message: 'raw SQL built from a variable' })),
+    ],
+    good: [
+      { code: 'const where = and(...filters.map((f) => toCondition(COLUMNS[f.field], f)));', file: 'app/invoices/queries.ts' },
+      { code: 'const dir = sql.raw("ASC");', file: 'app/invoices/queries.ts' },
+      { code: 'const dir = sql.raw(`ASC`);', file: 'app/invoices/queries.ts' },
+      { code: 'const dir = sql.raw(order === "desc" ? "DESC" : "ASC");', file: 'app/invoices/queries.ts' },
+      { code: 'const rows = await prisma.$queryRawUnsafe("SELECT 1");', file: 'app/invoices/queries.ts' },
+    ],
     bad: [
       { code: 'const order = sql.raw(`${sortField} ${dir}`);', file: 'app/invoices/queries.ts' },
       { code: 'const rows = await prisma.$queryRawUnsafe(`SELECT * FROM invoices ORDER BY ${field}`);', file: 'app/invoices/queries.ts' },
@@ -48,8 +66,11 @@ export default [
     why: 'An ORDER BY clause interpolates a variable, so a sort field from the client can inject SQL.',
     fix: 'Look the sort id up in the server column registry and order by the column object; reject unknown ids.',
     ref: 'secondsky tanstack-table server patterns; OWASP SQL injection',
-    check: ({ source }) => [...source.text.matchAll(/ORDER\s+BY\s+[^`'"]*\$\{/gi)].map((m) => ({ index: m.index, message: 'ORDER BY with an interpolated value' })),
-    good: [{ code: 'const rows = await db.select().from(invoices).orderBy(desc(SORTABLE[sort.id]), asc(invoices.id));', file: 'app/invoices/queries.ts' }],
+    check: ({ source }) => [...source.text.matchAll(/ORDER\s+BY\s+((?:(?!\b(?:LIMIT|OFFSET)\b)[^`'"])*)\$\{/gi)].map((m) => ({ index: m.index, message: 'ORDER BY with an interpolated value' })),
+    good: [
+      { code: 'const rows = await db.select().from(invoices).orderBy(desc(SORTABLE[sort.id]), asc(invoices.id));', file: 'app/invoices/queries.ts' },
+      { code: 'const text = `SELECT * FROM invoices ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;', file: 'app/invoices/queries.ts' },
+    ],
     bad: [{ code: 'const text = `SELECT * FROM invoices ORDER BY ${sort.id} ${sort.desc ? "DESC" : "ASC"}`;', file: 'app/invoices/queries.ts' }],
   },
   {

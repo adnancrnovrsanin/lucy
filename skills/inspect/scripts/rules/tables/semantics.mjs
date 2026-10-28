@@ -21,7 +21,7 @@ export default [
   },
   {
     id: 'aria-sort-misuse',
-    severity: 'error',
+    severity: 'warning',
     platform: 'web',
     why: 'aria-sort is set to none, or sits on a button instead of the header cell, so screen readers announce the wrong sort state.',
     fix: 'Put aria-sort only on the header cell of the sorted column, as ascending or descending, and leave it off every other column.',
@@ -48,12 +48,13 @@ export default [
     ref: 'WCAG 1.3.1 Info and Relationships; GOV.UK table',
     check: ({ source, stack, path }) => (inLibraryDir(path) ? [] : source.elements
       .filter((el) => NAMED_TABLES.has(el.tag) && !(el.tag === 'Table' && stack.ui === 'heroui'))
-      .filter((el) => !has(el, 'aria-label', 'aria-labelledby') && !el.children.some((c) => c.tag === 'caption' || c.tag === 'TableCaption'))
+      .filter((el) => el.spreads.length === 0 && !has(el, 'aria-label', 'aria-labelledby') && !el.children.some((c) => c.tag === 'caption' || c.tag === 'TableCaption'))
       .map((el) => ({ line: el.line, message: `<${el.tag}> without a caption or label` }))),
     good: [
       { code: 'const a = <Table aria-labelledby="invoices-heading"><TableBody /></Table>;' },
       { code: 'const a = <table><caption>Invoices</caption><tbody /></table>;' },
       { code: 'export const Table = (p) => <table {...p} />;', file: 'components/ui/table.tsx' },
+      { code: 'export const DataTable = (props) => <Table {...props} />;', file: 'app/invoices/data-table.tsx' },
     ],
     bad: [{ code: 'const a = <Table><TableHeader /><TableBody /></Table>;' }],
   },
