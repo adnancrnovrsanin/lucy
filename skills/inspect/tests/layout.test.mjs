@@ -21,3 +21,11 @@ test('craft proves through inspect', () => {
   assert.match(forms, /Invoke `inspect` through the host's skill mechanism/);
   assert.doesNotMatch(forms, /craft-scan-ignore|scripts\/scan\.mjs|forms\/checklist\.md/);
 });
+
+test('craft tables proves through inspect', () => {
+  const tables = readFileSync(join(SKILLS_DIR, 'craft', 'tables.md'), 'utf8');
+  assert.match(tables, /Invoke `inspect` through the host's skill mechanism/);
+  assert.doesNotMatch(tables, /scripts\/scan\.mjs|tables\/checklist\.md/);
+  const core = readFileSync(join(SKILLS_DIR, 'craft', 'SKILL.md'), 'utf8');
+  assert.match(core, /\[tables\.md\]\(tables\.md\)/);
+});
