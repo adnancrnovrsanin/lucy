@@ -166,3 +166,44 @@ export function controlKind(el) {
   if (el.tag === 'form') return 'form';
   return 'input';
 }
+
+// Tables: tags and predicates the tables rules share.
+export const TABLE_TAGS = new Set(['table', 'Table', 'Table.Content', 'AgGridReact', 'DataGrid', 'TreeDataGrid', 'DataTable', 'MaterialReactTable', 'MantineReactTable']);
+export const HEAD_TAGS = new Set(['thead', 'TableHeader', 'Table.Header']);
+export const ROW_TAGS = new Set(['tr', 'TableRow', 'Table.Row']);
+export const HEADER_CELL_TAGS = new Set(['th', 'TableHead', 'Table.Column']);
+export const CELL_TAGS = new Set(['td', 'TableCell', 'Table.Cell']);
+const TABLE_IMPORTS = /^(@tanstack\/react-table|@tanstack\/table-core|ag-grid-react|ag-grid-community|ag-grid-enterprise|@mui\/x-data-grid|material-react-table|mantine-react-table|react-data-grid)/;
+
+export function isTableFile(source) {
+  return source.elements.some((e) => TABLE_TAGS.has(e.tag))
+    || importsFrom(source, TABLE_IMPORTS).length > 0
+    || /\buse(?:React)?Table\s*\(/.test(source.masked);
+}
+
+// The className (or class) value as written: a string literal's text, or an expression's source.
+export function classOf(el) {
+  const a = attr(el, 'className', 'class');
+  return a ? a.value : '';
+}
+
+// The source between an element's opening and closing tags; empty for a self-closing element.
+export function innerSource(source, el) {
+  if (el.selfClosing) return '';
+  const closing = source.text.lastIndexOf('</', el.close);
+  return source.text.slice(el.end, closing > el.end ? closing : el.close);
+}
+
+// The argument objects of every table hook call: useReactTable({...}), useTable({...}), useMaterialReactTable({...}).
+export function tableOptions(source) {
+  return blocks(source, /\buse(?:React|Material|Mantine)?(?:React)?Table\s*\(\s*(?:useMemo\s*\(\s*\(\)\s*=>\s*\(\s*)?\{/g);
+}
+
+// True when an element renders inside a table cell: under a cell element, or inside the
+// cell renderer of a column definition (the nearest preceding cell, header, or footer key is cell).
+export function inCell(source, el) {
+  if (ancestors(el).some((a) => CELL_TAGS.has(a.tag))) return true;
+  if (!/\b(accessorKey|accessorFn|createColumnHelper|ColumnDef)\b/.test(source.masked)) return false;
+  const keys = [...source.masked.slice(Math.max(0, el.start - 800), el.start).matchAll(/\b(cell|header|footer)\s*:/g)];
+  return keys.length > 0 && keys[keys.length - 1][1] === 'cell';
+}

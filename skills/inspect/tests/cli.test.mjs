@@ -162,11 +162,24 @@ test('--inventory forms lists form files outside the library and hidden director
   rmSync(dir, { recursive: true, force: true });
 });
 
+test('--inventory tables lists table files outside the library directory', () => {
+  const dir = project({
+    'app/invoices/table.tsx': 'export const T = () => <Table aria-label="Invoices"><TableBody /></Table>;',
+    'app/invoices/columns.tsx': 'import type { ColumnDef } from "@tanstack/react-table";\nexport const columns = [];',
+    'app/b.tsx': CLEAN,
+    'components/ui/table.tsx': 'export const Table = (p) => <table {...p} />;',
+  });
+  const r = run(dir, '--inventory', 'tables', '--all');
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.deepEqual(r.stdout.trim().split('\n'), ['app/invoices/columns.tsx', 'app/invoices/table.tsx', 'tables: 2 files']);
+  rmSync(dir, { recursive: true, force: true });
+});
+
 test('--inventory rejects an unknown area', () => {
   const dir = project({ 'app/a.tsx': CLEAN });
-  const r = run(dir, '--inventory', 'tables', '--all');
+  const r = run(dir, '--inventory', 'charts', '--all');
   assert.equal(r.status, 2);
-  assert.match(r.stderr, /unknown inventory area tables/);
+  assert.match(r.stderr, /unknown inventory area charts/);
   rmSync(dir, { recursive: true, force: true });
 });
 

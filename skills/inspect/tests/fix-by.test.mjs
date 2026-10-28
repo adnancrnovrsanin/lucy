@@ -5,6 +5,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import rules from '../scripts/rules/forms/index.mjs';
 import FIX_BY from '../scripts/rules/forms/fix-by.mjs';
+import tablesRules from '../scripts/rules/tables/index.mjs';
+import TABLES_FIX_BY from '../scripts/rules/tables/fix-by.mjs';
 import { pointerProblem, slug } from './pointers.mjs';
 
 test('slug turns headings into anchors', () => {
@@ -36,4 +38,14 @@ test('every checklist item has a unique id and a fix-by pointer that resolves', 
   assert.equal(new Set(ids).size, ids.length, 'ids are unique');
   const problems = items.map((line) => pointerProblem(/ Fix by: (\S+)$/.exec(line)?.[1])).filter(Boolean);
   assert.deepEqual(problems, []);
+});
+
+test('the tables fix-by map covers exactly the tables rules', () => {
+  assert.deepEqual(Object.keys(TABLES_FIX_BY).sort(), tablesRules.map((r) => r.id).sort());
+});
+
+test('every tables rule carries a fix-by pointer that resolves to a craft/tables heading', () => {
+  const problems = tablesRules.map((r) => (r.fixBy ? pointerProblem(r.fixBy) : `${r.id} has no fixBy`)).filter(Boolean);
+  assert.deepEqual(problems, []);
+  assert.deepEqual(tablesRules.filter((r) => !r.fixBy.startsWith('craft/tables')).map((r) => r.id), []);
 });

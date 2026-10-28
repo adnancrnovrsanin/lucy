@@ -9,13 +9,14 @@ import { selectFiles, UsageError } from './lib/files.mjs';
 import { scanSource, selfTest } from './lib/engine.mjs';
 import { summarize, formatText, formatJson, exitCode } from './lib/report.mjs';
 import formsRules from './rules/forms/index.mjs';
+import tablesRules from './rules/tables/index.mjs';
 import { readSource, ReadError } from './lib/jsx.mjs';
-import { isFormFile, inLibraryDir } from './lib/helpers.mjs';
+import { isFormFile, isTableFile, inLibraryDir } from './lib/helpers.mjs';
 
-export const RULES = [...formsRules];
+export const RULES = [...formsRules, ...tablesRules];
 
 // Which files belong to each reviewer area.
-const INVENTORIES = { forms: (source) => isFormFile(source) };
+const INVENTORIES = { forms: (source) => isFormFile(source), tables: (source) => isTableFile(source) };
 
 const USAGE = `usage: node scan.mjs [--stack] [--base <ref>] [--all] [--json] [--self-test] [--inventory <area>] [paths...]
   --stack       print the detected stack of the current project and exit
@@ -23,7 +24,7 @@ const USAGE = `usage: node scan.mjs [--stack] [--base <ref>] [--all] [--json] [-
   --all         scan every file under the current directory
   --json        print machine-readable output
   --self-test   check every rule against its own good and bad examples
-  --inventory <area>  list the files that belong to an area (forms) instead of scanning
+  --inventory <area>  list the files that belong to an area (forms, tables) instead of scanning
 With no paths and no --all, scans the files changed since the merge base plus untracked files.
 Exit 0 with no error findings, 1 with error findings, 2 on usage errors or unreadable files.
 `;
