@@ -16,15 +16,16 @@ Next.js 16 App Router; check the installed major first.
 
 ## Errors
 
-- `error.tsx` is a Client Component taking `{ error, retry }`. Call `retry()` (stable since 16.3), which refetches; `reset()` only clears state.
+- `error.tsx` is a Client Component taking `{ error, retry }`. Call `retry()` (Next.js 16.3 or later), which refetches; `reset()` only clears state.
 - Narrow with `instanceof Error`.
-- Section boundaries use `catchError` from `next/error`.
+- Section boundaries use `catchError` from `next/error` (Next.js 16.3 or later).
 
 ## Data
 
 - Server: `void queryClient.query(orderQuery(id))`, or `await` it when the page needs a real 404, plus `<HydrationBoundary state={dehydrate(queryClient)}>`.
 - Client: `useSuspenseQuery(orderQuery(id))` with the same factory.
 - The server query client sets `shouldRedactErrors: () => false`.
+- To stream a pending query, the server query client's `dehydrate.shouldDehydrateQuery` returns true for `defaultShouldDehydrateQuery(query) || query.state.status === 'pending'`, and the server client sets a default `staleTime` above 0.
 - A Server Action is not a `queryFn`; Server Actions run serially.
 
 ## Peek routes

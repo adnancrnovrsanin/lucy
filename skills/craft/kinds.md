@@ -68,7 +68,7 @@ Tables add alignment, sort, filter, export and server columns in tables/column-k
 ## Dates and durations
 
 - A date-only value is shown as a locale short date and never passes through a JS `Date` that could shift it by time zone.
-- A timestamp shows relative time within 7 days, then an absolute date. The absolute value is available as text, not only on hover.
+- A timestamp shows relative time within 7 days, then an absolute date. The absolute value is available as text, not only on hover. In a table cell a tooltip on a focusable trigger satisfies this.
 - The plan states the time zone decision.
 - Audit views always show absolute, zoned time.
 - A duration shows a compact human form ("2h 5m") with the exact value available.

@@ -12,7 +12,7 @@ Done when you can name the record type and say the page shows one record.
 
 ## Step 1: Stack
 
-Carry the stack line into your plan or reply. Write for the installed versions: `queryClient.query()` rather than `prefetchQuery` or `ensureQueryData` from TanStack Query 5.105; `react-router` rather than `react-router-dom` on React Router 8; the `retry` prop in Next.js error files.
+Carry the stack line into your plan or reply. Write for the installed versions: `queryClient.query()` rather than `prefetchQuery` or `ensureQueryData` from TanStack Query 5.105; `react-router` rather than `react-router-dom` on React Router 8; the `retry` prop in Next.js 16.3 or later error files.
 
 Done when the stack line names the UI library, the router with its major, the data layer with its version, and the URL-state library.
 

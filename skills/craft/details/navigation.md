@@ -30,7 +30,7 @@ How people reach a record, move between records, and go back.
 
 ## Previous and next
 
-- Neighbours and "N of M" come from the list query in the cache for the same URL filter.
+- Neighbours and "N of M" come from the list query in the cache for the same URL filter and sort.
 - At a page edge, load the next list page.
 - With no cached list (a direct link), hide prev and next.
 - Keys: j and k, or the arrows.

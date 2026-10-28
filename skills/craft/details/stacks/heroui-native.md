@@ -26,7 +26,7 @@ heroui-native 1.x on Expo Router; Pro rows need `heroui-native-pro`. Route wirin
 - A chevron only on rows that navigate. Those rows also get a button or link role.
 - Section titles use `Typography.Heading`.
 - The record name is the native header title, not a second large heading.
-- Empty values are words: "Not set".
+- Empty values are words, as in kinds.md: field-specific words first, then "Not provided".
 - Copy with `Clipboard.setStringAsync`, an announcement, and an `accessibilityActions` copy action.
 
 ## Actions

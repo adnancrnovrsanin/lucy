@@ -19,7 +19,7 @@ A details page loads, seeds, mutates and refreshes its record through one TanSta
 
 ## Loading the record
 
-- From 5.105, `queryClient.query()` replaces `prefetchQuery`, `ensureQueryData` and `fetchQuery`.
+- TanStack Query 5.105 deprecates `prefetchQuery`, `ensureQueryData` and `fetchQuery`; use `queryClient.query()`.
 - The record: `await queryClient.query(orderQuery(id))`, with no `.catch`, so the router's not-found and error boundaries fire.
 - Where `ensureQueryData` was used: `query({ ...orderQuery(id), staleTime: 'static' })`.
 - The component reads with `useSuspenseQuery(orderQuery(id))`, or `useQuery` where the screen renders its own states.

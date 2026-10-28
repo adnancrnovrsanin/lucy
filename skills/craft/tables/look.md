@@ -32,7 +32,7 @@ This is the modern default for admin tables. Add an opt-in tier only when the ta
 
 ## Row open and peek
 
-- The identifier links to the detail page. A row click may delegate to that link.
+- The identifier links to the details page. A row click may delegate to that link.
 - The peek is an opt-in tier for triage tables:
   - a right sheet about 480px wide with `?peek=<id>` in the URL;
   - previous and next buttons plus arrow keys;

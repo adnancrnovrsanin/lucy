@@ -11,7 +11,7 @@ Changed: no text copied. Its onBlur and onChange validation timing is replaced b
 
 ## https://github.com/ancoleman/ai-design-components, commit 76551b7b19ebc667764ec75da14990d0aef8b6e5, path skills/building-forms
 
-Taken: ideas for the option-count thresholds in forms/field-map.md (fixed sets of values), the per-step validation strategy and draft rules in forms/multi-step.md (Validation, Drafts), the conditional-field rules and async-check practices in forms/feedback.md (Conditional fields, Async checks), and the anti-pattern style of the scan rules.
+Taken: ideas for the option-count thresholds in forms/field-map.md (enums and booleans), the per-step validation strategy and draft rules in forms/multi-step.md (Validation, Drafts), the conditional-field rules and async-check practices in forms/feedback.md (Conditional fields, Async checks), and the anti-pattern style of the scan rules.
 Changed: the code is not used, because it does not run; every rule is restated in our words and the thresholds follow the decisions recorded in the synthesis (5 or fewer options for radios, Select from 6, Combobox above 30).
 
 ## https://github.com/secondsky/claude-skills, commit 88378361314f558fb719aec0af9fd898ab36f0b2, path plugins/react-hook-form-zod (first published in jezweb/claude-skills)

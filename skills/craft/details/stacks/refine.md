@@ -5,7 +5,7 @@ refine core with its shadcn, antd or MUI views. Route and data wiring is in the 
 ## Parts
 
 - `useShow` loads the record; `setShowId` drives a peek.
-- `useCan` with the record id answers each action. Disable with the reason as the title, or hide; set one policy with `hideIfUnauthorized`.
+- `useCan` with the record id answers each action. Disable with the reason as visible text or a tooltip on a focusable trigger (a `title` on a disabled button is not reachable by keyboard), or hide; set one policy with `hideIfUnauthorized`.
 - Delete buttons navigate to the list afterwards.
 
 ## Pitfalls

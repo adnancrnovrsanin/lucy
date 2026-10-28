@@ -33,7 +33,7 @@ Done when you can name the file that defines every column's field and every rela
 
 Write one row per column: source field, value kind, presentation, filter with its default operator, sortable or not, mobile priority, and for a relation its display field. Choose each kind with [kinds.md](kinds.md) and its table projection in [tables/column-kinds.md](tables/column-kinds.md): first how the project already shows the field, then the schema. When the kind is still unclear, stop and ask; a kind the kind table does not cover stops you too. An integer is never guessed as money, a count, or a year, and no column falls back to raw text or a raw number.
 
-Leave out fields that do not serve the table's job, such as internal ids, secrets, JSON blobs, and long text; they belong in the peek or the detail page.
+Leave out fields that do not serve the table's job, such as internal ids, secrets, JSON blobs, and long text; they belong in the peek or the details page.
 
 Done when every column has a row and every row has a kind from the kind table.
 

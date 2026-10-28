@@ -30,9 +30,9 @@ Ask the library what it offers before writing a field. The vendor tools are the 
 - Routers: the documentation for the installed major; for TanStack Router and React Router also the installed type definitions; for Expo Router the docs for the installed SDK.
 - With no vendor tool: read the installed component files and the package's type definitions.
 
-A component the form needs and the project lacks comes from the same library, for example `npx shadcn@latest add calendar popover`, or you ask the user. The form or table is built from that library's components only: no raw HTML stand-in (such as a clickable div where a button or the library's choice component belongs), no second UI library.
+A component the form needs and the project lacks comes from the same library, for example `npx shadcn@latest add calendar popover`, or you ask the user. The form, table, or details page is built from that library's components only: no raw HTML stand-in (such as a clickable div where a button or the library's choice component belongs), no second UI library.
 
-Done when every control the form or table needs maps to a component that exists or that you will add, and you have said which vendor tool you used or that none was available.
+Done when every control the form, table, or details page needs maps to a component that exists or that you will add, and you have said which vendor tool you used or that none was available.
 
 ## 3. Follow the playbook
 
