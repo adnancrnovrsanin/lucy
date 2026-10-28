@@ -59,7 +59,7 @@ Done when you can list the filterable columns with their controls and the surfac
 
 Apply the modern default in [tables/look.md](tables/look.md). Add an opt-in tier (peek, power keyboard, grouping, totals, grid mode, facet sidebar, saved views, AI filters) only when the table's job needs it, and name the reason.
 
-Then show the table plan: the column inventory, the data-flow choice, the rendering choice, the filter surface with the filterable columns, and the opt-in tiers. Wait for approval. One exception: a client-side, read-only table with at most 5 columns and no filters goes straight to step 8, with the plan in your reply. In a plan or an autonomous run, the table plan goes into the plan or spec, where it is approved. When the user approved in advance, still show the plan in your reply (with every column's value kind) before building, then build without waiting.
+Then show the table plan: the column inventory, the data-flow choice, the rendering choice, the filter surface with the filterable columns, and the opt-in tiers. Wait for approval. One exception: a client-side, read-only table with at most 5 columns and no filters goes straight to step 8, with the plan in your reply. When the work comes from a written plan or spec that already holds the table plan, it is approved there. Otherwise show the table plan as a message, with every column's value kind, before you write the first file, even when the user approved in advance; then build without waiting.
 
 Done when the table plan is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a table that meets the exception.
 

@@ -1,5 +1,5 @@
 ---
 type: llm
-focus: trace
+focus: { source: file, path: src/routes/customers/index.tsx }
 ---
-PASS if the peek opens from a peek search param and not from component state, `peek` is declared in the route's `validateSearch`, the customers list opens the peek, and it reuses the customer page's component. FAIL otherwise, naming the first miss.
+PASS if the customers list opens a customer in a side peek driven by a `peek` search param (not component state), and the peek renders the same customer component the customer page uses (imported, not duplicated). FAIL otherwise, naming the first miss.

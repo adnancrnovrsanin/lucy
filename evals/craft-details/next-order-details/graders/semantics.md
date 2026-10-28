@@ -1,5 +1,5 @@
 ---
 type: llm
-focus: trace
+focus: { source: file, path: "app/orders/[id]/order-details.tsx" }
 ---
-PASS if the order number is the only h1 on the page and field groups are marked up as dl, dt and dd. FAIL otherwise, naming the first miss.
+PASS if the order number is the heading level 1 of the view and the field groups are description lists: dl with dt and dd here, or through an imported field-list or description-list component. FAIL if fields are div or span grids, naming the first miss.

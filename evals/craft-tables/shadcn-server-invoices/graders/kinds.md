@@ -1,5 +1,5 @@
 ---
 type: llm
-focus: trace
+focus: { source: file, path: app/invoices/columns.tsx }
 ---
-PASS if, in any file the agent wrote, amountMinor is rendered with Intl.NumberFormat in currency style using the row currency, right-aligned with tabular-nums, status is a badge with a label map, the customer column shows the customer name and not customerId, the number column is a link, and no column renders id. FAIL otherwise, naming the first miss.
+PASS if, in these column definitions (directly or through imported cell components), amountMinor is shown in currency style with the row currency, right-aligned with tabular-nums; status is a badge with a label map; the customer column shows the customer name and not customerId; the number column is a link to the invoice; and no column renders id. FAIL otherwise, naming the first miss.

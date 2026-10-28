@@ -56,7 +56,7 @@ Done when every editable field has a surface and delete has its severity.
 
 ## Step 8: Page plan
 
-Show the page plan: the record inventory, page kind, surfaces, sections or tabs, related records, activity, states, permissions, and edit surfaces. Wait for approval. One exception: a reference-row page that is read-only, has about 6 fields or fewer, and has no tabs and no activity goes straight to step 9 with the plan in your reply. In planned or autonomous work, the page plan goes into the plan or spec, where it is approved. When the user approved in advance, still show the plan in your reply (with every field's value kind) before building, then build without waiting.
+Show the page plan: the record inventory, page kind, surfaces, sections or tabs, related records, activity, states, permissions, and edit surfaces. Wait for approval. One exception: a reference-row page that is read-only, has about 6 fields or fewer, and has no tabs and no activity goes straight to step 9 with the plan in your reply. When the work comes from a written plan or spec that already holds the page plan, it is approved there. Otherwise show the page plan as a message, with every field's value kind, before you write the first file, even when the user approved in advance; then build without waiting.
 
 Done when the plan is shown in your reply or the plan document, and approved or exempt: approved by the user, approved in advance, or a page that meets the exception.
 
