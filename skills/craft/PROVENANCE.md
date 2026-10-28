@@ -176,6 +176,98 @@ NN/g on data tables and infinite scrolling, Adrian Roselli's three table article
 
 Research reports and the synthesis are in .lucy/notes/2026-10-27-tables-research/ (not shipped).
 
+## Details playbook sources, studied 2026-10-28
+
+The details playbook (details.md and details/) was written for Lucy from the research model in .lucy/notes/2026-10-28-details-research/ (not shipped). Each entry below names what was adapted and where. Text is restated in our words; no code is copied.
+
+## https://github.com/patternfly/patternfly-org, commit 8e08661e4e3f58644570bc9a4db75eb7884f3947 (MIT)
+
+Taken: the header action limits, the overflow placement of the destructive action, the no-access state, and the read-only and inline edit rules, in details/anatomy.md, details/states.md, details/navigation.md, and details/editing.md.
+Changed: reduced to short rules with our thresholds.
+
+## https://gitlab.com/gitlab-org/gitlab-services/design.gitlab.com, commit c5d4fbfc6bdf53e04b27a2631dff513f5efdbad8 (MIT)
+
+Taken: the field group and label rules (Pajamas), the explicit save and leave-with-changes rules, and the tab and navigation rules, in details/anatomy.md, details/editing.md, and details/navigation.md.
+Changed: restated; the wording of the leave dialog buttons is ours.
+
+## https://github.com/primer/design, commit 87f799f202ec95df15c99f473c9c0c803da8e6b3 (MIT)
+
+Taken: the saving rules (explicit save, never disable the save button), the loading delay and the error isolation rules, in details/editing.md and details/states.md.
+Changed: restated as rules with our reasons.
+
+## https://github.com/Shopify/polaris, commit 3f7954ae42fabf26d63cee68c23ceebfd7ef0972 (MIT)
+
+Taken: the main column plus side rail layout and the skeleton title rule, in details/anatomy.md and details/states.md.
+Changed: the 2/3 and 1/3 split is stated as a default, not a requirement.
+
+## https://github.com/carbon-design-system/carbon-website, commit 5e9cd1da43c32d3d3b991dc947b427f674da61a8 (Apache-2.0)
+
+Taken: read-only values are text and not disabled inputs, the edit surface choice, and the delete confirmation rules, in details/anatomy.md, details/editing.md, and details/states.md.
+Changed: restated and shortened.
+
+## https://github.com/salesforce-ux/design-system, commit 9bc6a4046d10d95b4f3fb9cee7c7dc036bf43ad2 (BSD-3-Clause)
+
+Taken: the header highlights count, in details/anatomy.md.
+Changed: restated as a range.
+
+## https://github.com/SAP/ai-skills-library, commit 82b27a81d972aa4f70dc6154605606cfed0b4772 (Apache-2.0)
+
+Taken: the related-record preview and inline thresholds, the same-layout-in-edit rule, and the create-mode title, in details/anatomy.md and details/editing.md.
+Changed: the thresholds are rounded and stated as defaults.
+
+## https://github.com/Eyhenij/rt-tools, commit d056c75871ebde19d2f19c5dfa87645506beba2b (Apache-2.0)
+
+Taken: the editing law and the rule that skeletons follow the read flag, in details/editing.md and details/states.md.
+Changed: restated in our words.
+
+## https://github.com/dembrandt/dembrandt-skills, commit c4ad177dea5b864f779f8c722f28cf04f760cb22 (MIT)
+
+Taken: one skeleton for every details page, the label column, and the tab rules, in details/anatomy.md.
+Changed: restated.
+
+## https://github.com/getprobo/probo, commit d28ef8e43b844d8b48d937e9e8c24c5d742c74be, read through the GitHub API on 2026-10-28 (MIT)
+
+Taken: the back link keeps the list's query string, in details/navigation.md.
+Changed: restated; the same-origin validation rule is ours.
+
+## https://github.com/open-mercato/open-mercato, commit e75439fc4f57054b099725cde82098f46c72ca01 (MIT)
+
+Taken: the order of the states (loading, not found, no access, error, content), in details/states.md.
+Changed: restated as an early-return order.
+
+## https://github.com/Community-Access/accessibility-agents, commit decf6bac7f086c19afb242797b4974671ceff597 (MIT)
+
+Taken: the key-value markup rule (a description list and not styled divs), in details/anatomy.md and details/stacks/react-admin.md.
+Changed: restated.
+
+## https://github.com/marmelab/react-admin (commit 0c33d9c3c27cc4bf97e11f56080c5bfe182f2f2a), https://github.com/marmelab/atomic-crm (9eb83492c6e49a8ab42ce71fba42a923abe6f458), and https://github.com/marmelab/shadcn-admin-kit (c1503ddeb3df26e913e8014e5c4f64a72f31f31c) (MIT)
+
+Taken: the stack note in details/stacks/react-admin.md and the defects (a missing not-found state, a missing title, an unwrapped field list) that became fix notes there.
+Changed: restated; the defects are described, none of their code is shipped.
+
+## https://github.com/refinedev/refine, commit 2352eb5b6539e2f39ad9aef652279ad1dcf2c467 (MIT)
+
+Taken: the permissions rule and the defects (loading forever on error, a title that is only the resource label) in details/stacks/refine.md.
+Changed: restated.
+
+## https://github.com/medusajs/medusa, commit cdab14cc3d1917e14747d4b315632ea10de83a09 (MIT, Enterprise Edition parts excluded)
+
+Taken: the header pattern, the edit drawer as a route, and the defects, in details/anatomy.md, details/editing.md, and details/states.md.
+Changed: restated; the defects are described, none of their code is shipped.
+
+## https://github.com/Kiranism/next-shadcn-dashboard-starter, commit 9084ffd954d24591d9b1d279c4b18e119b02b34e (MIT)
+
+Taken: the shared query options rule, in details/data.md, and a defect in the product view page.
+Changed: restated.
+
+## Framework and standards docs, cited and not copied
+
+Read 2026-10-28: Next.js 16.4.3 docs, React 19.3.1 docs, TanStack Query 5.105.0 docs, TanStack Router 1.170.46 docs, React Router 8.5.1 docs, nuqs 2.10.2 docs, MDN, W3C WCAG and WAI-ARIA APG, the GOV.UK Design System, web.dev, Expo docs (SDK 58), React Native 0.88 docs, React Navigation 7, FlashList v2, and the HeroUI Native docs. The details/ notes state facts from them, each in our words. The versions are the ones recorded in report-engineering.md and report-native.md.
+
+## Ideas only, no text copied (details playbook)
+
+Cloudscape, Atlassian, Elastic EUI, docyrus design skills, ensi, TMS-ADMIN, thomaxxl, graphland, and product help centres (Linear, Attio, HubSpot, Notion, Airtable, Stripe). Twenty and Plane (AGPL-3.0) were read for ideas only; nothing from them is in the playbook.
+
 ## Tier
 
 model-invoked (tier 2): the model must apply it unasked whenever it builds or changes a form or input flow (ADR-0008).
