@@ -38,7 +38,7 @@ export default [
     why: 'Since Next 16.3 the error boundary\'s retry prop refetches and re-renders the segment; reset only clears the boundary state, so the same error returns.',
     fix: 'Destructure retry in error.tsx and call it from the Try again button.',
     ref: 'Next.js docs, error.js file convention',
-    when: (stack) => routerAtLeast(stack, 'next', 16),
+    when: (stack) => routerAtLeast(stack, 'next', 16, 3),
     check: ({ source, path }) => {
       if (!ERROR_FILE.test(path)) return [];
       const m = source.masked;
@@ -50,6 +50,7 @@ export default [
     good: [
       { code: '"use client";\nexport default function Error({ error, retry }) { return <div role="alert"><p>Could not load this order.</p><button onClick={() => retry()}>Try again</button></div>; }', file: 'app/orders/[id]/error.tsx' },
       { code: '"use client";\nexport default function Error({ error, reset }) { return <button onClick={() => reset()}>Try again</button>; }', file: 'app/orders/[id]/error.tsx', stack: { routerMajor: 15 } },
+      { code: '"use client";\nexport default function Error({ error, reset }) { return <button onClick={() => reset()}>Try again</button>; }', file: 'app/orders/[id]/error.tsx', stack: { routerMinor: 2 } },
       { code: 'export function ResetForm({ reset }) { return <button onClick={() => reset()}>Clear</button>; }', file: 'app/orders/[id]/reset-form.tsx' },
     ],
     bad: [

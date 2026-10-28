@@ -73,9 +73,12 @@ export function installedMajor(root, name, range) {
 
 function routerOf(root, has, deps) {
   for (const [router, pkg] of ROUTERS) {
-    if (has(pkg)) return { router, pkg, major: installedMajor(root, pkg, deps[pkg]) };
+    if (has(pkg)) {
+      const v = installedVersion(root, pkg, deps[pkg]);
+      return { router, pkg, major: v.major, minor: v.minor };
+    }
   }
-  return { router: null, pkg: null, major: null };
+  return { router: null, pkg: null, major: null, minor: null };
 }
 
 function tableEngineOf(root, has, deps, ui) {
@@ -139,14 +142,19 @@ export function detectStack(root) {
     router: router.router,
     routerPackage: router.pkg,
     routerMajor: router.major,
+    routerMinor: router.minor,
     queryMajor: query.major,
     queryMinor: query.minor,
   };
 }
 
-// True when the stack's router is `name` at `major` or later.
-export function routerAtLeast(stack, name, major) {
-  return stack.router === name && stack.routerMajor !== null && stack.routerMajor >= major;
+// True when the stack's router is `name` at major.minor or later. With a minor above 0, an
+// unknown minor is false: unknown stays silent. A greater major passes whatever the minor.
+export function routerAtLeast(stack, name, major, minor = 0) {
+  if (stack.router !== name || stack.routerMajor === null || stack.routerMajor === undefined) return false;
+  if (stack.routerMajor !== major) return stack.routerMajor > major;
+  if (minor === 0) return true;
+  return stack.routerMinor !== null && stack.routerMinor !== undefined && stack.routerMinor >= minor;
 }
 
 // True when TanStack Query is installed at major.minor or later; false when the version is unknown.

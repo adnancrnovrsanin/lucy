@@ -14,6 +14,7 @@ test('Next with TanStack Query reports the router major and the Query minor', ()
   assert.equal(s.router, 'next');
   assert.equal(s.routerPackage, 'next');
   assert.equal(s.routerMajor, 16);
+  assert.equal(s.routerMinor, 4);
   assert.equal(s.queryMajor, 5);
   assert.equal(s.queryMinor, 105);
   assert.match(describeStack(s), /^router: next, major 16 \(next \^16\.4\.0\)$/m);
@@ -68,4 +69,13 @@ test('routerAtLeast and queryAtLeast gate on known versions only', () => {
   assert.equal(queryAtLeast({ ...s, queryMajor: 6, queryMinor: 0 }, 5, 105), true);
   assert.equal(queryAtLeast({ ...s, queryMinor: null }, 5, 105), false);
   assert.equal(queryAtLeast({ ...s, queryMajor: null, queryMinor: null }, 5, 105), false);
+});
+
+test('routerAtLeast gates on the router minor, and an unknown minor stays silent', () => {
+  const s = fixtureStack('web');
+  assert.equal(routerAtLeast({ ...s, routerMinor: 4 }, 'next', 16, 3), true);
+  assert.equal(routerAtLeast({ ...s, routerMinor: 2 }, 'next', 16, 3), false);
+  assert.equal(routerAtLeast({ ...s, routerMajor: 17, routerMinor: 0 }, 'next', 16, 3), true);
+  assert.equal(routerAtLeast({ ...s, routerMinor: null }, 'next', 16, 3), false);
+  assert.equal(routerAtLeast({ ...s, routerMinor: null }, 'next', 16), true);
 });

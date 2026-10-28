@@ -8,7 +8,7 @@ A failed item is an error when it shows wrong states, builds the view as an edit
 
 - [ ] `view-not-form` The view page shows the record; it is not the edit form or a set of disabled inputs. [static] Fix by: craft/details.md#is-this-a-details-page
 - [ ] `page-plan` A page plan was shown and approved, or the page meets the reference-row exception. [static] Fix by: craft/details.md#step-8-page-plan
-- [ ] `current-apis` The code uses the installed versions' APIs: `queryClient.query`, `react-router`, `retry`. [static] Fix by: craft/details.md#step-1-stack
+- [ ] `current-apis` The code uses the installed versions' APIs: `queryClient.query`, `react-router`, `retry` (Next.js 16.3 or later). [static] Fix by: craft/details.md#step-1-stack
 
 ## Model and kinds
 
