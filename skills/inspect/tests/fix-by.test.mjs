@@ -49,3 +49,14 @@ test('every tables rule carries a fix-by pointer that resolves to a craft/tables
   assert.deepEqual(problems, []);
   assert.deepEqual(tablesRules.filter((r) => !r.fixBy.startsWith('craft/tables')).map((r) => r.id), []);
 });
+
+test('every tables checklist item has a unique id and a fix-by pointer that resolves', () => {
+  const checklist = join(dirname(fileURLToPath(import.meta.url)), '..', 'tables', 'checklist.md');
+  const items = readFileSync(checklist, 'utf8').split('\n').filter((line) => line.startsWith('- [ ] '));
+  assert.equal(items.length, 34);
+  const ids = items.map((line) => /^- \[ \] `([a-z0-9-]+)` /.exec(line)?.[1]);
+  assert.ok(ids.every(Boolean), 'every item starts with an id');
+  assert.equal(new Set(ids).size, ids.length, 'ids are unique');
+  const problems = items.map((line) => pointerProblem(/ Fix by: (\S+)$/.exec(line)?.[1])).filter(Boolean);
+  assert.deepEqual(problems, []);
+});
