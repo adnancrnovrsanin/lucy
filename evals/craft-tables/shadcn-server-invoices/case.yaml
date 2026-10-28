@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: shadcn-server-invoices
+context:
+  scaffold_script: setup.sh

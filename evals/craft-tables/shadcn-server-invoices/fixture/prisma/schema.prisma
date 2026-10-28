@@ -1,0 +1,33 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  VOID
+}
+
+model Customer {
+  id       String    @id @default(cuid())
+  name     String
+  invoices Invoice[]
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  number      String        @unique
+  status      InvoiceStatus @default(DRAFT)
+  amountMinor Int
+  currency    String        @default("EUR")
+  issuedOn    DateTime      @db.Date
+  customer    Customer      @relation(fields: [customerId], references: [id])
+  customerId  String
+  createdAt   DateTime      @default(now())
+}
