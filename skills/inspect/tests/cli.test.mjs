@@ -143,7 +143,7 @@ test('error findings print their fix-by pointer', () => {
   const dir = project({ 'app/b.tsx': DATE });
   const r = run(dir, 'app/b.tsx');
   assert.equal(r.status, 1);
-  assert.match(r.stdout, /^ {2}fix by: craft\/forms\/field-map\.md#dates-and-times$/m);
+  assert.match(r.stdout, /^ {2}fix by: craft\/forms\/field-map\.md#dates-and-durations$/m);
   rmSync(dir, { recursive: true, force: true });
 });
 
