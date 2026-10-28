@@ -207,3 +207,29 @@ export function inCell(source, el) {
   const keys = [...source.masked.slice(Math.max(0, el.start - 800), el.start).matchAll(/\b(cell|header|footer)\s*:/g)];
   return keys.length > 0 && keys[keys.length - 1][1] === 'cell';
 }
+
+// Details pages: the page for one record, its peek, and the details shell.
+// A route path with a dynamic segment: Next and Expo `[id]`, TanStack `$id`. React Router
+// paths live in a route config, so its pages are recognised by reading a param and loading one record.
+export const DYNAMIC_SEGMENT = /(^|[\\/])(\[[^\]\\/.]+\]|\$[A-Za-z_]\w*)([\\/.]|$)/;
+const DETAILS_MARKERS = /\b(useShow|useShowController|ShowBase|useRecordContext)\s*(?:<[^>]*>)?\s*\(|<\s*(Show|ShowBase|ShowView|SimpleShowLayout|TabbedShowLayout)\b/;
+const ONE_RECORD = /\buse(?:Suspense)?Query\s*(?:<[^>]*>)?\s*\(|\bqueryClient\.(?:query|ensureQueryData|fetchQuery)\s*\(|\bawait\s+[\w$.]+\(\s*(?:params\.)?\w*[iI]d\b|\buse[A-Z]\w*\s*(?:<[^>]*>)?\(\s*(?:params\.)?\w*[iI]d\b/;
+const QUERY_SHAPED = /\b(?:const|let)\s*\{[^{}]*\b(?:isLoading|isPending|isError)\b[^{}]*\}\s*=\s*use[A-Z]\w*\s*(?:<[^>]*>)?\s*\(/;
+const PEEK_PARAM = /\buseQueryState\s*\(\s*['"`]peek['"`]|searchParams\.get\(\s*['"`]peek['"`]|[?&]peek=/;
+const READS_PARAM = /\buse(?:Local)?(?:Search)?Params\s*(?:<[^>]*>)?\s*\(|\bparams\s*[.:}]|\bRoute\.useParams\s*\(/;
+const SHELL_PATH = /(^|[\\/])details[\\/]|(^|[\\/])[\w-]*(details|detail-page|record-page|-detail)[\w-]*\.[jt]sx?$/i;
+const NOT_DETAILS_ROUTE = /(^|[\\/])(edit|new|create)([\\/.]|$)/;
+const NOT_DETAILS_NAME = /(^|[\\/])[\w-]*(create|edit|new|form)[\w-]*\.[jt]sx?$/i;
+const BUILDS_FORM = /\buse(?:App)?Form\s*\(/;
+
+export function isDetailsFile(source, path = '') {
+  if (inLibraryDir(path)) return false;
+  if (DETAILS_MARKERS.test(source.masked) || DETAILS_MARKERS.test(source.text)) return true;
+  if (PEEK_PARAM.test(source.text)) return true;
+  if (SHELL_PATH.test(path) && !NOT_DETAILS_NAME.test(path)) return true;
+  if (NOT_DETAILS_ROUTE.test(path)) return false;
+  if (DYNAMIC_SEGMENT.test(path)) return READS_PARAM.test(source.masked) || ONE_RECORD.test(source.masked);
+  return /\b(?:Route\.)?useParams\s*(?:<[^>]*>)?\s*\(/.test(source.masked)
+    && (ONE_RECORD.test(source.masked) || QUERY_SHAPED.test(source.masked))
+    && !BUILDS_FORM.test(source.masked);
+}

@@ -10,13 +10,18 @@ import { scanSource, selfTest } from './lib/engine.mjs';
 import { summarize, formatText, formatJson, exitCode } from './lib/report.mjs';
 import formsRules from './rules/forms/index.mjs';
 import tablesRules from './rules/tables/index.mjs';
+import detailsRules from './rules/details/index.mjs';
 import { readSource, ReadError } from './lib/jsx.mjs';
-import { isFormFile, isTableFile, inLibraryDir } from './lib/helpers.mjs';
+import { isFormFile, isTableFile, isDetailsFile, inLibraryDir } from './lib/helpers.mjs';
 
-export const RULES = [...formsRules, ...tablesRules];
+export const RULES = [...formsRules, ...tablesRules, ...detailsRules];
 
 // Which files belong to each reviewer area.
-const INVENTORIES = { forms: (source) => isFormFile(source), tables: (source) => isTableFile(source) };
+const INVENTORIES = {
+  forms: (source) => isFormFile(source),
+  tables: (source) => isTableFile(source),
+  details: (source, path) => isDetailsFile(source, path),
+};
 
 const USAGE = `usage: node scan.mjs [--stack] [--base <ref>] [--all] [--json] [--self-test] [--inventory <area>] [paths...]
   --stack       print the detected stack of the current project and exit
@@ -24,7 +29,7 @@ const USAGE = `usage: node scan.mjs [--stack] [--base <ref>] [--all] [--json] [-
   --all         scan every file under the current directory
   --json        print machine-readable output
   --self-test   check every rule against its own good and bad examples
-  --inventory <area>  list the files that belong to an area (forms, tables) instead of scanning
+  --inventory <area>  list the files that belong to an area (forms, tables, details) instead of scanning
 With no paths and no --all, scans the files changed since the merge base plus untracked files.
 Exit 0 with no error findings, 1 with error findings, 2 on usage errors or unreadable files.
 `;
@@ -117,7 +122,7 @@ function inventory(options, files, cwd) {
     if (inLibraryDir(path)) continue;
     try {
       const source = readSource(readFileSync(file, 'utf8'), { jsx: !/\.ts$/.test(path) });
-      if (INVENTORIES[options.inventory](source)) matches.push(path);
+      if (INVENTORIES[options.inventory](source, path)) matches.push(path);
     } catch (error) {
       if (!(error instanceof ReadError)) throw error;
       unreadable.push({ path, reason: error.message });

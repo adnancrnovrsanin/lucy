@@ -7,6 +7,8 @@ import rules from '../scripts/rules/forms/index.mjs';
 import FIX_BY from '../scripts/rules/forms/fix-by.mjs';
 import tablesRules from '../scripts/rules/tables/index.mjs';
 import TABLES_FIX_BY from '../scripts/rules/tables/fix-by.mjs';
+import detailsRules from '../scripts/rules/details/index.mjs';
+import DETAILS_FIX_BY from '../scripts/rules/details/fix-by.mjs';
 import { pointerProblem, slug } from './pointers.mjs';
 
 test('slug turns headings into anchors', () => {
@@ -69,4 +71,14 @@ test('value kinds live in craft/kinds.md, not in the tables projection', () => {
 test('forms field-map pointers use the value-kind sections', () => {
   const old = /field-map\.md#(fixed-sets-of-values|relations|dates-and-times|text-fields|files)$/;
   assert.deepEqual(rules.filter((r) => old.test(r.fixBy)).map((r) => r.id), []);
+});
+
+test('the details fix-by map covers exactly the details rules, and every pointer resolves', () => {
+  assert.deepEqual(Object.keys(DETAILS_FIX_BY).sort(), detailsRules.map((r) => r.id).sort());
+  const problems = detailsRules.map((r) => (r.fixBy ? pointerProblem(r.fixBy) : `${r.id} has no fixBy`)).filter(Boolean);
+  assert.deepEqual(problems, []);
+  assert.deepEqual(detailsRules.filter((r) => !/^craft\/(details|kinds\.md)/.test(r.fixBy)).map((r) => r.id), []);
+});
+test('details fix texts name no document path', () => {
+  assert.deepEqual(detailsRules.filter((r) => /(details|kinds)[a-z/-]*\.md/.test(r.fix)).map((r) => r.id), []);
 });
