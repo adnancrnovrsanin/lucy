@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum OrderStatus {
+  draft
+  paid
+  shipped
+  cancelled
+}
+
+model Customer {
+  id     String  @id @default(cuid())
+  name   String
+  email  String
+  orders Order[]
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  number     String      @unique
+  status     OrderStatus @default(draft)
+  totalCents Int /// minor units
+  currency   String      @default("EUR")
+  customer   Customer    @relation(fields: [customerId], references: [id])
+  customerId String
+  createdAt  DateTime    @default(now())
+  notes      String?
+}
+
+model Product {
+  id          String  @id @default(cuid())
+  name        String
+  sku         String  @unique
+  priceCents  Int /// minor units
+  currency    String  @default("EUR")
+  description String?
+  active      Boolean @default(true)
+}

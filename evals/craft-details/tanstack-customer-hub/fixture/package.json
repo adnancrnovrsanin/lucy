@@ -1,0 +1,1 @@
+{ "name": "crm", "private": true, "dependencies": { "@tanstack/react-router": "^1.170.0", "@tanstack/react-query": "^5.105.0", "@heroui/react": "^3.2.6", "zod": "^4.6.0" } }
