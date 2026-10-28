@@ -32,3 +32,67 @@ for (const rule of rules) {
     }
   });
 }
+
+const EXPECTED = {
+  'tanstack-v8-api-in-v9': 'error all',
+  'tanstack-v9-api-in-v8': 'error all',
+  'table-unstable-data': 'warning all',
+  'manual-flags-mixed': 'error all',
+  'manual-pagination-without-count': 'warning all',
+  'row-count-without-manual-pagination': 'error all',
+  'selection-without-row-id': 'warning all',
+  'row-id-from-index': 'warning all',
+  'index-key-on-rows': 'warning web',
+  'virtualizer-counts-data': 'warning all',
+  'measure-without-data-index': 'warning web',
+  'rows-mapped-beside-virtualizer': 'warning web',
+  'sortable-th-without-button': 'error web',
+  'aria-sort-misuse': 'error web',
+  'table-without-name': 'error web',
+  'th-without-scope': 'warning web',
+  'grid-role-without-keyboard': 'error web',
+  'aria-selected-on-table-row': 'warning web',
+  'table-display-override': 'warning web',
+  'nested-table': 'warning web',
+  'numeric-cell-alignment': 'warning web',
+  'money-raw-or-tofixed': 'warning all',
+  'hardcoded-number-locale': 'warning all',
+  'placeholder-cell-glyph': 'warning all',
+  'centered-data-cell': 'warning web',
+  'truncate-without-full-value': 'warning web',
+  'row-click-navigation-without-link': 'warning web',
+  'hover-only-row-actions': 'warning web',
+  'icon-action-without-name': 'error web',
+  'constant-row-checkbox-label': 'warning web',
+  'select-all-without-indeterminate': 'warning web',
+  'zebra-with-selection': 'warning web',
+  'pagination-div-onclick': 'warning web',
+  'table-scroll-snap': 'warning web',
+  'scroll-container-without-region': 'warning web',
+  'sticky-header-without-background': 'warning web',
+  'filter-input-in-thead': 'warning web',
+  'spinner-instead-of-table': 'warning web',
+  'error-as-empty-rows': 'warning all',
+  'query-without-error-branch': 'warning web',
+  'raw-sql-filter-field': 'error all',
+  'like-pattern-unescaped': 'warning all',
+  'search-params-json-unvalidated': 'warning all',
+  'order-by-interpolated': 'error all',
+  'dynamic-code-in-filter': 'error all',
+  'query-data-copied-to-state': 'warning all',
+  'constant-query-key-with-table-state': 'warning all',
+  'heroui-table-without-name': 'error web',
+  'heroui-table-without-row-header': 'error web',
+  'rac-header-groups-first': 'warning web',
+  'sort-descriptor-without-handler': 'warning web',
+  'heroui-selection-without-checkbox': 'warning web',
+  'ag-grid-container-without-height': 'warning web',
+  'ag-grid-enterprise-import': 'info all',
+  'rdg-rows-recreated': 'warning all',
+};
+
+test('the tables table holds exactly the 55 rules of the plan', () => {
+  assert.equal(Object.keys(EXPECTED).length, 55);
+  assert.equal(rules.length, 55);
+  assert.deepEqual(Object.fromEntries(rules.map((r) => [r.id, `${r.severity} ${r.platform}`])), EXPECTED);
+});

@@ -48,4 +48,12 @@ export default {
   'dynamic-code-in-filter': 'craft/tables/filtering.md#server-translation',
   'query-data-copied-to-state': 'craft/tables/data-flow.md#query-wiring',
   'constant-query-key-with-table-state': 'craft/tables/data-flow.md#query-wiring',
+  'heroui-table-without-name': 'craft/tables/stacks/heroui.md#pitfalls',
+  'heroui-table-without-row-header': 'craft/tables/stacks/heroui.md#pitfalls',
+  'rac-header-groups-first': 'craft/tables/stacks/heroui.md#composition-with-tanstack',
+  'sort-descriptor-without-handler': 'craft/tables/stacks/heroui.md#composition-with-tanstack',
+  'heroui-selection-without-checkbox': 'craft/tables/stacks/heroui.md#pitfalls',
+  'ag-grid-container-without-height': 'craft/tables/stacks/ag-grid.md#pitfalls',
+  'ag-grid-enterprise-import': 'craft/tables/stacks/ag-grid.md#detect',
+  'rdg-rows-recreated': 'craft/tables/rendering.md#performance',
 };
