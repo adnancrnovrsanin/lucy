@@ -39,6 +39,7 @@ Operators per filter control are in the filtering reference; components per kind
 - Date filters offer presets (today, last 7 days, last 30 days, this month) and a custom range.
 - Export uses ISO 8601 with offset, and money as a decimal string plus a currency code column.
 - The enum filter is a faceted multi-select with counts ("is any of"). On server tables the counts come from the server and exclude the column's own filter.
+- Relation and person filters use an async combobox over the display field, debounced, with the previous request aborted; the filter searches the display field and stores the related id.
 - Filters compare accessor values, never the rendered output.
 - One data point per column.
 

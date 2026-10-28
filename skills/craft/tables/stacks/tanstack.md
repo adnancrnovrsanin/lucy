@@ -1,6 +1,6 @@
 # TanStack Table stack note
 
-This note serves shadcn and HeroUI tables built on TanStack Table. It carries decisions and pitfalls; the value kinds live in [kinds.md](../../kinds.md) and their table projection in [column-kinds.md](../column-kinds.md) and the data flow in [data-flow.md](../data-flow.md).
+This note serves shadcn and HeroUI tables built on TanStack Table. It carries decisions and pitfalls; the value kinds live in [kinds.md](../../kinds.md) and their table projection in [column-kinds.md](../column-kinds.md), and the data flow in [data-flow.md](../data-flow.md).
 
 ## Detect
 
