@@ -21,4 +21,10 @@ export default {
   'aria-selected-on-table-row': 'craft/tables/look.md#selection-and-bulk-actions',
   'table-display-override': 'craft/tables/look.md#accessibility',
   'nested-table': 'craft/tables/look.md#accessibility',
+  'numeric-cell-alignment': 'craft/tables/column-kinds.md#numbers-and-money',
+  'money-raw-or-tofixed': 'craft/tables/column-kinds.md#numbers-and-money',
+  'hardcoded-number-locale': 'craft/tables/column-kinds.md#value-rules',
+  'placeholder-cell-glyph': 'craft/tables/column-kinds.md#value-rules',
+  'centered-data-cell': 'craft/tables/look.md#columns-and-cells',
+  'truncate-without-full-value': 'craft/tables/column-kinds.md#text-and-identifiers',
 };

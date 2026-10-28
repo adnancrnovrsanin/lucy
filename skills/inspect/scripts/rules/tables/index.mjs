@@ -1,6 +1,7 @@
 import engine from './engine.mjs';
 import semantics from './semantics.mjs';
+import cells from './cells.mjs';
 import FIX_BY from './fix-by.mjs';
 
-export default [...engine, ...semantics]
+export default [...engine, ...semantics, ...cells]
   .map((rule) => ({ ...rule, fixBy: FIX_BY[rule.id] }));
