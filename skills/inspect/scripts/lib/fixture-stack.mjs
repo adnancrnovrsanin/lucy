@@ -8,11 +8,15 @@ export function fixtureStack(platform = 'web', overrides = {}) {
       root: '/fixture', ui: 'heroui-native', uiPro: false, base: null, platform: 'native', formLib: 'react-hook-form',
       validation: 'zod', versions: {}, components: new Set(), hasDatePicker: false, hasSelect: true,
       vendorTools: { shadcnCli: false, herouiMcpInProject: false },
+      tableEngine: null, tableEnginePackage: null, tableEngineMajor: null, agGridEdition: null,
+      dataLayer: null, urlState: null, virtualizer: null,
     }
     : {
       root: '/fixture', ui: 'shadcn', uiPro: false, base: 'radix', platform: 'web', formLib: 'react-hook-form',
       validation: 'zod', versions: {}, components: new Set(SHADCN_COMPONENTS), hasDatePicker: true, hasSelect: true,
       vendorTools: { shadcnCli: true, herouiMcpInProject: false },
+      tableEngine: 'tanstack', tableEnginePackage: '@tanstack/react-table', tableEngineMajor: 9, agGridEdition: null,
+      dataLayer: '@tanstack/react-query', urlState: 'nuqs', virtualizer: '@tanstack/react-virtual',
     };
   const stack = { ...base, ...overrides };
   if (Array.isArray(overrides.components)) stack.components = new Set(overrides.components);
