@@ -13,4 +13,12 @@ export default {
   'virtualizer-counts-data': 'craft/tables/stacks/tanstack.md#virtualization',
   'measure-without-data-index': 'craft/tables/stacks/tanstack.md#virtualization',
   'rows-mapped-beside-virtualizer': 'craft/tables/stacks/tanstack.md#virtualization',
+  'sortable-th-without-button': 'craft/tables/look.md#sort-headers',
+  'aria-sort-misuse': 'craft/tables/look.md#sort-headers',
+  'table-without-name': 'craft/tables/look.md#accessibility',
+  'th-without-scope': 'craft/tables/look.md#accessibility',
+  'grid-role-without-keyboard': 'craft/tables/look.md#accessibility',
+  'aria-selected-on-table-row': 'craft/tables/look.md#selection-and-bulk-actions',
+  'table-display-override': 'craft/tables/look.md#accessibility',
+  'nested-table': 'craft/tables/look.md#accessibility',
 };
