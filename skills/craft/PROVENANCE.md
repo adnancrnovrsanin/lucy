@@ -120,6 +120,62 @@ Taken: facts, not text. All read 2026-10-27.
 - https://github.com/TanStack/form, `framework/react/guides/dynamic-validation.md`: `revalidateLogic` is required for `onDynamic` (shadcn.md).
 Changed: each fact is stated once in the note that uses it; the notes' Checked facts sections hold the detail.
 
+## Tables playbook sources, studied 2026-10-27 and 2026-10-28
+
+## https://github.com/TanStack/table, commit c14e0221b1e656c7bb35e7b3d4cdf188719a3599 (MIT)
+
+Taken: the client or server rule, the server checklist, the feature registration rule, the v8 and v9 table, and the virtualization rules, in tables/data-flow.md, tables/rendering.md, and tables/stacks/tanstack.md, plus the v9 feature and factory names as facts.
+Changed: restated in our words and cut to decisions the playbook needs; the registration rule comes from its bundled agent skills, and the v9 names are marked in tanstack.md as something to confirm against the installed table-core.
+
+## https://github.com/heroui-inc/heroui, branch v3 at commit 70a11531fedfb39b6a0748ca49766266108362ae (Apache-2.0)
+
+Taken: the TanStack composition in tables/stacks/heroui.md, adapted from its TanStack table demo.
+Changed: the server flags, the selection bridge, and leaf headers are added; none of them is in the demo. The note's Checked facts pin what was read.
+
+## https://github.com/adobe/react-spectrum, commit 3280ed4b0e65cfce16ae2767aba52a5f9a8ad4d6 (Apache-2.0)
+
+Taken: facts only, in tables/stacks/heroui.md Checked facts: the grid role, `aria-sort`, the row header requirement, keyboard resize, and the Virtualizer.
+Changed: no code or text copied; each fact is stated once with its file and line.
+
+## https://github.com/bvaughn/react-window, commit dfbfc501350e7b60eed8a17bbfb2bfff22daf65d (MIT)
+
+Taken: the idea behind the accessible virtual markup in tables/rendering.md.
+Changed: restated as a rule; none of its code is used.
+
+## https://github.com/ag-grid/skills, commit ef483f7f9e8cc9e5f359144d11317cd4094d5b8e (MIT)
+
+Taken: the container height, module registration, stable props, and purpose-built feature rules in tables/stacks/ag-grid.md (adapted from its ag-dev skill).
+Changed: restated and shortened. The AG Grid licensing facts (the licence key set with the `licenseKey` prop on `AgGridProvider` from v35.1, `LicenseManager` before, and which row models are Enterprise) were read from ag-grid.com on 2026-10-28 and are recorded in the note's Checked facts.
+
+## https://github.com/react-querybuilder/react-querybuilder, commit 851ed07541b566e9d45ff7186fe7687b5bdbc5ad (MIT)
+
+Taken: the allow-list rule and the diagnostic codes in tables/filtering.md.
+Changed: reduced to the rule for turning a filter state into a server query, and the codes a server returns when it refuses one.
+
+## https://github.com/w3c/aria-practices, commit 0f765e4dc33e966026114ac12a8380db1de3b787 (W3C Software and Document License)
+
+Taken: the sort header pattern and the grid keys in tables/look.md.
+Changed: restated as short rules; no example code is copied.
+
+## Ideas only, no text copied
+
+- tablecn at commit 8ed90808cb19eeac53dc058d48853fc7f68230f4 (MIT), data-table-filters at dd87f2770048f1b805d497f1c763794e060781c1 (MIT), and diceui at 061d7b67ef233c531f2c86448741f0b37b3d3583 (MIT).
+- shadcn-ui/ui at 96da9cc7f1aa10580a3741664e2a77c721206c00 (MIT).
+- Material React Table and Mantine React Table (MIT).
+- Supabase at 845ed5a1e3e8e39f8eef41b2875be4e7a9b8bdfc (Apache-2.0) and PostHog at fbf1e0015fba76b0e5407a308ed4fad3342049f8 (MIT outside ee/).
+- Carbon at 5e9cd1da43c32d3d3b991dc947b427f674da61a8 (Apache-2.0), Primer at 87f799f202ec95df15c99f473c9c0c803da8e6b3 (MIT), Polaris at 3f7954ae42fabf26d63cee68c23ceebfd7ef0972 (MIT), and GOV.UK Design System at 14ef0f3cad54b5e42c58b4a080d2dd54617b443a (MIT).
+- nuqs at d9dc5c2a51af9d1d6276e002415028e194bcfaab (MIT) and liqe at 011ff2a0602309cae84f7074959e40f88090c747 (BSD-3-Clause).
+
+## Ideas only, licence forbids copying
+
+Twenty, Plane, and Dub (AGPL-3.0), and the build000r and oakoss skills (no licence). They were read for ideas and nothing from them is in the playbook.
+
+## Ideas only, docs and articles read 2026-10-27 and 2026-10-28
+
+NN/g on data tables and infinite scrolling, Adrian Roselli's three table articles, Sarah Higley on grids, Pencil & Paper, and the Linear, Attio, Notion, Airtable, Stripe, Retool, Clay, and Vercel Geist docs.
+
+Research reports and the synthesis are in .lucy/notes/2026-10-27-tables-research/ (not shipped).
+
 ## Tier
 
 model-invoked (tier 2): the model must apply it unasked whenever it builds or changes a form or input flow (ADR-0008).
