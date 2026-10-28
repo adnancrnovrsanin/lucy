@@ -9,7 +9,8 @@ export function fixtureStack(platform = 'web', overrides = {}) {
       validation: 'zod', versions: {}, components: new Set(), hasDatePicker: false, hasSelect: true,
       vendorTools: { shadcnCli: false, herouiMcpInProject: false },
       tableEngine: null, tableEnginePackage: null, tableEngineMajor: null, agGridEdition: null,
-      dataLayer: null, urlState: null, virtualizer: null,
+      dataLayer: '@tanstack/react-query', urlState: null, virtualizer: null,
+      router: 'expo-router', routerPackage: 'expo-router', routerMajor: 58, queryMajor: 5, queryMinor: 105,
     }
     : {
       root: '/fixture', ui: 'shadcn', uiPro: false, base: 'radix', platform: 'web', formLib: 'react-hook-form',
@@ -17,6 +18,7 @@ export function fixtureStack(platform = 'web', overrides = {}) {
       vendorTools: { shadcnCli: true, herouiMcpInProject: false },
       tableEngine: 'tanstack', tableEnginePackage: '@tanstack/react-table', tableEngineMajor: 9, agGridEdition: null,
       dataLayer: '@tanstack/react-query', urlState: 'nuqs', virtualizer: '@tanstack/react-virtual',
+      router: 'next', routerPackage: 'next', routerMajor: 16, queryMajor: 5, queryMinor: 105,
     };
   const stack = { ...base, ...overrides };
   if (Array.isArray(overrides.components)) stack.components = new Set(overrides.components);

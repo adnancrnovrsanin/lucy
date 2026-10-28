@@ -1,0 +1,1 @@
+{ "name": "next-query", "dependencies": { "next": "^16.4.0", "@tanstack/react-query": "^5.105.0", "nuqs": "^2.10.0", "radix-ui": "^1.4.0" } }

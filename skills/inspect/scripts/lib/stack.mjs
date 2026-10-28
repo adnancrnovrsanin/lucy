@@ -17,11 +17,20 @@ const TABLE_ENGINES = [
 const DATA_LAYERS = ['@tanstack/react-query', 'swr'];
 const URL_STATE_LIBS = ['nuqs'];
 const VIRTUALIZERS = ['@tanstack/react-virtual', 'react-virtuoso', 'react-window'];
+// Routers in precedence order: a framework router wins over a library router it may sit beside.
+const ROUTERS = [
+  ['expo-router', 'expo-router'],
+  ['next', 'next'],
+  ['tanstack-router', '@tanstack/react-router'],
+  ['react-router', 'react-router'],
+  ['react-router', 'react-router-dom'],
+];
 const NOTED = [
   '@heroui/react', '@heroui-pro/react', 'heroui-native', 'heroui-native-pro', 'react-native', 'expo',
   'radix-ui', '@base-ui/react', 'react-aria-components', '@react-stately/data', 'react-day-picker', 'date-fns',
   '@internationalized/date', '@hookform/resolvers', ...FORM_LIBS, ...VALIDATION_LIBS,
   ...TABLE_ENGINES.flatMap(([, pkgs]) => pkgs), ...DATA_LAYERS, ...URL_STATE_LIBS, ...VIRTUALIZERS,
+  ...ROUTERS.map(([, pkg]) => pkg),
 ];
 
 function readJson(path) {
@@ -44,16 +53,29 @@ export function packageRootOf(path) {
   }
 }
 
-// The installed major of a package: node_modules first, walking up for hoisted installs,
-// then the first number in the declared range. Null when neither gives one.
-export function installedMajor(root, name, range) {
+// The installed major and minor of a package: node_modules first, walking up for hoisted
+// installs, then the first version in the declared range. Nulls when neither gives one;
+// a range with only a major ("^5") gives a null minor.
+export function installedVersion(root, name, range) {
   for (let dir = root; ; dir = dirname(dir)) {
     const version = readJson(join(dir, 'node_modules', name, 'package.json'))?.version;
-    if (typeof version === 'string' && /^\d+/.test(version)) return Number(/^\d+/.exec(version)[0]);
+    const m = typeof version === 'string' ? /^(\d+)\.(\d+)/.exec(version) : null;
+    if (m) return { major: Number(m[1]), minor: Number(m[2]) };
     if (dirname(dir) === dir) break;
   }
-  const m = /(\d+)/.exec(typeof range === 'string' && !range.startsWith('workspace:') ? range : '');
-  return m ? Number(m[1]) : null;
+  const m = /(\d+)(?:\.(\d+))?/.exec(typeof range === 'string' && !range.startsWith('workspace:') ? range : '');
+  return m ? { major: Number(m[1]), minor: m[2] === undefined ? null : Number(m[2]) } : { major: null, minor: null };
+}
+
+export function installedMajor(root, name, range) {
+  return installedVersion(root, name, range).major;
+}
+
+function routerOf(root, has, deps) {
+  for (const [router, pkg] of ROUTERS) {
+    if (has(pkg)) return { router, pkg, major: installedMajor(root, pkg, deps[pkg]) };
+  }
+  return { router: null, pkg: null, major: null };
 }
 
 function tableEngineOf(root, has, deps, ui) {
@@ -91,6 +113,8 @@ export function detectStack(root) {
   }
 
   const table = tableEngineOf(root, has, deps, ui);
+  const router = routerOf(root, has, deps);
+  const query = has('@tanstack/react-query') ? installedVersion(root, '@tanstack/react-query', deps['@tanstack/react-query']) : { major: null, minor: null };
 
   return {
     root,
@@ -112,7 +136,24 @@ export function detectStack(root) {
     dataLayer: DATA_LAYERS.find(has) ?? null,
     urlState: URL_STATE_LIBS.find(has) ?? null,
     virtualizer: VIRTUALIZERS.find(has) ?? null,
+    router: router.router,
+    routerPackage: router.pkg,
+    routerMajor: router.major,
+    queryMajor: query.major,
+    queryMinor: query.minor,
   };
+}
+
+// True when the stack's router is `name` at `major` or later.
+export function routerAtLeast(stack, name, major) {
+  return stack.router === name && stack.routerMajor !== null && stack.routerMajor >= major;
+}
+
+// True when TanStack Query is installed at major.minor or later; false when the version is unknown.
+export function queryAtLeast(stack, major, minor) {
+  if (stack.queryMajor === null || stack.queryMajor === undefined) return false;
+  if (stack.queryMajor !== major) return stack.queryMajor > major;
+  return stack.queryMinor !== null && stack.queryMinor >= minor;
 }
 
 function shadcnBase(config, has) {
@@ -159,9 +200,11 @@ export function describeStack(s) {
   for (const name of ['@internationalized/date', 'react-day-picker', 'date-fns']) {
     if (s.versions[name]) lines.push(`dates: ${name}${v(name)}`);
   }
+  lines.push(`router: ${s.router ? `${s.router}${s.routerMajor !== null ? `, major ${s.routerMajor}` : ''} (${s.routerPackage}${v(s.routerPackage)})` : 'none'}`);
   lines.push(`table engine: ${describeEngine(s)}`);
   for (const [label, name] of [['data layer', s.dataLayer], ['url state', s.urlState], ['virtualizer', s.virtualizer]]) {
-    lines.push(`${label}: ${name ? name + v(name) : 'none'}`);
+    const resolved = name === '@tanstack/react-query' && s.queryMajor !== null ? `, version ${s.queryMajor}${s.queryMinor !== null ? `.${s.queryMinor}` : ''}` : '';
+    lines.push(`${label}: ${name ? name + v(name) + resolved : 'none'}`);
   }
   const tools = [];
   if (s.vendorTools.shadcnCli) tools.push('shadcn CLI (npx shadcn@latest info, npx shadcn@latest docs <component>)');

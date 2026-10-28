@@ -58,7 +58,7 @@ test('installedMajor prefers node_modules over the declared range', () => {
 test('describeStack prints the table facts', () => {
   const text = describeStack(detectStack(fixture('tables-tanstack')));
   assert.match(text, /^table engine: tanstack, major 9 \(@tanstack\/react-table \^9\.2\.4\)$/m);
-  assert.match(text, /^data layer: @tanstack\/react-query \^5\.90\.0$/m);
+  assert.match(text, /^data layer: @tanstack\/react-query \^5\.90\.0, version 5\.90$/m);
   assert.match(text, /^url state: nuqs \^2\.7\.0$/m);
   assert.match(text, /^virtualizer: @tanstack\/react-virtual \^3\.13\.0$/m);
   const grid = describeStack(detectStack(fixture('tables-ag-grid')));

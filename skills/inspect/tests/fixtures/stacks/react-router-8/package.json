@@ -1,0 +1,1 @@
+{ "name": "react-router-8", "dependencies": { "react-router": "^8.5.0", "@tanstack/react-query": "^5" } }
