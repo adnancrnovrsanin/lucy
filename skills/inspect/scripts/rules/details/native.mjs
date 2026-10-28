@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { basename, dirname, join, relative, resolve } from 'node:path';
+import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { has, str, expr, attr, isTrue, ancestors, descendants, classOf, importsFrom, DYNAMIC_SEGMENT } from '../../lib/helpers.mjs';
 import { installedVersion } from '../../lib/stack.mjs';
 
@@ -108,6 +108,11 @@ const SCREEN = (body, head = []) => [
   ...body,
   '}',
 ].join('\n');
+// A title key in an options object: `title: x`, shorthand `{ title }`, or `title,` in a list.
+const TITLE_KEY = /\b(title|headerTitle)\s*[:,}]/;
+// An options object that spreads other options in: options={{ ...opts }}, or options: { title, ...rest }.
+const SPREAD_OPTS = /\boptions\s*[=:]\s*\{\{?[^<>;]*?\.\.\./;
+
 const GOOD_SCREEN = SCREEN([
   '  if (q.isPending) return <><Stack.Screen options={{ title: "Order" }} /><OrderSkeleton /></>;',
   '  if (q.isError) return <RecordError status={q.error.status} onRetry={q.refetch} />;',
@@ -192,14 +197,18 @@ export default [
     ref: 'Expo Router docs, Stack screen options; craft details research, report-native',
     check: ({ source, path }) => {
       if (!isRecordScreen(source, path) || !LOADS.test(source.masked)) return [];
-      if (/\b(title|headerTitle)\s*:|\bStack\.Title\b|\bheaderShown\s*:\s*false\b|\bsetOptions\s*\(/.test(source.masked)) return [];
+      if (TITLE_KEY.test(source.masked) || SPREAD_OPTS.test(source.masked)) return [];
+      if (/\bStack\.Title\b|\bheaderShown\s*:\s*false\b|\bsetOptions\s*\(/.test(source.masked)) return [];
       if (!source.elements.length) return [];
       if (isRecordRoute(path)) {
         const name = basename(path).replace(/\.[jt]sx?$/, '');
         for (const l of layoutsOf(path)) {
           const parts = relative(l.dir, resolve(dirname(path))).split(/[\\/]/).filter(Boolean);
           const segments = [parts.concat(name).join('/'), ...(name === 'index' && parts.length ? [parts.join('/')] : [])];
-          if (segments.some((seg) => /\b(title|headerTitle)\s*:|headerShown\s*:\s*false/.test(screenEntry(l.text, seg)))) return [];
+          if (segments.some((seg) => {
+            const entry = screenEntry(l.text, seg);
+            return TITLE_KEY.test(entry) || SPREAD_OPTS.test(entry) || /headerShown\s*:\s*false/.test(entry);
+          })) return [];
         }
       }
       const m = LOADS.exec(source.masked);
@@ -207,6 +216,8 @@ export default [
     },
     good: [
       { file: ROUTE, code: GOOD_SCREEN },
+      { file: ROUTE, code: SCREEN(['  const title = q.data?.number ?? "Order";', '  if (q.isPending) return <><Stack.Screen options={{ title }} /><OrderSkeleton /></>;', '  return <><Stack.Screen options={{ title }} /><OrderBody order={q.data} /></>;']) },
+      { file: ROUTE, code: SCREEN(['  const opts = { title: q.data?.number ?? "Order" };', '  return <><Stack.Screen options={{ ...opts }} /><OrderBody order={q.data} /></>;']) },
       { file: ROUTE, code: SCREEN(['  return <><Stack.Title>{q.data?.number ?? "Order"}</Stack.Title><OrderBody order={q.data} /></>;']) },
       { file: ROUTE, code: SCREEN(['  const navigation = useNavigation();', '  useEffect(() => { navigation.setOptions({ title: q.data?.number ?? "Order" }); }, [q.data]);', '  return <OrderBody order={q.data} />;']) },
       { file: 'app/orders/index.tsx', code: 'export default function Orders() { const q = useQuery(ordersQuery()); return <OrderList data={q.data} />; }' },
@@ -507,7 +518,7 @@ export default [
       for (const el of sheetScreens) {
         if (/(^|[\\/])_layout\.[jt]sx?$/.test(path)) {
           const name = str(el, 'name');
-          if (!name) continue;
+          if (!name || name.includes('..') || isAbsolute(name)) continue;
           const base = join(dirname(resolve(path)), name);
           const file = ['.tsx', '.ts', '.jsx', '.js', '/index.tsx', '/index.jsx'].map((ext) => base + ext).find((f) => existsSync(f));
           if (!file) continue;
