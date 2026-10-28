@@ -4,7 +4,7 @@ HeroUI v3 on React Aria Components. Route and data wiring is in the router note,
 
 ## Parts
 
-- Peek: the Sheet or Drawer.
+- Peek: the Pro `Sheet` (ask first, commercial). Without Pro, the open-source `Modal` styled as a side panel, or the project's own sheet component.
 - Master-detail: `Resizable` where installed (Pro).
 - Section anchors: `FloatingToc` (Pro).
 - Tabs: `Tabs` with `selectedKey` and `onSelectionChange` bound to the URL.

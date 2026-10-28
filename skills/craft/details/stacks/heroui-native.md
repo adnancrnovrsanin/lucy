@@ -31,7 +31,7 @@ heroui-native 1.x on Expo Router; Pro rows need `heroui-native-pro`. Route wirin
 
 ## Actions
 
-- Header actions: `Stack.Toolbar` with `Stack.Toolbar.Menu` and `MenuAction destructive`.
+- Header actions: `Stack.Toolbar` with `Stack.Toolbar.Menu` and `Stack.Toolbar.MenuAction destructive`.
 - In content: `Menu` with `Menu.Item variant="danger"` last, and the same `presentation` on `Menu` and `Menu.Content`.
 - Confirm with `Alert.alert`. The button text is the verb ("Delete order"), because the destructive style is iOS only.
 - Undo with `toast.show({ actionLabel: 'Undo', onActionPress, duration: 8000 })` plus `AccessibilityInfo.announceForAccessibility`.
