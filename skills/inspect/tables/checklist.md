@@ -7,13 +7,13 @@ A failed item is an error when it shows a column against its kind (raw money, a 
 ## Model and kinds
 
 - [ ] `columns-from-model` Every column comes from a field of the named model, and the column inventory has a row for each. [static] Fix by: craft/tables.md#step-3-column-inventory
-- [ ] `kind-per-column` Every column has a kind from the kind table, chosen by the resolution order, and no unclear kind was guessed. [static] Fix by: craft/tables/column-kinds.md#how-to-choose-a-kind
-- [ ] `money-as-money` Money shows in currency style with the app locale and the record currency, from minor units or a decimal string. [static] Fix by: craft/tables/column-kinds.md#numbers-and-money
-- [ ] `relation-display-field` Relations show the related record's display field as a link, never a foreign-key id, and the server returns it in the same query. [static] Fix by: craft/tables/column-kinds.md#relations-and-display-fields
-- [ ] `enum-presentation` Enums show a badge with an icon or dot and a label from a label map, sorted by declared order. [static] Fix by: craft/tables/column-kinds.md#enums-and-booleans
-- [ ] `dates-zoned` Dates and timestamps follow the date rules, and the time zone decision is stated. [static] Fix by: craft/tables/column-kinds.md#dates-and-durations
-- [ ] `kind-layer-reused` Cells and filter controls come from the project's kind layer, and no kind is inlined in one table. [static] Fix by: craft/tables/column-kinds.md#kind-layer-and-column-registry
-- [ ] `registry-shared` One column registry per table is read by the table and by the server allow-list. [static] Fix by: craft/tables/column-kinds.md#kind-layer-and-column-registry
+- [ ] `kind-per-column` Every column has a kind from the kind table, chosen by the resolution order, and no unclear kind was guessed. [static] Fix by: craft/kinds.md#how-to-choose-a-kind
+- [ ] `money-as-money` Money shows in currency style with the app locale and the record currency, from minor units or a decimal string. [static] Fix by: craft/kinds.md#numbers-and-money
+- [ ] `relation-display-field` Relations show the related record's display field as a link, never a foreign-key id, and the server returns it in the same query. [static] Fix by: craft/kinds.md#relations-and-display-fields
+- [ ] `enum-presentation` Enums show a badge with an icon or dot and a label from a label map, sorted by declared order. [static] Fix by: craft/kinds.md#enums-and-booleans
+- [ ] `dates-zoned` Dates and timestamps follow the date rules, and the time zone decision is stated. [static] Fix by: craft/kinds.md#dates-and-durations
+- [ ] `kind-layer-reused` Cells and filter controls come from the project's kind layer, and no kind is inlined in one table. [static] Fix by: craft/kinds.md#kind-layer
+- [ ] `registry-shared` One column registry per table is read by the table and by the server allow-list. [static] Fix by: craft/tables/column-kinds.md#column-registry
 
 ## Data flow
 
@@ -54,9 +54,9 @@ A failed item is an error when it shows a column against its kind (raw money, a 
 
 ## Real data
 
-- [ ] `longest-values` The longest value each column allows fits, or truncates with a path to the full value. [browser] Fix by: craft/tables/column-kinds.md#text-and-identifiers
-- [ ] `large-numbers` The largest amounts and counts stay aligned and formatted. [browser] Fix by: craft/tables/column-kinds.md#numbers-and-money
-- [ ] `empty-values` Empty and null values render blank, and an empty relation shows nothing rather than an id. [browser] Fix by: craft/tables/column-kinds.md#value-rules
+- [ ] `longest-values` The longest value each column allows fits, or truncates with a path to the full value. [browser] Fix by: craft/kinds.md#copy-and-long-values
+- [ ] `large-numbers` The largest amounts and counts stay aligned and formatted. [browser] Fix by: craft/kinds.md#numbers-and-money
+- [ ] `empty-values` Empty and null values render blank, and an empty relation shows nothing rather than an id. [browser] Fix by: craft/kinds.md#empty-values
 - [ ] `slow-network` A slow network shows the first-load and refetch states. [browser] Fix by: craft/tables/look.md#states
 
 Every check you could not run is reported as "Not verified", never assumed. Report the scan summary only when its `files N` counts the table's files; otherwise pass the table paths explicitly and run it again.

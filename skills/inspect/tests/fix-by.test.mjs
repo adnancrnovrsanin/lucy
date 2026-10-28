@@ -47,7 +47,7 @@ test('the tables fix-by map covers exactly the tables rules', () => {
 test('every tables rule carries a fix-by pointer that resolves to a craft/tables heading', () => {
   const problems = tablesRules.map((r) => (r.fixBy ? pointerProblem(r.fixBy) : `${r.id} has no fixBy`)).filter(Boolean);
   assert.deepEqual(problems, []);
-  assert.deepEqual(tablesRules.filter((r) => !r.fixBy.startsWith('craft/tables')).map((r) => r.id), []);
+  assert.deepEqual(tablesRules.filter((r) => !/^craft\/(tables|kinds\.md)/.test(r.fixBy)).map((r) => r.id), []);
 });
 
 test('every tables checklist item has a unique id and a fix-by pointer that resolves', () => {
@@ -59,4 +59,9 @@ test('every tables checklist item has a unique id and a fix-by pointer that reso
   assert.equal(new Set(ids).size, ids.length, 'ids are unique');
   const problems = items.map((line) => pointerProblem(/ Fix by: (\S+)$/.exec(line)?.[1])).filter(Boolean);
   assert.deepEqual(problems, []);
+});
+
+test('value kinds live in craft/kinds.md, not in the tables projection', () => {
+  const moved = ['money-raw-or-tofixed', 'hardcoded-number-locale', 'placeholder-cell-glyph', 'truncate-without-full-value'];
+  assert.deepEqual(moved.filter((id) => !TABLES_FIX_BY[id].startsWith('craft/kinds.md#')), []);
 });

@@ -1,6 +1,6 @@
 # shadcn/ui tables stack note
 
-shadcn components are copied into the project, so the installed files are the API. This note maps the kinds of [column-kinds.md](../column-kinds.md) to shadcn components; the engine rules are in [tanstack.md](tanstack.md).
+shadcn components are copied into the project, so the installed files are the API. This note maps the value kinds of [kinds.md](../../kinds.md) and their table projection in [column-kinds.md](../column-kinds.md) to shadcn components; the engine rules are in [tanstack.md](tanstack.md).
 
 ## Detect
 

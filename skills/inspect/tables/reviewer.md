@@ -18,7 +18,7 @@ Stack: [STACK LINE]
 Scan findings for these files: [SCAN FINDINGS]
 
 1. Read the table and find the model its rows come from, plus the related models of its relations: the shared schema, the database schema or migrations, the server DTO, or the record type.
-2. Read [CRAFT DIRECTORY]/tables/column-kinds.md, and the stack notes for the stack when they exist: [CRAFT DIRECTORY]/tables/stacks/tanstack.md for a TanStack engine, plus shadcn.md or heroui.md for the UI library, or ag-grid.md.
+2. Read [CRAFT DIRECTORY]/kinds.md and [CRAFT DIRECTORY]/tables/column-kinds.md, and the stack notes for the stack when they exist: [CRAFT DIRECTORY]/tables/stacks/tanstack.md for a TanStack engine, plus shadcn.md or heroui.md for the UI library, or ag-grid.md.
 3. Walk every item of [INSPECT DIRECTORY]/tables/checklist.md. Decide each [static] item from the code. Report each [browser] item as "Not verified" unless you can run the app.
 4. Report each failed item as: its id, file:line, the severity the checklist's rule gives, the problem in one sentence, and the item's "Fix by" pointer. Skip a failure the scan findings already report on the same line.
 

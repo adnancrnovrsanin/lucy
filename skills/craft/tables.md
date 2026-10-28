@@ -31,7 +31,7 @@ Done when you can name the file that defines every column's field and every rela
 
 ## Step 3: Column inventory
 
-Write one row per column: source field, column kind, presentation, filter with its default operator, sortable or not, mobile priority, and for a relation its display field. Choose each kind with [tables/column-kinds.md](tables/column-kinds.md): first how the project already shows the field, then the schema. When the kind is still unclear, stop and ask; a kind the kind table does not cover stops you too. An integer is never guessed as money, a count, or a year, and no column falls back to raw text or a raw number.
+Write one row per column: source field, value kind, presentation, filter with its default operator, sortable or not, mobile priority, and for a relation its display field. Choose each kind with [kinds.md](kinds.md) and its table projection in [tables/column-kinds.md](tables/column-kinds.md): first how the project already shows the field, then the schema. When the kind is still unclear, stop and ask; a kind the kind table does not cover stops you too. An integer is never guessed as money, a count, or a year, and no column falls back to raw text or a raw number.
 
 Leave out fields that do not serve the table's job, such as internal ids, secrets, JSON blobs, and long text; they belong in the peek or the detail page.
 
@@ -67,11 +67,11 @@ Done when the table plan is approved, or written in the reply for a table that m
 
 Build in this order:
 
-1. The kind layer. Find the project's existing cell presentations and filter controls, and add the missing ones, one per column kind the table uses, where the project keeps shared components. Reuse before you write.
+1. The kind layer. Find the project's existing cell presentations and filter controls, and add the missing ones, one per value kind the table uses, where the project keeps shared components. Reuse before you write.
 2. The column registry: the one definition of the table's columns with each column's kind and flags, read by the table and by the server's allow-list.
 3. The table, with the stack note's binding, every state from the look reference (first load, refetch, no data, no results, error), and its accessibility rules.
 
-[tables/column-kinds.md](tables/column-kinds.md) describes the kind layer and the registry.
+[kinds.md](kinds.md) describes the kind layer; [tables/column-kinds.md](tables/column-kinds.md) the column registry.
 
 Done when every column renders through the kind layer and the project's type check or build passes for the changed files.
 

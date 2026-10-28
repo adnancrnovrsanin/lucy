@@ -1,6 +1,6 @@
 # AG Grid tables stack note
 
-AG Grid renders and processes the table itself, so its column definitions replace the kind layer's components. This note maps the kinds of [column-kinds.md](../column-kinds.md) to column definitions. Adapted from AG Grid's ag-dev skill (MIT).
+AG Grid renders and processes the table itself, so its column definitions replace the kind layer's components. This note maps the value kinds of [kinds.md](../../kinds.md) and their table projection in [column-kinds.md](../column-kinds.md) to column definitions. Adapted from AG Grid's ag-dev skill (MIT).
 
 ## Detect
 
@@ -8,7 +8,7 @@ AG Grid renders and processes the table itself, so its column definitions replac
 - Enterprise means an `ag-grid-enterprise` dependency. Enterprise is commercial: never add it without asking, and an Enterprise import needs the project's licence key (see Checked facts for where the key goes in the installed major).
 - Read the installed `ag-grid-community` types and the AG Grid MCP tools when available; the docs for the installed major win over memory.
 
-## Column kinds as column definitions
+## Value kinds as column definitions
 
 | Kind | Column definition |
 |---|---|

@@ -1,6 +1,6 @@
 # HeroUI tables stack note
 
-HeroUI v3 Table wraps react-aria-components (RAC) one to one and does no data processing. This note maps the kinds of [column-kinds.md](../column-kinds.md) to HeroUI components, shows how TanStack drives the table, and lists where HeroUI departs from the defaults in [look.md](../look.md). The engine rules are in [tanstack.md](tanstack.md).
+HeroUI v3 Table wraps react-aria-components (RAC) one to one and does no data processing. This note maps the value kinds of [kinds.md](../../kinds.md) and their table projection in [column-kinds.md](../column-kinds.md) to HeroUI components, shows how TanStack drives the table, and lists where HeroUI departs from the defaults in [look.md](../look.md). The engine rules are in [tanstack.md](tanstack.md).
 
 ## Detect
 

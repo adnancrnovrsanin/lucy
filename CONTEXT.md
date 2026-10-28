@@ -30,23 +30,23 @@ _Avoid_: grid (unless cells are edited in place), list view
 **Static table**:
 A table whose content is fixed in the page, such as a pricing comparison; the tables playbook gives it only semantics.
 
-**Column kind**:
-What a column's value is, combining its technical type (integer, decimal, timestamp, foreign key) with its meaning (price, quantity, status, person, relation); it decides how the value is shown, sorted, and filtered.
-_Avoid_: column type, data type, field kind
+**Value kind**:
+What a field's value is, combining its technical type (integer, decimal, timestamp, foreign key) with its meaning (price, quantity, status, person, relation); it decides how the value is shown, entered, sorted, and filtered in every playbook.
+_Avoid_: column kind, column type, data type, field kind
 
 **Column inventory**:
-The table a data table starts from: one row per column with its source field, column kind, presentation, filter, and sortability.
+The table a data table starts from: one row per column with its source field, value kind, presentation, filter, and sortability.
 _Avoid_: column list, table spec
 
 **Table plan**:
 The column inventory plus the data-flow, rendering, filtering, and opt-in choices for one data table, approved before the table is built.
 
 **Column registry**:
-The one definition of a data table's columns in the project's code, carrying each column's kind and flags, read by both the table and the server.
+The one definition of a data table's columns in the project's code, carrying each column's value kind and flags, read by both the table and the server.
 _Avoid_: column config, column defs (for the registry as a whole)
 
 **Kind layer**:
-The project's shared set of cell presentations and filter controls, one per column kind, that every data table in the project reuses.
+The project's shared set of value presentations, filter controls, and inputs, one per value kind, that every table, form, and details page in the project reuses.
 _Avoid_: cell library, renderers
 
 **Filter tree**:
@@ -56,6 +56,31 @@ _Avoid_: filter model, query object
 **Exemplar**:
 A data table Adnan has built and approved, recorded as the reference the tables playbook and its stack notes are calibrated against.
 _Avoid_: golden table, sample
+
+**Details page**:
+The page for one record, opened from a data table or a link, that shows what the record is, what relates to it, and what happened to it.
+_Avoid_: detail view, show page, record page, entity page, object page
+
+**Page kind**:
+Which of four shapes a details page takes: work item, hub record, transaction, or reference row; it decides the layout.
+
+**Record inventory**:
+The table a details page starts from: one row per field of the record with its value kind, group, placement, edit surface, and empty-value words.
+_Avoid_: field list, attribute list
+
+**Page plan**:
+The record inventory plus the page kind, surfaces, sections or tabs, related records, activity, and states for one details page, approved before it is built.
+
+**Details shell**:
+The project's shared set of details page parts (header, highlights, field groups, sections, activity, state views) that every details page in the project reuses.
+_Avoid_: page template, layout kit
+
+**Peek**:
+A details page shown in a side sheet or modal over the list it was opened from, the same component as the full page and addressable by URL.
+_Avoid_: preview, quick view, drawer (for the peek itself)
+
+**Router note**:
+A playbook reference file for one routing framework, covering record routes, loading, not-found and forbidden states, peek routes, titles, and focus.
 
 ## Inspect
 

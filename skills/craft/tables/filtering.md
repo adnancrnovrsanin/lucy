@@ -22,7 +22,7 @@ type FilterState = { version: 1; root: FilterGroup };
 
 ## Operators by kind
 
-Columns take their control from the kind table in [column-kinds.md](column-kinds.md); this table gives the operators each control offers.
+Columns take their control from the table projection in [column-kinds.md](column-kinds.md); this table gives the operators each control offers.
 
 | Filter control | Operators | Default |
 | --- | --- | --- |
