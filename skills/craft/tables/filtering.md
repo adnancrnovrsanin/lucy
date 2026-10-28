@@ -27,7 +27,7 @@ Columns take their control from the kind table in [column-kinds.md](column-kinds
 | Filter control | Operators | Default |
 | --- | --- | --- |
 | text | contains, does not contain, is, is not, is empty, is not empty | contains |
-| number range | is, is not, less than, at most, greater than, at least, between, is empty | is |
+| number range | is, is not, less than, at most, greater than, at least, between, is empty | between |
 | date presets and range | on, before, after, between, relative presets, is empty | between |
 | facet multi-select | is any of, is none of, is empty | is any of |
 | tags | has any of, has all of, has none of | has any of |
